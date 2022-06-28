@@ -14,6 +14,7 @@
  * limitations under the License.
  */ 
 
+
 import { Field, GetScreenResponse, MenuTransformation, TableTransformation } from "@softwareag/applinx-rest-apis";
 import { take } from "rxjs/operators";
 import { ScreenHolderService } from "src/app/services/screen-holder.service";
