@@ -14,6 +14,7 @@
  * limitations under the License.
  */ 
  
+import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { Injector, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -21,7 +22,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule} from '@angular/material/icon';
 import { MatFormFieldModule} from '@angular/material/form-field';
 import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-
 import { AppComponent } from './app.component';
 import { ApiModule, Configuration, ConfigurationParameters} from '@softwareag/applinx-rest-apis'
 import { ScreenComponent } from './screen/screen.component';
@@ -51,7 +51,6 @@ import { LineComponent } from './mini-components/transformations/line/line.compo
 import { CheckboxComponent } from './mini-components/transformations/checkbox/checkbox.component';
 import { JSMethodsService } from '../common/js-functions/js-methods.service';
 import { LoggerModule, NGXLogger, NgxLoggerLevel } from 'ngx-logger';
-import { RouterModule, Routes } from '@angular/router';
 import { ScreenHolderService } from './services/screen-holder.service';
 import { OAuth2HandlerService } from './services/oauth2-handler.service';
 import { RouteGuardService } from './services/route-guard.service';
@@ -68,12 +67,6 @@ export function apiConfigFactory(): Configuration {
 export const generatedPages: any[] = [
   
 ];
-
-const routes: Routes = [
-  { path: 'webLogin', component: WebLoginComponent, canActivate: [RouteGuardService] },
-  { path: 'instant', component: ScreenComponent, canActivate: [RouteGuardService] },
-  { path: '**',   redirectTo: 'instant', pathMatch: 'full' }
-]; 
 
 @NgModule({
   declarations: [
@@ -94,8 +87,8 @@ const routes: Routes = [
     CheckboxComponent,
   ].concat(generatedPages),
   imports: [
+    AppRoutingModule,
     ApiModule.forRoot(apiConfigFactory),
-    RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'}),
     BrowserModule,
     HttpClientModule,
     FormsModule,
@@ -123,7 +116,6 @@ const routes: Routes = [
     ScreenProcessorService,
     {provide: 'IJSFunctionService', useClass: JSMethodsService}
   ],  
-  exports: [RouterModule],
   bootstrap: [AppComponent]
 })
 export class AppModule {
