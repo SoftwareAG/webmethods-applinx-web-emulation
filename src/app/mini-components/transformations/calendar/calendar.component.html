@@ -1,15 +1,15 @@
 <div class="dlt-form-item input"
-    *ngIf="transform && sendableField" 
-    [ngStyle]="{'grid-row-start': field.position.row, 'grid-column-start': field.position.column, 
-                'grid-column-end': field.position.column + transform.dateInputFields[0].format.length + 2}">
+  *ngIf="transform && sendableField" 
+  [ngStyle]="{'grid-row-start': field.position.row, 'grid-column-start': field.position.column, 
+    'grid-column-end': field.position.column + transform.dateInputFields[0].format.length + 2}">
   <div class="dlt-form-group">
-    <input [attr.data-toggle]="this.toggleId" 
-            (focus)="onFocus()" 
-            type="text" 
-            class="dlt-date-picker" 
-            [placeholder]="transform.dateInputFields[0].format" 
-            [ngModel]="field.content.trim()" 
-            [ngStyle]="{'grid-row-start': field.position.row, 'grid-column-start': field.position.column}">
+    <input
+      (focus)="onFocus()" 
+      type="text" 
+      class="dlt-date-picker" 
+      [placeholder]="transform.dateInputFields[0].format"
+      value="{{field.content.trim()}}"             
+      [ngStyle]="{'grid-row-start': field.position.row, 'grid-column-start': field.position.column}">
     <i #datepickerIcon class="dlt-icon-calendar datepicker-icon"></i>
   </div>
 </div>
