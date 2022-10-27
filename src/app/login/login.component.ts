@@ -12,6 +12,8 @@ import { CreateSessionResponse,GetInfoResponse,
 import { UserExitsEventThrowerService } from '../services/user-exits-event-thrower.service';
 import { NGXLogger } from 'ngx-logger';
 import { MessagesService } from '../services/messages.service';
+import { NavigationService } from '../services/navigation/navigation.service';
+import { Subscription } from 'rxjs';
 declare var $: any;
 
 @Component({
@@ -23,11 +25,14 @@ export class LoginComponent implements OnInit {
 
   form: FormGroup;
   authMethod: string;
+  loginVisible: boolean = false;
   errorMessage: string;
   version: string;
+  autoLoginSubscription: Subscription;
 
   constructor(private sessionService: SessionService, private infoService: InfoService, 
     private storageService: StorageService, private keyboardMappingService: KeyboardMappingService,
+    private navigationService: NavigationService,
     private screenLockerService: ScreenLockerService, private userExitsEventThrower: UserExitsEventThrowerService,
     private configurationService: ConfigurationService, private oAuth2handler: OAuth2HandlerService, private logger: NGXLogger, private messages: MessagesService) {}
 
@@ -50,9 +55,41 @@ export class LoginComponent implements OnInit {
       } else {
         this.authMethod = response.auth;
       }
+      this.autoLoginSubscription = this.configurationService.isConfigurationLoaded.subscribe(loaded => {
+        if (!loaded) {
+          return;
+        }
+        if (loaded) {
+          if (this.configurationService.autoLogin && this.authMethod == GXConst.DISABLED) {
+            this.autoLogin();
+          }
+          else {
+            this.loginVisible = true;
+          }
+        }
+      })
       this.version = response.version;
       this.keyboardMappingService.initMapping(response.keyboardMapping);       
       this.screenLockerService.setLocked(false); // Unlock screen after finished initizling. 
+    });
+  }
+
+  autoLogin() {
+    const createSessionRequest = new CreateSessionRequest(this.configurationService.applicationName, 
+      this.configurationService.connectionPool);
+    this.sessionConnect(createSessionRequest);
+  }
+
+  sessionConnect(createSessionRequest: CreateSessionRequest, authHeader?: string) {
+    this.userExitsEventThrower.firePreConnect(createSessionRequest, authHeader);
+    this.sessionService.connect(createSessionRequest, authHeader).subscribe((res: CreateSessionResponse)  => {
+      this.storageService.setConnected(res.token);
+      this.navigationService.isConnectedtoHost.next(true);
+      this.keyboardMappingService.initMapping(res.keyboardMapping);
+      this.userExitsEventThrower.firePostConnect(res); 
+    }, (errorResponse: HttpErrorResponse) => {
+      this.handleError(errorResponse);
+      this.userExitsEventThrower.fireOnConnectError(errorResponse);
     });
   }
 

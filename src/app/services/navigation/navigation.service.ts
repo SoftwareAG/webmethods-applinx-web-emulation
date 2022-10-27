@@ -11,18 +11,23 @@ import { MessagesService } from '../messages.service';
 import { Position, Size, InputField, Cursor, ScreenService, InfoService, SendKeysRequest, GetInfoResponse, GetScreenResponse, ReturnScreen } from '@softwareag/applinx-rest-apis';
 import { TabAndArrowsService } from './tab-and-arrows.service';
 import { StatusCodes } from 'http-status-codes';
+import { GXConst } from '../enum.service';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class NavigationService {
  
-  
+  errorMessage: string;
+  isAutoLogin: boolean;
+  authMethod: string;
   private routingHandler: RoutingHandler;
   private screenId: number;
   private screenSize: Size;
   private sendableFields: Map<string, InputField>;
   private cursorPosition: Cursor;
+  isConnectedtoHost: BehaviorSubject<boolean> = new BehaviorSubject(true); // if false - shows disconnection message or redirects to login page
   isScreenUpdated: BehaviorSubject<boolean> = new BehaviorSubject(false);
   screenObjectUpdated: BehaviorSubject<GetScreenResponse> = new BehaviorSubject(null);
 
@@ -36,6 +41,11 @@ export class NavigationService {
               private messages: MessagesService) {
     this.sendableFields = new Map<string, InputField>();
     this.setRoutingHandler();
+    this.getAuthMethod();
+  }
+
+  setIsAutoLogin (isAutoLogin:boolean): void {
+    this.isAutoLogin = isAutoLogin;
   }
 
   sendKeys(sendKey: string): void {
@@ -53,9 +63,13 @@ export class NavigationService {
       this.userExitsEventThrower.firePostSendKey(newScreen);
       this.screenObjectUpdated.next (newScreen);
     }, errorResponse => {
-      this.logger.error(errorResponse);
-      if (errorResponse.status === StatusCodes.GONE || errorResponse.error.message.indexOf("Session was disconnected by Host") > 0) {
+      this.logger.error(errorResponse.error.message);
+      if (errorResponse.status === StatusCodes.GONE || errorResponse.error.message.indexOf("Session was disconnected by Host") > -1
+      || errorResponse.error.message.indexOf("Disconnected by host") > -1
+      || errorResponse.error.message.indexOf("Internal Server Error. Cannot create a session.\r\nSession was disconnected by Host") > -1
+      ) {
           this.storageService.setNotConnected();
+          
       }
       this.userExitsEventThrower.fireOnSendKeyError(errorResponse);   
       this.screenLockerService.setLocked(false);
@@ -139,6 +153,17 @@ export class NavigationService {
       }
     });
   }
+
+  getAuthMethod(): void {
+    this.infoService.getInfo().subscribe((response: GetInfoResponse) => {
+        this.authMethod = response.auth;
+    });
+  }
+
+  isAuthDisabled (): boolean {
+    return (this.authMethod == GXConst.DISABLED);
+  }
+
   tearDown(): void {
     this.sendableFields.clear();
     this.tabAndArrowsService.tearDown();
