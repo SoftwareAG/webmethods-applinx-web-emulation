@@ -10,7 +10,7 @@ span {
 .flexField{
   display: flex;
   flex-direction: row;
-
+  overflow: visible !important;
   border-style: none;
   border-width: thin;
 }
