@@ -1,3 +1,20 @@
+<section id="readonly_modal" role="dialog" tabindex="-1" class="dlt-modal-window"
+aria-labelledby="modal-header-readonly" aria-modal="true" aria-describedby="modal-content-readonly">
+<div class="dlt-modal info-border dlt-modal-window__container">
+  <div class="title-wrapper">
+    <button data-modal-close class="dlt-button dlt-button-icon dlt-modal-window__close dlt-icon-sm"></button>
+    <div class="toast-title"><span class="dlt-icon-info info-icon"></span>Info</div>
+  </div>
+  <div class="toast-message">{{errorMessage}}
+    <br>
+    Press the Reconnect button to start a new session.</div>
+  <div class="buttons-wrapper">
+    <button class="dlt-button dlt-button-primary sm-button" (click)="reconnect()">Reconnect</button>
+  </div>
+</div>
+<div class="dlt-modal-window__backdrop" data-modal-close></div>
+</section>
+
 <ng-container *ngIf="storageService.isConnected()">
 
   <sag-topnav *ngIf="!isSmallScreen()" brandsrc='assets/images/ApplinX-all white.svg' scrollStyle="" brandtitle='ApplinX Web Application' brandheight='56' brandwidth='196'>

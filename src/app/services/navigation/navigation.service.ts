@@ -64,12 +64,18 @@ export class NavigationService {
       this.screenObjectUpdated.next (newScreen);
     }, errorResponse => {
       this.logger.error(errorResponse.error.message);
-      if (errorResponse.status === StatusCodes.GONE || errorResponse.error.message.indexOf("Session was disconnected by Host") > -1
-      || errorResponse.error.message.indexOf("Disconnected by host") > -1
-      || errorResponse.error.message.indexOf("Internal Server Error. Cannot create a session.\r\nSession was disconnected by Host") > -1
+      if (errorResponse.status === StatusCodes.GONE || errorResponse.error.message.indexOf("Disconnected by host") > -1
+      || errorResponse.error.message.indexOf("Session was disconnected by Host") > -1
+      || errorResponse.error.message.indexOf("Not connected to Server (Software caused connection abort: recv failed)") > -1
       ) {
+        console.log(errorResponse.error.message);
+        if ((this.isAuthDisabled() && this.isAutoLogin) ) { // show disconnect message
+          this.errorMessage = 'The session has been disconnected from the host.';          
+          this.isConnectedtoHost.next(false);
+        }
+        else { // redirect to webLogin
           this.storageService.setNotConnected();
-          
+        }
       }
       this.userExitsEventThrower.fireOnSendKeyError(errorResponse);   
       this.screenLockerService.setLocked(false);

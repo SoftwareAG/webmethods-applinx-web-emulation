@@ -32,10 +32,12 @@ export class AppComponent implements OnInit, OnDestroy {
   hostKeyTransforms: HostKeyTransformation[];
   loginComponent: LoginComponent;
   displayScreen = false;
+  errorMessage: string;
   
   disconnectSubscription: Subscription;
   hostKeysEmitterSubscription: Subscription;
   screenInitializedSubscription: Subscription;
+  hostConnectionSubscription: Subscription;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
@@ -85,7 +87,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private screenHolderService: ScreenHolderService, private userExitsEventThrower: UserExitsEventThrowerService,
     private logger: NGXLogger, private httpClient: HttpClient, private messages: MessagesService,
     private oAuth2handler: OAuth2HandlerService,
-	private infoService: InfoService) {
+	  private infoService: InfoService) {
     this.userExitsEventThrower.clearEventListeners();
     this.userExitsEventThrower.addEventListener(new LifecycleUserExits(infoService,navigationService,storageService,keyboardMappingService,logger));
     this.getLoggerConfiguration();
@@ -117,6 +119,23 @@ export class AppComponent implements OnInit, OnDestroy {
         });
       }
     });
+    this.hostConnectionSubscription = this.navigationService.isConnectedtoHost.subscribe(hostConnection => {
+      if (!hostConnection) {
+        this.errorMessage = this.navigationService.errorMessage;
+        this.showDisconnectionMessage();
+      }
+    })
+  }
+
+  showDisconnectionMessage(): void {
+    const targetModal = document.getElementById('readonly_modal');
+    targetModal.classList.add('dlt-modal-window__open');
+  }
+
+  reconnect(): void {
+    const targetModal = document.getElementById('readonly_modal');
+    targetModal.classList.remove('dlt-modal-window__open')
+    this.storageService.setNotConnected();
   }
 
   reload(): void {
@@ -172,6 +191,9 @@ export class AppComponent implements OnInit, OnDestroy {
     }
     if (this.screenInitializedSubscription) {
       this.screenInitializedSubscription.unsubscribe();
+    }
+    if (this.hostConnectionSubscription) {
+      this.hostConnectionSubscription.unsubscribe();
     }
   }
 }
