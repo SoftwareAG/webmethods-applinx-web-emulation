@@ -147,7 +147,7 @@ The snippets contain code which can be used as a basis for further development. 
 Like any Angular component, the generated page should be declared in a *NgModule*.
 The generated page should be declared within:
 
-> \<projectDir\>/app/src/app.module.ts
+> \<projectDir\>/src/app/app.module.ts
 
 Also, a route for the component should be configured. All of this takes 3 steps.
 Let’s showcase the required configuration with an example of Generated Page titled ***‘Environment’***:
