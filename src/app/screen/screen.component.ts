@@ -35,7 +35,7 @@ import {GXUtils} from 'src/utils/GXUtils'
 import { Field, GetScreenRequest,
   GetScreenResponse,
   HostKeyTransformation,
-  ScreenService, InputField, ScreenBounds } from '@softwareag/applinx-rest-apis';
+  ScreenService, InputField, ScreenBounds,LineTransformation } from '@softwareag/applinx-rest-apis';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { ScreenHolderService } from '../services/screen-holder.service';
@@ -266,13 +266,37 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
                                 column: fld.position.column - windowBounds.startCol + 1};
       }
     });
-  }
+    
+    screen.transformations.forEach((transform) => {
+      if(this.isTransformOutOfBounds(transform,windowBounds)) {
+          this.m_screen.transformations.push(transform);
+        } else {
+          transform.position = {row: transform.position.row - windowBounds.startRow + 1, 
+                                column: transform.position.column - windowBounds.startCol +1};
+          transform.regionsToHide?.forEach(region => {
+            region.topLeft.row = 0;
+            region.topLeft.column = 0;
+            region.bottomRight.row = 0;
+            region.bottomRight.column = 0;
+            transform.regionsToHide.push(region);
+       });
+      }
+  });
 
+}
+  
   private isFieldOutOfBounds(field: Field, bounds: ScreenBounds): boolean {
     return field.position.row < bounds.startRow || 
             field.position.row > bounds.endRow || 
             field.position.column < bounds.startCol ||  
            (field.position.column+field.length > bounds.endCol+1)
+  }
+
+  private isTransformOutOfBounds(transform: LineTransformation, bounds: ScreenBounds): boolean {
+    return transform.position.row < bounds.startRow || 
+    transform.position.row > bounds.endRow || 
+    transform.position.column < bounds.startCol ||  
+           (transform.position.column+transform.length > bounds.endCol+1)
   }
 
   getChildWindows(): GetScreenResponse[] {
