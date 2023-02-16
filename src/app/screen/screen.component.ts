@@ -266,8 +266,19 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
                                 column: fld.position.column - windowBounds.startCol + 1};
       }
     });
-  }
-
+    screen.transformations.forEach((transform) => {
+          transform.position = {row: transform.position.row - windowBounds.startRow + 1, 
+                                column: transform.position.column - windowBounds.startCol +1};
+          transform.regionsToHide?.forEach(region => {
+            region.topLeft.row = 0;
+            region.topLeft.column = 0;
+            region.bottomRight.row = 0;
+            region.bottomRight.column = 0;
+            transform.regionsToHide.push(region);
+       });
+  });
+}
+  
   private isFieldOutOfBounds(field: Field, bounds: ScreenBounds): boolean {
     return field.position.row < bounds.startRow || 
             field.position.row > bounds.endRow || 
