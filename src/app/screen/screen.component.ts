@@ -333,7 +333,8 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       this.gridChangedSubscription.unsubscribe();
     }
     if (this.navigationService.getScreenId()) {
-      this.navigationService.setScreenId(null);
+      //this.navigationService.setScreenId(null);
+      clearInterval(this.navigationService.getScreenId())
     }
     if (!this.isChildWindow) this.hostKeysEmitter.emit(null);
   }
