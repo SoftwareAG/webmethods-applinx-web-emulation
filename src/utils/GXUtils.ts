@@ -212,5 +212,8 @@ export class GXUtils {
     public static removeEndingSlash(str: string): string {
       return (str.slice(-1) == '/') ?  str.substring(0, str.length - 1) : str;
     }
+    public static zoomMinValue = 10;
+    public static zoomMaxValue = 24;
+    public static zoomStep = 1;
     
 }

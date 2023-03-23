@@ -1,4 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+	--primary-color: black;
+	--primary-text-color: white;
+	--btn-color: #B3B2B2;
+	--btn-hover-color: #E57200;
+	--text-font-size: 17px;
+}
 
 html, body { height: 100%; -webkit-overflow-scrolling: touch; }
 body { 
@@ -10,14 +17,16 @@ body {
 .datepicker-container {
 	min-width: 240px;
 }
-
+.ngx-slider .ngx-slider-bubble{color: white !important;
+	border: 1px solid !important;
+    margin-left: 6px !important;}
 .dlt-button {
 	display: inline-block !important;
 }
 
 input[type="month"]::-webkit-calendar-picker-indicator:hover,
 input[type="date"]::-webkit-calendar-picker-indicator:hover {
-	background-color: white;
+	background-color: var(--primary-color);
     cursor: pointer;
 }
 
@@ -25,7 +34,14 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 #gx_screenArea
 {
 	font-family: "Lucida Console", Monaco, "Menlo-Regular", monospace,"Courier New","Noto Sans Mono CJK JP","IPA Mincho";
-	color: #006992;
+	color: var(--primary-text-color);
+	padding-bottom: 8%;
+	margin-top: 0em !important;
+	font-size: var(--text-font-size);
+}
+
+#gx_screenArea.wrapper {
+	background-color: var(--primary-color);
 }
 
 
@@ -34,6 +50,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 #gx_screenArea textarea,
 #gx_screenArea select {
 	font-family: "Lucida Console", Monaco, "Menlo-Regular", monospace,"Courier New","Noto Sans Mono CJK JP","IPA Mincho";
+	color:  var(--primary-text-color);;
 }
 
 /* labels inside the instant wrapping tag */
@@ -43,6 +60,31 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 #gx_screenArea img,
 #gx_screenArea a{
 	white-space: nowrap;
+}
+
+#gx_screenArea button {
+    font-family: Tahoma, Geneva, Verdana, sans-serif;
+	border-radius: 7px;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border: none;
+	background-color: var(--btn-color);
+	color: var(--primary-color);
+	text-decoration: none;
+	font-size: var(--text-font-size);
+}
+
+.dlt-button-secondary {
+	background-color: var(--btn-color);
+	color: var(--primary-color);
+}
+
+#gx_screenArea button:hover {
+	background-color: var(--btn-hover-color);
+}
+
+.dlt-button-primary:hover .dlt-button-secondary:hover{
+   background-color: var(--btn-hover-color);
 }
 
 .noGridItem {
@@ -81,7 +123,7 @@ input::-ms-clear {
 .gx_intf
 {
 	text-shadow:0 0.025em 0 black, 0.025em 0 0 black;
-	color:black;
+	color: var(--primary-text-color);;
 }
 input.gx_intf
 {
@@ -528,3 +570,26 @@ input.gx_usr
 	background-color: black;
 	color:white;
 } */
+
+/* new line */
+
+.main-container maindiv{
+	background-color: var(--primary-color);
+}
+
+#sagtopnav-div-header.header-wrap {
+	margin-top: 0;
+}
+
+.hostKeysContainer #enter.dlt-button-primary:hover {
+	background-color: var(--btn-hover-color);
+}
+
+.hostKeysContainer #on-hover.dlt-button-secondary:hover {
+	background-color: var(--btn-hover-color);
+}
+
+#app-host-keys-btns app-host-keys-template .hostKeysContainer {
+    width: 50%;
+}
+

@@ -20,7 +20,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule} from '@angular/material/icon';
 import { MatFormFieldModule} from '@angular/material/form-field';
+import {OverlayModule} from '@angular/cdk/overlay';
+import {MatSliderModule} from '@angular/material/slider';
 import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatDialogModule, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatMenuModule} from '@angular/material/menu';
+//import { MatDialog } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { ApiModule, Configuration, ConfigurationParameters} from '@softwareag/applinx-rest-apis'
@@ -35,6 +40,7 @@ import { TableComponent } from './mini-components/transformations/table/table.co
 import { MultipleOptionsComponent } from './mini-components/transformations/multiple-options/multiple-options.component';
 import { TextComponent } from './mini-components/transformations/text/text.component';
 import { MenuComponent } from './mini-components/transformations/menu/menu.component';
+import { ModalpopupComponent } from './mini-components/transformations/modalpopup/modalpopup.component';
 import { TransformGeneratorComponent } from './mini-components/transformations/transform-generator/transform-generator.component';
 import { InputFieldComponent } from './mini-components/input-field/input-field.component';
 import { NavigationService} from './services/navigation/navigation.service';
@@ -86,6 +92,7 @@ const routes: Routes = [
     MultipleOptionsComponent,
     TextComponent,
     MenuComponent,
+    ModalpopupComponent,
     TransformGeneratorComponent,
     InputFieldComponent,
     HostKeysTemplateComponent,
@@ -106,6 +113,11 @@ const routes: Routes = [
     MatIconModule,
     MatSidenavModule,    
     MatProgressSpinnerModule,
+    MatDialogModule,
+    MatSliderModule,
+    OverlayModule,
+    MatMenuModule, 
+    // MatDialog,
     LoggerModule.forRoot({serverLoggingUrl: environment.basePath+'/logger', level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.TRACE})
   ],
   providers: [NavigationService, 
@@ -121,6 +133,7 @@ const routes: Routes = [
     OAuth2HandlerService,
     RouteGuardService,
     ScreenProcessorService,
+    { provide: MAT_DIALOG_DATA, useValue: {} },
     {provide: 'IJSFunctionService', useClass: JSMethodsService}
   ],  
   exports: [RouterModule],
