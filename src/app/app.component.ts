@@ -61,20 +61,62 @@ export class AppComponent implements OnInit, OnDestroy {
     'black' : {
       'bg-color' : 'black',
       'text-color' : 'white',
+      'input-text-pw': '#ff0000',
+      'input-text': '#00ff00',
       'btn-color' : '#B3B2B2',
-      'btn-hover-color' : '#E57200'
+      'btn-hover-color' : '#E57200',
+      'login-screen-color': '#59b0ca',
+      'menu-content-color': 'white',
+      'table-header-background': '#006992',
+      'table-header-border-color': '#042237',
+      'table-header-text-color': 'white',
+      'table-body-border-color':'#042237',
+      'table-body-alternating1': '#042237',
+      'table-body-alternating2': 'black' ,
+      'table-body-text-color': '#59b0ca',
+      'table-body-select-border-color': 'black',
+      'table-body-select-background-color': '#042237',
+      'table-body-select-color': '#59b0ca'
     },
     'white' : {
       'bg-color' : 'white',
       'text-color' : 'black',
-      'btn-color' : '#B3B2B2',
-      'btn-hover-color' : '#E57200'
+      'input-text': '#00ff00',
+      'input-text-pw': '#ff0000',
+      'btn-color' : '#233356',
+      'btn-hover-color' : '#068CB2',
+      'login-screen-color': '#59b0ca',
+      'menu-content-color': 'black',
+      'table-header-background': '#093655',
+      'table-header-border-color': '#d4f0f7',
+      'table-header-text-color': 'white',
+      'table-body-border-color': '#d4f0f7',
+      'table-body-alternating1': 'white',
+      'table-body-alternating2': '#d4f0f7' ,
+      'table-body-text-color': '#006d93',
+      'table-body-select-border-color': 'black',
+      'table-body-select-background-color': 'white',
+      'table-body-select-color': 'black'
     },
     'green' :  {
       'bg-color' : 'black',
       'text-color' : 'green',
+      'input-text': '#ff0000',
+      'input-text-pw': '#00ff00',
       'btn-color' : '#B3B2B2',
-      'btn-hover-color' : '#E57200'
+      'btn-hover-color' : '#E57200',
+      'login-screen-color': '#59b0ca',
+      'menu-content-color' : '#00ff00',
+      'table-header-background': '#093655',
+      'table-header-border-color': '#d4f0f7',
+      'table-header-text-color': 'white',
+      'table-body-border-color': '#d4f0f7',
+      'table-body-alternating1': '#042237',
+      'table-body-alternating2': 'black' ,
+      'table-body-text-color': '#006d93',
+      'table-body-select-border-color': 'black',
+      'table-body-select-background-color': 'white',
+      'table-body-select-color': 'black'
     }
   }
   zoomDefault: number;
@@ -313,6 +355,21 @@ export class AppComponent implements OnInit, OnDestroy {
     document.documentElement.style.setProperty('--primary-text-color', this.themecolorConfig[color]['text-color']);
     document.documentElement.style.setProperty('--btn-color', this.themecolorConfig[color]['btn-color']);
     document.documentElement.style.setProperty('--btn-hover-color', this.themecolorConfig[color]['btn-hover-color']);
+    document.documentElement.style.setProperty('--input-table-text', this.themecolorConfig[color]['input-text']);
+    document.documentElement.style.setProperty('--input-table-text-pw', this.themecolorConfig[color]['input-text-pw']);
+    document.documentElement.style.setProperty('--login-screen-color', this.themecolorConfig[color]['login-screen-color']);
+    document.documentElement.style.setProperty('--menu-content-color', this.themecolorConfig[color]['menu-content-color']);
+    document.documentElement.style.setProperty('--table-header-background', this.themecolorConfig[color]['table-header-background']);
+    document.documentElement.style.setProperty('--table-header-border-color', this.themecolorConfig[color]['table-header-border-color']);
+    document.documentElement.style.setProperty('--table-header-text-color', this.themecolorConfig[color]['table-header-text-color']);
+    document.documentElement.style.setProperty('--table-body-border-color', this.themecolorConfig[color]['table-body-border-color']);
+    document.documentElement.style.setProperty('--table-body-alternating1', this.themecolorConfig[color]['table-body-alternating1']);
+    document.documentElement.style.setProperty('--table-body-alternating2', this.themecolorConfig[color]['table-body-alternating2']);
+    document.documentElement.style.setProperty('--table-body-text-color', this.themecolorConfig[color]['table-body-text-color']);
+    document.documentElement.style.setProperty('--table-body-select-border-color', this.themecolorConfig[color]['table-body-select-border-color']);
+    document.documentElement.style.setProperty('--table-body-select-background-color', this.themecolorConfig[color]['table-body-select-background-color']);
+    document.documentElement.style.setProperty('--table-body-select-color', this.themecolorConfig[color]['table-body-select-color']);
+
     //this is for delite button hover
     // document.documentElement.style.setProperty('--dlt-color-interactive-primary-hover', this.themecolorConfig[color]['btn-hover-color']);
   }

@@ -25,12 +25,12 @@
       </sag-topnav-item>
 
       
-      <sag-topnav-item [matMenuTriggerFor]="menu" itemType="button" itemIcon="dlt-icon-zoom-in"
+      <sag-topnav-item [matMenuTriggerFor]="menu" title="Zoom" itemType="button" itemIcon="dlt-icon-zoom-in"
       itemStyle="color:white" (click)="zoom()">
     </sag-topnav-item>
       <mat-menu #menu="matMenu">  
         <div id="silder-default-btn" >
-          <button type="button" (click)="setDefaultZoom()">default</button>
+          <button type="button" (click)="setDefaultZoom()">Default</button>
         </div>
         <div id="slider">
           <mat-slider thumbLabel vertical  [displayWith]="formatLabel" [value]="zoomDefault" [step]="zoomStep" [min]="zoomMinValue"
@@ -39,7 +39,7 @@
       </mat-menu>
       
       <div class="color-theme-style">
-        <label for="">style: {{themeColor}}</label>
+        <label for="">style:{{themeColor}}</label>
       </div>
       <sag-topnav-item cdkOverlayOrigin #trigger="cdkOverlayOrigin" itemType="button" title="Style"
         (click)="changeTheme()" itemId="theme-style" itemName="" itemIcon="dlt-icon-caret-down" itemStyle="color:white">
