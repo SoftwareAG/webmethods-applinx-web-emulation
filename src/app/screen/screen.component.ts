@@ -248,6 +248,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     const lastWindowIndex = screen.windows.length - 1;
     const windowBounds = screen.windows[lastWindowIndex].bounds;
     const mainScreenFields = new Map<string, number>();
+    const currentWindowName = screen.name;
     this.m_screen.fields = this.m_screen.fields.filter(f => f);
     this.m_screen.fields.forEach((fld, i) => mainScreenFields.set(this.fieldToString(fld), i));
 
@@ -266,6 +267,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
                                 column: fld.position.column - windowBounds.startCol + 1};
       }
     });
+    if (currentWindowName != GXUtils.nationalityWin) {
     screen.transformations.forEach((transform) => {
           transform.position = {row: transform.position.row - windowBounds.startRow + 1, 
                                 column: transform.position.column - windowBounds.startCol +1};
@@ -278,6 +280,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
        });
   });
 }
+   }
   
   private isFieldOutOfBounds(field: Field, bounds: ScreenBounds): boolean {
     return field.position.row < bounds.startRow || 

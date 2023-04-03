@@ -18,8 +18,9 @@
 .hostKeys-btns-container {
     flex-basis: 15%;
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
+    margin-left: 1rem;
 
 }
 
