@@ -2,8 +2,9 @@
   display: contents;
 }
 input {
-  height: 1.4rem !important;
-  line-height: 1rem !important;
+  height: calc(var(--text-font-size) + 2px) !important;
+  line-height: var(--text-font-size) !important;
   width: fit-content !important;
-  padding: 0;
+  padding: 0px;
+  margin-top: -1px;
 }

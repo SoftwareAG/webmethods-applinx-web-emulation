@@ -11,7 +11,7 @@
                 'border-style': (m_screen.windows[index].boundsIncludeBorder) ? 'solid' : 'none', 'width': 'max-content !important',
                 'z-index': this.index+1}
                 : {'grid-template-columns': m_screen ? 'repeat(auto-fit, minmax(0px, 1fr))'  : 'repeat(80, 1fr)',
-                  'grid-template-rows': m_screen ? 'repeat('+(m_screen.screenSize.rows) +', 1fr)' : 'repeat(24, 1fr)',
+                  'grid-template-rows': m_screen ? 'repeat(auto-fit, minmax(calc(var(--text-font-size) + 2px), 1fr))' : 'repeat(24, 1fr)',
                   'z-index': 0, 'width': 'min-content', 'margin-top': '1rem'}">
 
   <div name="emptyArray" *ngIf="!isChildWindow" style="display: contents; z-index: -999;">
