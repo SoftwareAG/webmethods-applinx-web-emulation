@@ -212,5 +212,25 @@ export class GXUtils {
     public static removeEndingSlash(str: string): string {
       return (str.slice(-1) == '/') ?  str.substring(0, str.length - 1) : str;
     }
+    public static zoomMinValue = 10;
+    public static zoomMaxValue = 24;
+    public static zoomStep = 1;
     
+    public static replaceString(str, index, replacement) {
+      return (
+        str.slice(0, index) +
+        replacement +
+        str.slice(index + replacement.length)
+      );
+    }
+
+    public static divElement = "DIV";
+    public static appFieldElement = "APP-FIELD";
+    public static appInputFieldElement = "APP-INPUT-FIELD";
+    public static appTransformGeneratorElement = "APP-TRANSFORM-GENERATOR";
+    public static textFieldType = "text";
+    public static multipleOptionsTransformation = "MultipleOptionsTransformation";
+    public static tableTransformation = "TableTransformation";
+    public static action = "Action";
+    public static nationalityWin = "NationalityWin";
 }
