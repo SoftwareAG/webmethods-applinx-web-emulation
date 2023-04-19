@@ -1,26 +1,33 @@
-<div class="modal-header">
-    <div *ngIf="!printFlag">
-        <h5 class="modal-title" id="exampleModalLabel">Clipboard for Copying</h5>
-    </div>
-    <div class="container-fluid" *ngIf="printFlag">
-        <div class="row">
-            <div class="col-11 col-sm-11">
-                <h5 class="modal-title" id="exampleModalLabel">Print Preview</h5>
-            </div>
-            <div class="col-1 col-sm-1">
-                <sag-topnav-right right>
-                    <sag-topnav-item id="pop-up-print-icon" itemType="button" [disable]='false' title="Print" (click)="print()" itemId="print"
-                        itemName="" itemIcon="dlt-icon-print" itemStyle="color:white">
-                    </sag-topnav-item>
-                </sag-topnav-right>
+<div id="copyParentDiv" tabindex="10" (keydown)="handleKeyDown($event)">
+    <div class="modal-header">
+        <div *ngIf="!printFlag">
+            <h5 class="modal-title" id="exampleModalLabel">Clipboard for Copying</h5>
+        </div>
+        <div class="container-fluid" *ngIf="printFlag">
+            <div class="row">
+                <div class="col-11 col-sm-11">
+                    <h5 class="modal-title" id="exampleModalLabel">Print Preview</h5>
+                </div>
+                <div class="col-1 col-sm-1">
+                    <sag-topnav-right right>
+                        <sag-topnav-item id="pop-up-print-icon" itemType="button" [disable]='false' title="Print"
+                            (click)="print()" itemId="print" itemName="" itemIcon="dlt-icon-print"
+                            itemStyle="color:white">
+                        </sag-topnav-item>
+                    </sag-topnav-right>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div id="copyDiv"></div>
-<div class="modal-footer">
-    <mat-dialog-actions>
-        <button mat-button mat-dialog-close >Cancel</button>
-    </mat-dialog-actions>
+    <div id="copyDiv" class="copyWrapper" (mousedown)="handleMouseDown($event)" (mouseup)="handleMouseUp($event)">
+    </div>
+    <div class="modal-footer">
+        <div class="instruction">
+            {{copyInstruction}}
+        </div>
+        <mat-dialog-actions>
+            <button mat-button mat-dialog-close>Cancel</button>
+        </mat-dialog-actions>
+    </div>
 </div>

@@ -19,6 +19,8 @@
 	--table-body-select-border-color: black;
 	--table-body-select-background-color: white;
 	--table-body-select-color: black;
+	/* --input-bottom-border-as400 : #9DBD72;
+	--cross-text-color : black; */
 }
 
 html, body { height: 100%; -webkit-overflow-scrolling: touch; }
@@ -134,6 +136,18 @@ table.gx_tbl tr td blink.gx_af
   BORDER-TOP: var(--primary-color) 1px;
 }
 
+/* AS400 */ 
+/* #gx_screenArea input.gx_lgrn
+{
+  border: gray solid 1px;
+  COLOR: var(--input-bottom-border-as400);
+  BACKGROUND-COLOR: var(--primary-color);
+  BORDER-BOTTOM: var(--input-bottom-border-as400) 1px solid;
+  BORDER-LEFT: WHITE 1px;
+  BORDER-RIGHT: WHITE 1px;
+  BORDER-TOP: var(--primary-color) 1px;
+}  */
+
 input::-ms-clear { 
 	  display: none; 
 }
@@ -172,6 +186,7 @@ input::-ms-clear {
 .gx_lwt,a.gx_lwt:link,a.gx_lwt:visited
 {
 	color: black;
+	/* color: var(--cross-text-color); */
 }
 input.gx_lwt
 {
@@ -654,3 +669,24 @@ div[name="Menu"]#gx_screenArea .gx_intf {
     font-size: 18px  !important;
     white-space: pre !important;
 }
+
+/* .grid-item {
+	grid-row-start: 14 ;
+	margin-bottom: 100px;
+   } */
+
+.copyWrapper {
+	position: relative;
+	height: 100% !important;
+	width: 100% !important;
+  }
+
+  .selWidgetClass {
+	display: block;
+	position: absolute;
+  }
+
+  .instruction{
+	font-size: small;
+	font-style: italic;
+  }

@@ -233,4 +233,5 @@ export class GXUtils {
     public static tableTransformation = "TableTransformation";
     public static action = "Action";
     public static nationalityWin = "NationalityWin";
+    public static copyInstruction = "Please draw a yellow rectangle over the text that needs to be copied using mouse and then use Ctrl +C to copy the text";
 }
