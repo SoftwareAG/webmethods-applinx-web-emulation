@@ -1,88 +1,44 @@
 <section id="readonly_modal" role="dialog" tabindex="-1" class="dlt-modal-window"
-  aria-labelledby="modal-header-readonly" aria-modal="true" aria-describedby="modal-content-readonly">
-  <div class="dlt-modal info-border dlt-modal-window__container">
-    <div class="title-wrapper">
-      <button data-modal-close class="dlt-button dlt-button-icon dlt-modal-window__close dlt-icon-sm"></button>
-      <div class="toast-title"><span class="dlt-icon-info info-icon"></span>Info</div>
-    </div>
-    <div class="toast-message">{{errorMessage}}
-      <br>
-      Press the Reconnect button to start a new session.
-    </div>
-    <div class="buttons-wrapper">
-      <button class="dlt-button dlt-button-primary sm-button" (click)="reconnect()">Reconnect</button>
-    </div>
+aria-labelledby="modal-header-readonly" aria-modal="true" aria-describedby="modal-content-readonly">
+<div class="dlt-modal info-border dlt-modal-window__container">
+  <div class="title-wrapper">
+    <button data-modal-close class="dlt-button dlt-button-icon dlt-modal-window__close dlt-icon-sm"></button>
+    <div class="toast-title"><span class="dlt-icon-info info-icon"></span>Info</div>
   </div>
-  <div class="dlt-modal-window__backdrop" data-modal-close></div>
+  <div class="toast-message">{{errorMessage}}
+    <br>
+    Press the Reconnect button to start a new session.</div>
+  <div class="buttons-wrapper">
+    <button class="dlt-button dlt-button-primary sm-button" (click)="reconnect()">Reconnect</button>
+  </div>
+</div>
+<div class="dlt-modal-window__backdrop" data-modal-close></div>
 </section>
 
 <ng-container *ngIf="storageService.isConnected()">
-  <sag-topnav *ngIf="!isSmallScreen()" brandsrc='assets/images/ApplinX-all white.svg' scrollStyle=""
-    brandtitle='ApplinX Web Application' brandheight='56' brandwidth='196'>
-    <sag-topnav-right right>
-      <sag-topnav-item itemType="button" [disable]='false' title="Copy" (click)="copy()" itemId="copy" itemName=""
-        itemIcon="dlt-icon-copy" itemStyle="color:white">
-      </sag-topnav-item>
-      <sag-topnav-item itemType="button" [disable]='false' title="Print" (click)="print()" itemId="print" itemName=""
-        itemIcon="dlt-icon-print" itemStyle="color:white">
-    </sag-topnav-item>
-          <sag-topnav-item [matMenuTriggerFor]="menu" title="Zoom" itemType="button" itemIcon="dlt-icon-zoom-in"
-      itemStyle="color:white" (click)="zoom()">
-    </sag-topnav-item>
-      <mat-menu #menu="matMenu">  
-        <div id="silder-default-btn" >
-          <button type="button" (click)="setDefaultZoom()">Default</button>
-        </div>
-        <div id="slider">
-          <mat-slider thumbLabel vertical  [displayWith]="formatLabel" [value]="zoomDefault" [step]="zoomStep" [min]="zoomMinValue"
-            [max]="zoomMaxValue" (valueChange)=onZoomChange($event) aria-label="units"></mat-slider>
-        </div>
-      </mat-menu>
-      
-      <!-- <div class="color-theme-style">
-        <label for="">style:{{themeColor}}</label>
-      </div>
-      <sag-topnav-item cdkOverlayOrigin #trigger="cdkOverlayOrigin" itemType="button" title="Style"
-        (click)="changeTheme()" itemId="theme-style" itemName="" itemIcon="dlt-icon-caret-down" itemStyle="color:white">
-      </sag-topnav-item>
-      <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger"
-        [cdkConnectedOverlayOpen]="isOpenThemeStyle">
-        <div style="height: auto;">
-          <button *ngFor="let color of themeColors; index as i" value="{{color}}"
-            (click)="changeBackgroundColor(color)">{{color}}</button>
-        </div>
-      </ng-template> -->
 
-      <sag-topnav-item itemType="button" [disable]='false' title="Refresh" (click)="reload()" itemId="reload"
-        itemName="" itemIcon="dlt-icon-refresh" itemStyle="color:white">
+  <sag-topnav *ngIf="!isSmallScreen()" brandsrc='assets/images/ApplinX-all white.svg' scrollStyle="" brandtitle='ApplinX Web Application' brandheight='56' brandwidth='196'>
+    <sag-topnav-right right>
+      <sag-topnav-item itemType="button" [disable]='false' title="Refresh" (click)="reload()"
+                       itemId="reload" itemName="" itemIcon="dlt-icon-refresh" itemStyle="color:white">
       </sag-topnav-item>
-      <sag-topnav-item itemType="button" [disable]='false' title="Configuration" itemId="configuration" itemName=""
-        itemIcon="dlt-icon-settings" itemStyle="color:white">
+      <sag-topnav-item itemType="button" [disable]='false' title="Configuration"
+                       itemId="configuration" itemName="" itemIcon="dlt-icon-settings" itemStyle="color:white">
       </sag-topnav-item>
-      <sag-topnav-item itemType="button" [disable]='false' title="Send to host" itemId="sendToHost" itemName=""
-        itemIcon="dlt-icon-send" itemStyle="color:white">
+      <sag-topnav-item itemType="button" [disable]='false' title="Send to host"
+                       itemId="sendToHost" itemName="" itemIcon="dlt-icon-send" itemStyle="color:white">
       </sag-topnav-item>
-      <sag-topnav-item itemType="button" [disable]='false' title="Logoff" (click)="logout()" itemId="logout" itemName=""
-        itemIcon="dlt-icon-close" itemStyle="color:white">
+      <sag-topnav-item itemType="button" [disable]='false' title="Logoff" (click)="logout()"
+                       itemId="logout" itemName="" itemIcon="dlt-icon-close" itemStyle="color:white">
       </sag-topnav-item>
     </sag-topnav-right>
   </sag-topnav>
-
-
-
-
-
-
-  <div class="middle-container">
-    <div *ngIf="!isSmallScreen()" class="flexContainer" [hidden]="!displayScreen"
-      >
-      <div class="main-container">
-        <div class="maindiv" id="maindiv">
-          <router-outlet (activate)="onActivate($event)" (deactivate)="onDeactivate()"></router-outlet>
-        </div>
-      </div>
+  
+  <div *ngIf="!isSmallScreen()" class="flexContainer" [hidden]="!displayScreen">
+    <div style="align-self: flex-start;">
+      <router-outlet (activate)="onActivate($event)" (deactivate)="onDeactivate()"></router-outlet>
     </div>
-    <div id = "app-host-keys-btns" class="hostKeys key-transform-container hostKeys-btns-container" *ngIf="hostKeyTransforms">
+    <div class="hostKeys" *ngIf="hostKeyTransforms" style="max-width: 13%; margin-left: 5%; right: 0; align-self: center;">
       <app-host-keys-template [transformations]="hostKeyTransforms">
       </app-host-keys-template>
     </div>
@@ -94,28 +50,25 @@
       <mat-sidenav #sidenav mode="side">
         <sag-topnav-right>
           <sag-topnav-item itemType="button" [disable]='false' title="Close sidebar" (click)="sidenav.toggle()"
-            itemIcon="dlt-icon-arrow-left" itemStyle="color:white">
+                           itemIcon="dlt-icon-arrow-left" itemStyle="color:white">
           </sag-topnav-item>
           <sag-topnav-item itemType="button" [disable]='false' title="Refresh" (click)="reload()"
-            itemIcon="dlt-icon-refresh" itemStyle="color:white">
+                           itemIcon="dlt-icon-refresh" itemStyle="color:white">
           </sag-topnav-item>
-          <sag-topnav-item itemType="button" [disable]='false' title="Logoff-2" (click)="logout()"
-            itemIcon="dlt-icon-close" itemStyle="color:white">
+          <sag-topnav-item itemType="button" [disable]='false' title="Logoff" (click)="logout()"
+                           itemIcon="dlt-icon-close" itemStyle="color:white">
           </sag-topnav-item>
-        </sag-topnav-right>
-        <div style="bottom: 5px; position: fixed; width: max(7%, 56px); margin: 0 auto;"><img
-            src="assets/images/ApplinX-all white.svg"></div>
+       </sag-topnav-right>
+       <div style="bottom: 5px; position: fixed; width: max(7%, 56px); margin: 0 auto;"><img src="assets/images/ApplinX-all white.svg"></div>
       </mat-sidenav>
       <mat-sidenav-content style="position: absolute; width: 100%;">
         <div>
-          <mat-icon [hidden]="sidenav.opened" (click)="sidenav.toggle()"
-            style="position: fixed;">navigate_next</mat-icon>
+          <mat-icon [hidden]="sidenav.opened" (click)="sidenav.toggle()" style="position: fixed;">navigate_next</mat-icon>
           <div class="flexContainer" [hidden]="!displayScreen">
             <div style="align-self: flex-start;">
               <router-outlet (activate)="onActivate($event)" (deactivate)="onDeactivate()"></router-outlet>
             </div>
-            <div class="hostKeys" *ngIf="hostKeyTransforms" style="max-width: 10%; right: 0; align-self: center;"
-              [ngStyle]="{'margin-left': sidenav.opened ? '1%' : '5%'}">
+            <div class="hostKeys" *ngIf="hostKeyTransforms" style="max-width: 10%; right: 0; align-self: center;" [ngStyle]="{'margin-left': sidenav.opened ? '1%' : '5%'}">
               <app-host-keys-template [transformations]="hostKeyTransforms">
               </app-host-keys-template>
             </div>
@@ -126,8 +79,7 @@
   </ng-container>
 </ng-container>
 
-<router-outlet *ngIf="!this.storageService.isConnected()" (activate)="onActivate($event)"
-  (deactivate)="onDeactivate()"></router-outlet>
+<router-outlet *ngIf="!this.storageService.isConnected()" (activate)="onActivate($event)" (deactivate)="onDeactivate()"></router-outlet>
 
 <div *ngIf="screenLockerService.isShowScreenSpinner()" class="spinner">
   <mat-spinner diameter="70"></mat-spinner>

@@ -1,45 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
-:root {
-	--primary-color: black;
-	--primary-text-color: white;
-	--btn-color: #233356;
-	--btn-hover-color: #068CB2;
-	--text-font-size: 17px;
-	--input-table-text: #008000;
-	--input-table-text-pw: #af272f;
-	--login-screen-color: white;
-	--menu-content-color: black;
-	--table-header-background: #093655;
-	--table-header-border-color: #d4f0f7;
-	--table-header-text-color: white;
-	--table-body-border-color: #d4f0f7;
-	--table-body-alternating1: white;
-	--table-body-alternating2: #d4f0f7;
-	--table-body-text-color: #006d93;
-	--table-body-select-border-color: black;
-	--table-body-select-background-color: white;
-	--table-body-select-color: black;
-}
 
 html, body { height: 100%; -webkit-overflow-scrolling: touch; }
 body { 
   margin: 0; 
   background-color: white;
+  line-height: 1.4rem !important; 
 }
 
 .datepicker-container {
 	min-width: 240px;
 }
-.ngx-slider .ngx-slider-bubble{color: white !important;
-	border: 1px solid !important;
-    margin-left: 6px !important;}
+
 .dlt-button {
 	display: inline-block !important;
 }
 
 input[type="month"]::-webkit-calendar-picker-indicator:hover,
 input[type="date"]::-webkit-calendar-picker-indicator:hover {
-	background-color: var(--primary-color);
+	background-color: white;
     cursor: pointer;
 }
 
@@ -47,14 +25,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 #gx_screenArea
 {
 	font-family: "Lucida Console", Monaco, "Menlo-Regular", monospace,"Courier New","Noto Sans Mono CJK JP","IPA Mincho";
-	color: var(--primary-text-color);
-	padding-bottom: 8%;
-	margin-top: 0em !important;
-	font-size: var(--text-font-size);
-}
-
-#gx_screenArea.wrapper {
-	background-color: var(--primary-color);
+	color: #006992;
 }
 
 
@@ -63,13 +34,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 #gx_screenArea textarea,
 #gx_screenArea select {
 	font-family: "Lucida Console", Monaco, "Menlo-Regular", monospace,"Courier New","Noto Sans Mono CJK JP","IPA Mincho";
-	/* color:  var(--primary-text-color); */
-}
-
-#gx_screenArea select {
-	border-color: var(--table-body-select-border-color);
-    background-color: var(--table-body-select-background-color);
-    color: var(--table-body-select-color);
 }
 
 /* labels inside the instant wrapping tag */
@@ -80,29 +44,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 #gx_screenArea a{
 	white-space: nowrap;
 }
-
-#gx_screenArea button {
-	font-size: var(--text-font-size);
-}
-
-.dlt-button-secondary {
-	background-color: var(--btn-color);
-	color: var(--primary-color);
-}
-
-/* #gx_screenArea button:hover {
-	background-color: var(--btn-hover-color);
-} */
-
-.dlt-button-primary:hover .dlt-button-secondary:hover{
-   background-color: var(--btn-hover-color);
-}
-
-.dlt-button-primary{
-	background-color: var(--btn-color);
-	color: var(--primary-color);
- }
- 
 
 .noGridItem {
 	min-width: 0;
@@ -121,17 +62,15 @@ table.gx_tbl tr td blink.gx_af
 
 
 /* protected-field */
+gx_pf
+{
+}
 
 /* unprotected-field */
-#gx_screenArea input[type = "text"]
+.gx_uf
 {
+  BACKGROUND-COLOR: white;
   border: gray solid 1px;
-  COLOR: var(--input-table-text);
-  BACKGROUND-COLOR: var(--primary-color);
-  BORDER-BOTTOM: var(--input-table-text) 1px solid;
-  BORDER-LEFT: WHITE 1px;
-  BORDER-RIGHT: WHITE 1px;
-  BORDER-TOP: var(--primary-color) 1px;
 }
 
 input::-ms-clear { 
@@ -142,18 +81,10 @@ input::-ms-clear {
 .gx_intf
 {
 	text-shadow:0 0.025em 0 black, 0.025em 0 0 black;
-	/* color: var(--input-table-text-waringr); */
-	/* padding-top: 5px; */
-} 
-#gx_screenArea input.gx_intf
+	color:black;
+}
+input.gx_intf
 {
-	text-shadow:0 0.025em 0 var(--input-table-text-pw), 0.025em 0 0 var(--input-table-text-pw);
-	color: var(--input-table-text-pw);
-    BACKGROUND-COLOR: var(--primary-color);
-    BORDER-BOTTOM: var(--input-table-text-pw) 1px solid;
-    BORDER-LEFT: WHITE 1px;
-    BORDER-RIGHT: WHITE 1px;
-    BORDER-TOP: var(--primary-color) 1px;
 }
 
 /* application field */
@@ -219,36 +150,28 @@ a.gx_hky:hover
 	text-decoration: underline;
 }
 /* table */
-/* .gx_tbl
+.gx_tbl
 {
 	color: #008AB1;
 	border-bottom: #D4F0F7 1px solid;
-} */
+}
 
 /* table cell */
 .gx_tbl tr td
 {
 	white-space: nowrap;
-	border-right: var(--table-body-border-color) 1px solid;
-	border-left: var(--table-body-border-color) 1px solid;
+	border-right: #D4F0F7 1px solid;
+	border-left: #D4F0F7 1px solid;
 }
 /* 1st alternating table row */
 .gx_tbl_alternating1
 {
-	background-color: var(--table-body-alternating1);
+	background-color: white;
 }
 /* 2nd alternating table row */
 .gx_tbl_alternating2
 {
-	background-color: var(--table-body-alternating2);
-}
-tbody .gx_tbl_alternating2
-{
-	color: var(--table-body-text-color);
-}
-tbody .gx_tbl_alternating1
-{
-	color: var(--table-body-text-color);
+	background-color: #D4F0F7;
 }
 /* selected table row */
 .gx_tbl_selected 
@@ -258,10 +181,9 @@ tbody .gx_tbl_alternating1
 /* table header */
 .gx_tbl tr th
 {
-    border-left: var(--table-header-border-color) 1px solid;
-    color: var(--table-header-text-color);
-    background-color: var(--table-header-background);
-    text-align: center;
+	border-left: #D4F0F7 1px solid;
+	color: white;
+	background-color: #093655;
 }
 /* table link */
 .gx_tbl A:link,.gx_tbl A:visited
@@ -437,19 +359,12 @@ input.gx_laq
 /* light red */
 .gx_lrd,a.gx_lrd:link,a.gx_lrd:visited
 {
-	color: #CE5F68 !important;
+	color: #CE5F68;
 }
 input.gx_lrd
 {
-	color: #CE5F68 !important;
-	border-bottom-color: #CE5F68 !important;
-	text-shadow: unset !important;
-}
-
-input.dlt-date-picker {
-	color: #CE5F68 !important;
-	border-bottom-color: #CE5F68 !important;
-
+	color: #CE5F68;
+	border-bottom-color: #CE5F68;
 }
 
 /* light purple */
@@ -613,44 +528,3 @@ input.gx_usr
 	background-color: black;
 	color:white;
 } */
-
-/* new line */
-
-.main-container maindiv{
-	background-color: var(--primary-color);
-}
-
-#sagtopnav-div-header.header-wrap {
-	margin-top: 0;
-	margin-bottom: 10px;
-}
-
-/* .hostKeysContainer #enter.dlt-button-primary:hover {
-	background-color: var(--btn-hover-color);
-	color: white;
-} */
-
-.hostKeysContainer #on-hover.dlt-button-secondary:hover {
-	background-color: var(--btn-hover-color);
-}
-
-#app-host-keys-btns app-host-keys-template .hostKeysContainer {
-    width: auto;
-}
-
-div[name="Login"]#gx_screenArea, div[name="Menu"]#gx_screenArea{
- color: var(--login-screen-color);
-}
-
-div[name="Menu"]#gx_screenArea .gx_intf {
-	color: var(--menu-content-color)
-}
-
-/* div[name="Menu"]#gx_screenArea .flexField.gx_intf {
-	padding-top: 5px;
-} */
-.copyTextCss {
-    font-family: "Courier New" !important;
-    font-size: 18px  !important;
-    white-space: pre !important;
-}

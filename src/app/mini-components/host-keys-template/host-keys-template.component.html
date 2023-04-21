@@ -1,6 +1,6 @@
 <div class="hostKeysContainer">
   <ng-container *ngFor="let transform of transformations; index as i">
-    <button class="dlt-button dlt-button-secondary" id="on-hover" *ngFor="let hostKey of transform.hostKeys" (click)="onClick(hostKey.action)">
+    <button class="on-hover dlt-button dlt-button-secondary" *ngFor="let hostKey of transform.hostKeys" (click)="onClick(hostKey.action)">
       {{hostKey.caption}}
     </button>
   </ng-container>

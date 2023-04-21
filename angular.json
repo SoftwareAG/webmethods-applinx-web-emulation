@@ -156,7 +156,6 @@
   },
   "defaultProject": "applinx-web-emulation",
   "cli": {
-    "analytics": "44bc6014-2042-410a-9b9a-5dea6a56182d",
     "defaultCollection": "@angular-eslint/schematics"
   }
 }

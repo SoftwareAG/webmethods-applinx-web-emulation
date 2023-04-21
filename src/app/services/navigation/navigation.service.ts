@@ -72,9 +72,6 @@ export class NavigationService {
    }, this.CHECK_HOST_SCREEN_UPDATE_INTERVAL);
   }
 
-
-  
-
   checkScreenUpdated () {
     if (this.isThereError) {
       return;
