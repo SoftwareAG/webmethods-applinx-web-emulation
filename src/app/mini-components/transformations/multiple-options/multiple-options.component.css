@@ -11,3 +11,8 @@ select {
 app-text {
   display: contents;
 }
+
+label {
+  color: var(--primary-text-color) !important;
+  font-size: var(--text-font-size) !important;
+}

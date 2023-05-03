@@ -13,7 +13,7 @@
 
 .flexContainer .main-container {
     text-align: center;
-    line-height: calc(var(--text-font-size) + 2px) !important; 
+    line-height: calc(var(--text-font-size) +2px) !important;
 }
 
 .hostKeys-btns-container {
@@ -144,4 +144,28 @@ select {
     background: #1776bf;
     color: white;
     border: unset;
+}
+
+
+::ng-deep .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle,::ng-deep .mat-radio-container .mat-radio-outer-circle  {
+    border-color: var(--border-color);
+    border-radius: unset !important;
+}
+
+::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle {
+    color: var(--color-theme);
+    background-color: var(--color-theme);
+    border-radius: unset !important;
+}
+
+::ng-deep .mat-radio-checked .mat-radio-inner-circle {
+    transform: scale(0.7) !important;
+}
+
+::ng-deep .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+    background-color: var(--color-theme);
+}
+
+::ng-deep .mat-menu-panel {
+    overflow: unset !important;
 }

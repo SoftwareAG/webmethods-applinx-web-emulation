@@ -4,7 +4,7 @@
 .gx_line {
   border-top-width: 1px;
   border-top-style: solid;
-  border-top-color: black;
+  border-top-color: var(--gx-line);
 }
 app-field {
   display: contents;

@@ -28,6 +28,6 @@ th {
 table {
   /* width: max-content !important; */
   height: 1rem !important;
-  line-height: var(--text-font-size) !important;
+  line-height: calc(var(--text-font-size)) !important;
 }
 

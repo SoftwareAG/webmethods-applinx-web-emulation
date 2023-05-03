@@ -15,6 +15,7 @@
  */ 
 
 import { Position } from "@softwareag/applinx-rest-apis";
+import {BlackTheme, WhiteTheme, GreenTheme} from "./GXColorTheme"
 
 enum FOREGROUND_COLOR {
     BLACK = 'gx_blk',
@@ -234,4 +235,7 @@ export class GXUtils {
     public static action = "Action";
     public static nationalityWin = "NationalityWin";
     public static copyInstruction = "Please draw a yellow rectangle over the text that needs to be copied using mouse and then use Ctrl +C to copy the text";
+    public static themeColorsList = ['Black', 'White', 'Green'];
+    public static defaultThemeColor = 'White';
+    public static themecolorConfig = {Black: BlackTheme, White: WhiteTheme, Green: GreenTheme}
 }

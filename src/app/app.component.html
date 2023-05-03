@@ -25,34 +25,33 @@
       </sag-topnav-item>
       <sag-topnav-item itemType="button" [disable]='false' title="Print" (click)="print()" itemId="print" itemName=""
         itemIcon="dlt-icon-print" itemStyle="color:white">
-    </sag-topnav-item>
-          <sag-topnav-item [matMenuTriggerFor]="menu" title="Zoom" itemType="button" itemIcon="dlt-icon-zoom-in"
-      itemStyle="color:white" (click)="zoom()">
-    </sag-topnav-item>
-      <mat-menu #menu="matMenu">  
-        <div id="silder-default-btn" >
+      </sag-topnav-item>
+      <sag-topnav-item [matMenuTriggerFor]="menu" title="Zoom" itemType="button" itemIcon="dlt-icon-zoom-in"
+        itemStyle="color:white" (click)="zoom()">
+      </sag-topnav-item>
+      <mat-menu #menu="matMenu">
+        <div id="silder-default-btn">
           <button type="button" (click)="setDefaultZoom()">Default</button>
         </div>
         <div id="slider">
-          <mat-slider thumbLabel vertical  [displayWith]="formatLabel" [value]="zoomDefault" [step]="zoomStep" [min]="zoomMinValue"
-            [max]="zoomMaxValue" (valueChange)=onZoomChange($event) aria-label="units"></mat-slider>
+          <mat-slider thumbLabel vertical [displayWith]="formatLabel" [value]="zoomDefault" [step]="zoomStep"
+            [min]="zoomMinValue" [max]="zoomMaxValue" (valueChange)=onZoomChange($event)
+            aria-label="units"></mat-slider>
         </div>
       </mat-menu>
-      
-      <!-- <div class="color-theme-style">
-        <label for="">style:{{themeColor}}</label>
-      </div>
-      <sag-topnav-item cdkOverlayOrigin #trigger="cdkOverlayOrigin" itemType="button" title="Style"
-        (click)="changeTheme()" itemId="theme-style" itemName="" itemIcon="dlt-icon-caret-down" itemStyle="color:white">
-      </sag-topnav-item>
-      <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger"
-        [cdkConnectedOverlayOpen]="isOpenThemeStyle">
-        <div style="height: auto;">
-          <button *ngFor="let color of themeColors; index as i" value="{{color}}"
-            (click)="changeBackgroundColor(color)">{{color}}</button>
-        </div>
-      </ng-template> -->
 
+      <sag-topnav-item [matMenuTriggerFor]="matMenuTheme" title="Style" itemType="button" itemIcon="dlt-icon-palette"
+        itemStyle="color:white" (click)="Style()">
+      </sag-topnav-item>
+      <mat-menu #matMenuTheme="matMenu">
+        <mat-radio-group [(ngModel)]="themeColor">
+          <mat-menu-content style="display: flex; flex-direction: column; padding: 0px 8px 0px 15px;">
+            <mat-menu-item *ngFor="let color of themeColors; index as i">
+              <mat-radio-button [id] = "getColor(color)"  [style.--border-color]="getColor(color)" [value]="color" [matTooltip]="color" [matTooltipPosition]="'after'" (change)="changeBackgroundColor($event.value)"></mat-radio-button>
+            </mat-menu-item>
+          </mat-menu-content>
+        </mat-radio-group>
+      </mat-menu>
       <sag-topnav-item itemType="button" [disable]='false' title="Refresh" (click)="reload()" itemId="reload"
         itemName="" itemIcon="dlt-icon-refresh" itemStyle="color:white">
       </sag-topnav-item>
@@ -74,15 +73,15 @@
 
 
   <div class="middle-container">
-    <div *ngIf="!isSmallScreen()" class="flexContainer" [hidden]="!displayScreen"
-      >
+    <div *ngIf="!isSmallScreen()" class="flexContainer" [hidden]="!displayScreen">
       <div class="main-container">
         <div class="maindiv" id="maindiv">
           <router-outlet (activate)="onActivate($event)" (deactivate)="onDeactivate()"></router-outlet>
         </div>
       </div>
     </div>
-    <div id = "app-host-keys-btns" class="hostKeys key-transform-container hostKeys-btns-container" *ngIf="hostKeyTransforms">
+    <div id="app-host-keys-btns" class="hostKeys key-transform-container hostKeys-btns-container"
+      *ngIf="hostKeyTransforms">
       <app-host-keys-template [transformations]="hostKeyTransforms">
       </app-host-keys-template>
     </div>
