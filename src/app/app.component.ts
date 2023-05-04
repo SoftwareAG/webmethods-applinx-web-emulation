@@ -329,6 +329,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.userExitsEventThrower.addEventListener(new LifecycleUserExits(this.infoService, this.navigationService, this.storageService, this.keyboardMappingService, this.logger));
     } else if (component instanceof WebLoginComponent) {
       this.loginComponent = component;
+      this.changeBackgroundColor('White');
     }
   }
 
