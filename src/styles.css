@@ -654,3 +654,39 @@ div[name="Menu"]#gx_screenArea .gx_intf {
     font-size: 18px  !important;
     white-space: pre !important;
 }
+
+.copyWrapper {
+	position: relative;
+	height: 100% !important;
+	width: 100% !important;
+}
+
+.selWidgetClass {
+	display: block;
+	position: absolute;
+}
+
+.instruction {
+	font-size: small;
+	font-style: italic;
+}
+
+.crosshair {
+	cursor: crosshair;
+}
+
+.customselect {
+	background: rgb(49, 141, 234);
+	font-style: italic;
+	color: white;
+}
+
+.selectbgcolor {
+	background: rgb(49, 141, 234);
+	color: white;
+}
+
+.unselectable {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+}

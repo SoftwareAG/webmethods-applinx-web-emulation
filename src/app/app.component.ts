@@ -275,70 +275,30 @@ export class AppComponent implements OnInit, OnDestroy {
     this.getScreenData(false);
   }
 
-  getScreenData(printFlag){
-    const screenValues = this.screenHolderService.getRuntimeScreen().fields;
-    const tableValues = this.screenHolderService.getRuntimeScreen().transformations.filter(item=>item.type == GXUtils.tableTransformation);
-    let divElement = document.createElement("div");
-    let objArray = [];
-    let formattedArray = [];
-    let maxLine = 0;
-    let headerSeperatorFlag = 0;
-
-    screenValues.forEach(element => {
+  generateObjectArray(values, objArray) {
+    values.forEach(element => {
       let obj = {};
       obj["row"] = element?element.position.row:"";
       obj["col"] = element?element.position.column:"";
       obj["size"] = element?element.length:"";
       obj["data"]= element?element.content:"";
       obj["protected"] = element?element.protected:"";
+      obj["visible"] = element ? element.visible : "";
       objArray.push(obj);
     });
-    tableValues.forEach(tableElement => {
-      let rowDetails = tableElement["table"].rows;
-      let colDetails = tableElement["table"].cols;
-      let rowTemplate = tableElement["table"].rows.filter(e=>e.type != GXUtils.multipleOptionsTransformation)[0];
-      
-      for(let i=0;i<colDetails.length;i++){ // Table Headers
-        let headerObj = {};
-        headerObj["row"] = rowDetails[0]['items'][0]['position']['row'] - 1;  
-        headerSeperatorFlag = headerObj["row"];
-        headerObj["col"] = rowTemplate.items[i].position.column; 
-        headerObj["size"] = rowTemplate.items[i].field?rowTemplate.items[i].field.length:rowTemplate.items[i].length; 
-        headerObj["data"] = colDetails[i].caption == GXUtils.action?colDetails[i].name:colDetails[i].caption;
-        objArray.push(headerObj);
       }
-      if (headerSeperatorFlag>0){
-        let headerObj = {};
-        headerObj["row"] = headerSeperatorFlag + 1;
-        headerObj["col"] = 0;
-        headerObj["size"] = 81;
-        headerObj["data"] = "--------------------------------------------------------------------------------";
-        objArray.push(headerObj);
-      }
-      // let titleSeperator = "--------------------------------------------------------------------------------";
-      // objArray.push(titleSeperator)
       
-      rowDetails.forEach(rowElement => {
-        rowElement.items.forEach(colElement => {
-          let tableObj = {};
-          if(colElement.type == GXUtils.multipleOptionsTransformation){
-            tableObj["row"] = colElement["field"].position.row+1;  
-            tableObj["col"] = colElement["field"].position.column; 
-            tableObj["size"] = colElement["field"].length; 
-            tableObj["data"] = colElement["field"].content;
-            objArray.push(tableObj);
-          }else{
-            tableObj["row"] = colElement.position.row+1;
-            tableObj["col"] = colElement.position.column;
-            tableObj["size"] = colElement.length;
-            tableObj["data"] = colElement.content;
-            tableObj["protected"] = colElement.protected;
-            objArray.push(tableObj);
-          }
-        });
-      });
-    })
+  getScreenData(printFlag) {
+    let rawData = this.screenHolderService.getRawScreenData();
+    let objArray = [];
+    let formattedArray = [];
+    let maxLine = 0;
+    this.generateObjectArray(rawData.fields, objArray)
+    console.log(objArray);
     let lineNo = 0;
+    objArray.sort((a, b) => {
+      return a.row - b.row;
+        });
     maxLine = objArray[objArray.length-1].row+1;
     do{
       let lineDetails = objArray.filter(item => item.row == lineNo);
@@ -346,20 +306,28 @@ export class AppComponent implements OnInit, OnDestroy {
       formattedArray.push(temp);
       lineNo++
     } while (lineNo < maxLine);
+    this.formatCopyPage(formattedArray,printFlag);
+  }
+
+  formatCopyPage(formattedArray,printFlag){
+    let divElement = document.createElement("div");
+    let lineIdentifier = 0;
     formattedArray.forEach(element =>{
       let paraElement = document.createElement("span");
       paraElement.innerText = element;
       paraElement.id = "gx_text";
+      paraElement.tabIndex = lineIdentifier++;
       divElement.appendChild(paraElement);
       let lineBreakElement = document.createElement("br");
       divElement.appendChild(lineBreakElement);  
+      divElement.tabIndex = lineIdentifier++;
     });
     const dialogRef = this.matDialog.open(ModalpopupComponent, {
       data: {
         content: divElement.innerHTML,
         typeFlag: printFlag
-      }, height: '90%',
-      width: '70%',
+      }, height: '100%',
+      width: '90%',
     });
   }
 
