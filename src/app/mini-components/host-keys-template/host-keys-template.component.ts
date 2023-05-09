@@ -25,6 +25,7 @@ import {HostKeyTransformation} from '@softwareag/applinx-rest-apis';
 export class HostKeysTemplateComponent implements OnInit {
 
   @Input() transformations: HostKeyTransformation[];
+  @Input() themeColor: string;
 
   constructor(public navigationService: NavigationService) { }
 

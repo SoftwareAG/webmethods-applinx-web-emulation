@@ -1,8 +1,8 @@
 <div class="hostKeysContainer">
   <ng-container *ngFor="let transform of transformations; index as i">
-    <button class="dlt-button dlt-button-secondary" id="on-hover" *ngFor="let hostKey of transform.hostKeys" (click)="onClick(hostKey.action)">
+    <button class="dlt-button dlt-button-secondary" [ngClass] = "{green_secondary: themeColor === 'Green'}" id="on-hover" *ngFor="let hostKey of transform.hostKeys" (click)="onClick(hostKey.action)">
       {{hostKey.caption}}
     </button>
   </ng-container>
-  <button id="enter" style="margin-top: 10%" class="dlt-button dlt-button-primary" (click)="this.navigationService.sendKeys('[enter]')">Enter</button>
+  <button id="enter" [ngClass] = "{green_enter: themeColor === 'Green'}" style="margin-top: 10%" class="dlt-button dlt-button-primary" (click)="this.navigationService.sendKeys('[enter]')">Enter</button>
 </div>

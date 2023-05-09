@@ -3,8 +3,11 @@
 	--border-color: white;
 	--color-theme: white;
 	--primary-color: black;
+	--input-text-bg-color: black;
+	--input-text-border-bottom: solid;
 	--primary-text-color: white;
 	--screen-btn-color: #e3e3e3;
+	--screen-btn-text-color: black;
 	--btn-regular-color: #1776bf;
 	--btn-outline-color: #1776bf;
 	--btn-hover-color-screen: #068CB2;
@@ -18,7 +21,10 @@
 	--login-screen-color: #006992;
 	--menu-content-color: black;
 	--table-header-background: #093655;
-	--table-header-border-color: #d4f0f7;
+	--table-header-border-color-left: #d4f0f7;
+	--table-header-border-color-right: none;
+	--table-header-border-color-top: none;
+	--table-header-border-color-botton: none;
 	--table-header-text-color: white;
 	--table-body-border-color: #d4f0f7;
 	--table-body-alternating1: white;
@@ -27,11 +33,27 @@
 	--table-body-select-border-color: black;
 	--table-body-select-background-color: white;
 	--table-body-select-color: black;
+	--table-text-shadow: none;
 	--input-bottom-border-gx-lgrn: #9DBD72;
 	--cross-text-color: black;
 	--gx-line: black;
 	--gx-blwt-text-color: white;
 	--gx-lbl: #006D93;
+	--gx-lgrn: #9DBD72;
+	--gx-lrd: #CE5F68;
+	--gx-blbl: #006992;
+	--gx-blbl-text-color: black;
+	--gx-blrd: #CE5F68;
+	--gx-lppl: #9D87B5;
+	--gx-laq: #99CEDE;
+	--gx-ylw: #ffd700;
+	--gx-blgrn: #9DBD72;
+	--gx-blgrn-text-color: black;
+	--gx-blaq: #99CEDE;
+	--gx-blaq-text-color: black;
+	--gx-bylw: #ffd700;
+	--gx-bylw-text-color: black;
+	--gx-intf: 0 0.025em 0 black, 0.025em 0 0 black;
 	--text-shadow-gx-lrd-intf: 0 0.025em 0 #AF272F, 0.025em 0 0 #AF272F;
 	--text-shadow-gx-lwt-gx-intf: 0 0.025em 0 black, 0.025em 0 0 black;
 }
@@ -64,7 +86,7 @@ body {
 
 input[type="month"]::-webkit-calendar-picker-indicator:hover,
 input[type="date"]::-webkit-calendar-picker-indicator:hover {
-	background-color: var(--primary-color);
+	background-color: var(--input-text-bg-color);
 	cursor: pointer;
 }
 
@@ -119,7 +141,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 #gx_screenArea button:hover {
 	background-color: var(--btn-hover-color-screen);
-	color: black;
+	color: var(--screen-btn-text-color);
 	outline: var(--btn-outline-color);
 	border-color: var(--btn-outline-color);
 }
@@ -132,6 +154,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 }
 
+
 .dlt-button-primary:hover,
 .dlt-button-secondary:hover {
 	background-color: var(--btn-hover-color);
@@ -139,7 +162,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 #gx_screenArea .dlt-button-primary {
 	background-color: var(--screen-btn-color);
-	color: black;
+	color: var(--screen-btn-text-color);
 	outline: var(--screen-btn-color);
 	border-color: var(--screen-btn-color);
 }
@@ -167,22 +190,22 @@ table.gx_tbl tr td blink.gx_af {
 #gx_screenArea input[type="password"].gx_blk {
 	border: gray solid 1px;
 	COLOR: var(--input-table-text);
-	BACKGROUND-COLOR: var(--primary-color);
-	BORDER-BOTTOM: var(--input-table-text) 1px solid;
+	BACKGROUND-COLOR: var(--input-text-bg-color);
+	BORDER-BOTTOM: var(--input-table-text) 1px var(--input-text-border-bottom);
 	BORDER-LEFT: WHITE 1px;
 	BORDER-RIGHT: WHITE 1px;
-	BORDER-TOP: var(--primary-color) 1px;
+	BORDER-TOP: var(--input-text-bg-color) 1px;
 }
 
 /* AS400 */
 #gx_screenArea input.gx_lgrn {
 	border: gray solid 1px;
 	COLOR: var(--input-bottom-border-gx-lgrn);
-	BACKGROUND-COLOR: var(--primary-color);
-	BORDER-BOTTOM: var(--input-bottom-border-gx-lgrn) 1px solid;
+	BACKGROUND-COLOR: var(--input-text-bg-color);
+	BORDER-BOTTOM: var(--input-bottom-border-gx-lgrn) 1px var(--input-text-border-bottom);
 	BORDER-LEFT: WHITE 1px;
 	BORDER-RIGHT: WHITE 1px;
-	BORDER-TOP: var(--primary-color) 1px;
+	BORDER-TOP: var(--input-text-bg-colorr) 1px;
 }
 
 input::-ms-clear {
@@ -191,7 +214,7 @@ input::-ms-clear {
 
 /* intensified-field , bold-field */
 .gx_intf {
-	text-shadow: 0 0.025em 0 black, 0.025em 0 0 black;
+	text-shadow: var(--gx-intf);
 	/* color: var(--input-table-text-waringr); */
 	/* padding-top: 5px; */
 }
@@ -199,11 +222,11 @@ input::-ms-clear {
 #gx_screenArea input.gx_intf {
 	text-shadow: 0 0.025em 0 var(--input-table-text-pw), 0.025em 0 0 var(--input-table-text-pw);
 	color: var(--input-table-text-pw);
-	BACKGROUND-COLOR: var(--primary-color);
-	BORDER-BOTTOM: var(--input-table-text-pw) 1px solid;
+	BACKGROUND-COLOR: var(--input-text-bg-color);
+	BORDER-BOTTOM: var(--input-table-text-pw) 1px var(--input-text-border-bottom);
 	BORDER-LEFT: WHITE 1px;
 	BORDER-RIGHT: WHITE 1px;
-	BORDER-TOP: var(--primary-color) 1px;
+	BORDER-TOP: var(--input-text-bg-color) 1px;
 }
 
 div[name='Login']#gx_screenArea input.gx_intf,
@@ -211,11 +234,11 @@ div[name='DEMOCO_Login']#gx_screenArea input.gx_intf,
 div[name='DEMOCO_Menu']#gx_screenArea input.gx_intf,
 div[name='MfMenu']#gx_screenArea input.gx_intf {
 	color: var(--input-table-text-pw);
-	BACKGROUND-COLOR: var(--primary-color);
-	BORDER-BOTTOM: var(--input-table-text-pw) 1px solid;
+	BACKGROUND-COLOR: var(--input-text-bg-color);
+	BORDER-BOTTOM: var(--input-table-text-pw) 1px var(--input-text-border-bottom);
 	BORDER-LEFT: WHITE 1px;
 	BORDER-RIGHT: WHITE 1px;
-	BORDER-TOP: var(--primary-color) 1px;
+	BORDER-TOP: var(--input-text-bg-color) 1px;
 }
 
 /* application field */
@@ -226,8 +249,14 @@ div[name='MfMenu']#gx_screenArea input.gx_intf {
 /* black */
 .gx_blk,
 a.gx_blk:link,
-a.gx_blk:visited, .customer_header {
+a.gx_blk:visited,
+.customer_header {
 	color: var(--login-screen-color);
+	text-shadow: var(--table-text-shadow);
+}
+
+.customer_header {
+	text-shadow: var(--table-text-shadow);
 }
 
 
@@ -264,6 +293,7 @@ div[name="Login"]#gx_screenArea .gx_intf {
 a.gx_lbl:link,
 a.gx_lbl:visited {
 	color: var(--gx-lbl);
+	text-shadow: var(--table-text-shadow);
 }
 
 input.gx_lbl {
@@ -296,11 +326,10 @@ a.gx_hky:hover {
 }
 
 /* table */
-/* .gx_tbl
-{
-	color: #008AB1;
-	border-bottom: #D4F0F7 1px solid;
-} */
+#gx_screenArea .gx_tbl {
+	border-bottom: var(--table-body-border-color)1px solid;
+	text-shadow: var(--table-text-shadow);
+}
 
 /* table cell */
 .gx_tbl tr td {
@@ -334,7 +363,10 @@ tbody .gx_tbl_alternating1 {
 
 /* table header */
 .gx_tbl tr th {
-	border-left: var(--table-header-border-color) 1px solid;
+	border-left: var(--table-header-border-color-left) 1px solid;
+	border-bottom: var(--table-header-border-color-botton) 1px solid;
+	border-right: var(--table-header-border-color-right) 1px solid;
+	border-top: var(--table-header-border-color-top) 1px solid;
 	color: var(--table-header-text-color);
 	background-color: var(--table-header-background);
 	text-align: center;
@@ -421,7 +453,12 @@ input.gx_grn {
 .gx_lgrn,
 a.gx_lgrn:link,
 a.gx_lgrn:visited {
-	color: #9DBD72;
+	color: var(--gx-lgrn);
+	text-shadow: var(--table-text-shadow);
+}
+
+div[name="Splash"]#gx_screenArea .gx_lgrn, div[name="DEMOCO_Splash"]#gx_screenArea .gx_lgrn {
+	text-shadow: none;
 }
 
 input.gx_lgrn {
@@ -508,7 +545,8 @@ input.gx_lbl
 .gx_laq,
 a.gx_laq:link,
 a.gx_laq:visited {
-	color: #99CEDE;
+	color: var(--gx-laq) !important;
+	text-shadow: var(--table-text-shadow);
 }
 
 #gx_screenArea input.gx_laq {
@@ -520,12 +558,12 @@ a.gx_laq:visited {
 .gx_lrd,
 a.gx_lrd:link,
 a.gx_lrd:visited {
-	color: #CE5F68 !important;
+	color: var(--gx-lrd) !important;
 }
 
 input.gx_lrd {
-	color: #CE5F68 !important;
-	border-bottom-color: #CE5F68 !important;
+	color: var(--gx-lrd) !important;
+	border-bottom-color: var(--gx-lrd) !important;
 	text-shadow: unset;
 }
 
@@ -548,7 +586,7 @@ input.dlt-date-picker {
 .gx_lppl,
 a.gx_lppl:link,
 a.gx_lppl:visited {
-	color: #9D87B5;
+	color: var(--gx-lppl);
 }
 
 input.gx_lppl {
@@ -560,7 +598,7 @@ input.gx_lppl {
 .gx_ylw,
 a.gx_ylw:link,
 a.gx_ylw:visited {
-	color: #ffd700;
+	color: var(--gx-ylw);
 }
 
 input.gx_ylw {
@@ -597,31 +635,32 @@ input.gx_aq {
 
 /* back light aqua */
 .gx_blaq {
-	background-color: #99CEDE;
+	background-color: var(--gx-blaq);
 	color: black;
 }
 
 /* back light blue */
 .gx_blbl {
-	background-color: #006992;
-	color: black;
+	background-color: var(--gx-blbl);
+	color: var(--gx-blbl-text-color);
+
 }
 
 /* back light green */
 .gx_blgrn {
-	background-color: #9DBD72;
+	background-color: var(--gx-blgrn);
 	color: black;
 }
 
 /* backlightpurple" */
 .gx_blppl {
-	background-color: #9D87B5;
+	background-color: var(--gx-lppl);
 	color: black;
 }
 
 /* back light red */
 .gx_blrd {
-	background-color: #CE5F68;
+	background-color: var(--gx-blrd);
 	color: black;
 }
 
@@ -652,7 +691,7 @@ input.gx_aq {
 
 /* back yellow */
 .gx_bylw {
-	background-color: #ffd700;
+	background-color: var(--gx-bylw);
 	color: black;
 }
 
@@ -718,6 +757,7 @@ div[name="MfMenu"]#gx_screenArea,
 div[name="DEMOCO_Login"]#gx_screenArea,
 div[name="DEMOCO_Menu"]#gx_screenArea {
 	color: var(--login-screen-color);
+	text-shadow: var(--table-text-shadow);
 }
 
 div[name="Menu"]#gx_screenArea .gx_intf,
