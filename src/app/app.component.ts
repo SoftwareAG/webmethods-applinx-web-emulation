@@ -49,7 +49,7 @@ export class AppComponent implements OnInit, OnDestroy {
   hostKeyTransforms: HostKeyTransformation[];
   loginComponent: WebLoginComponent;
   displayScreen = false;
-
+  showHostKeyFlag : boolean = GXUtils.showHostKeyFlag;
   errorMessage: string;
 
   disconnectSubscription: Subscription;
@@ -287,13 +287,53 @@ export class AppComponent implements OnInit, OnDestroy {
       objArray.push(obj);
     });
       }
+
+      formatTransformation(values, objArray) {
+        console.log("Transformation Values : ", values); // vinoth
+        values.forEach(element => {
+          if (element.type == 'HostKeyTransformation' && this.showHostKeyFlag) {
+            let hostKeyList = element.hostKeys
+            hostKeyList.forEach(hostKeyElement => {
+              let actionObj = {};
+              let displayObj = {};
+              actionObj["row"] = hostKeyElement.actionPosition.row;
+              actionObj["col"] = hostKeyElement.actionPosition.column;
+              actionObj["data"] = hostKeyElement.action;
+              objArray.push(actionObj);
+              displayObj["row"] = hostKeyElement.displayPosition.row;
+              displayObj["col"] = hostKeyElement.displayPosition.column;
+              displayObj["data"] = hostKeyElement.displayText;
+              objArray.push(displayObj);
+            });
+          } else if (element.type == "TextTransformation") {
+            let displayObj = {};
+            displayObj["row"] = element.position.row;
+            displayObj["col"] = element.position.column;
+            displayObj["data"] = element.text;
+            objArray.push(displayObj);
+          } else if (element.type == "LineTransformation") {
+            let displayObj = {};
+            displayObj["row"] = element.caption.position.row;
+            displayObj["col"] = element.caption.position.column;
+            displayObj["data"] = element.caption.text;
+            objArray.push(displayObj);
+          } else if (element.type == "MultipleOptionsTransformation") {
+            let displayObj = {};
+            displayObj["row"] = element.field.position.row;
+            displayObj["col"] = element.field.position.column;
+            displayObj["data"] = element.field.content;
+            objArray.push(displayObj);
+          }
+        });
+      }
       
   getScreenData(printFlag) {
     let rawData = this.screenHolderService.getRawScreenData();
     let objArray = [];
     let formattedArray = [];
     let maxLine = 0;
-    this.generateObjectArray(rawData.fields, objArray)
+    this.generateObjectArray(rawData.fields, objArray);
+    this.formatTransformation(rawData.transformations, objArray)
     console.log(objArray);
     let lineNo = 0;
     objArray.sort((a, b) => {

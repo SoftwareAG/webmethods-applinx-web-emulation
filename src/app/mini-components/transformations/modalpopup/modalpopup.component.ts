@@ -16,6 +16,7 @@ export class ModalpopupComponent implements OnInit {
   copyInstruction_bgcolor: string = GXUtils.copyInstruction_bgcolor;
   selection: any;
   copiedText: any = [];
+  displayString : any = ``;
   widget: any;
   mouseDownPrintX: any;
   mouseDownPrintY: any;
@@ -46,12 +47,12 @@ export class ModalpopupComponent implements OnInit {
         element.classList.add("copyTextCss");
      })
   }
-  handleKeyDown(event){
-    if (event.ctrlKey && event.keyCode == 67){
-      console.log("handleKeyDown....", event);
-      this.clipboard.copy(this.copiedText.toString().replaceAll(",","\n"));
-    }
-  }
+  // handleKeyDown(event){
+  //   if (event.ctrlKey && event.keyCode == 67){
+  //     console.log("handleKeyDown....", event);
+  //     this.clipboard.copy(this.copiedText.toString().replaceAll(",","\n"));
+  //   }
+  // }
 
   print(){
     window.print();
@@ -112,6 +113,7 @@ export class ModalpopupComponent implements OnInit {
   }
 
   handleMouseUp(event) {
+    
     if (window.getSelection) {                      //only work if supported
       this.selection = window.getSelection();      //get the selection object
       let startIndex = this.selection.anchorOffset;
@@ -119,17 +121,26 @@ export class ModalpopupComponent implements OnInit {
       let offset = endIndex>=startIndex?endIndex - startIndex: startIndex - endIndex;
       let selectedLines = this.selection.toString().split("\n");
       let lineCount = selectedLines.length;
-      this.copiedText = []
+      this.copiedText = [];
+      this.displayString = ``;
+      
       for (let i = 0; i < lineCount; i++) {
         if (i == 0) {
           this.copiedText.push(selectedLines[i].slice(0, offset));
+           this.displayString = this.displayString  + selectedLines[i].slice(0, offset) +"\n";
         } else {
-          endIndex>=startIndex?this.copiedText.push(selectedLines[i].slice(startIndex, endIndex)): this.copiedText.push(selectedLines[i].slice(endIndex,startIndex ));
+          if (endIndex >= startIndex) {
+            this.copiedText.push(selectedLines[i].slice(startIndex, endIndex));
+            this.displayString = this.displayString  + selectedLines[i].slice(startIndex, endIndex) +"\n";
+          } else {
+            this.copiedText.push(selectedLines[i].slice(endIndex, startIndex));
+            this.displayString = this.displayString  + selectedLines[i].slice(endIndex,startIndex) +"\n";
+          }
         }
       }
     }
     this.changeTextBGcolor();
-    this.clipboard.copy(this.copiedText.toString().replaceAll(",","\n"));
+    this.clipboard.copy(this.displayString)
   }
 }
 

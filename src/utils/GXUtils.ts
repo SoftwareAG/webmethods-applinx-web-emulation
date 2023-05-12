@@ -231,4 +231,5 @@ export class GXUtils {
     public static nationalityWin = "NationalityWin";
     public static copyInstruction = "For Copying, select the text that needs to be copied with mouse, the copied text background color will change to  ";
     public static copyInstruction_bgcolor = "Blue";
+    public static showHostKeyFlag = false;
 }
