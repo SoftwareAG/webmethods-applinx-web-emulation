@@ -11,12 +11,9 @@ import { GXUtils } from 'src/utils/GXUtils';
 export class ModalpopupComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private clipboard: Clipboard) { }
-  printFlag : boolean = false;
+  printFlag: boolean = false;
   copyInstruction: string = GXUtils.copyInstruction;
-  copyInstruction_bgcolor: string = GXUtils.copyInstruction_bgcolor;
-  selection: any;
   copiedText: any = [];
-  displayString : any = ``;
   widget: any;
   mouseDownPrintX: any;
   mouseDownPrintY: any;
@@ -33,28 +30,24 @@ export class ModalpopupComponent implements OnInit {
   left: any;
   top: any;
   ismousedown = false;
-  selectItemId: any;
 
-  ngOnInit(): void {  
-    this.initCall();
+  ngOnInit(): void {
+    document.getElementById("copyDiv").innerHTML = this.data.content;
+    this.printFlag = this.data.typeFlag;
+    let elementList = document.querySelectorAll("[id='gx_text']");
+    elementList.forEach(element => {
+      element.classList.add("copyTextCss");
+    })
   }
 
-  initCall(){
-     document.getElementById("copyDiv").innerHTML = this.data.content;
-     this.printFlag = this.data.typeFlag;
-     let elementList = document.querySelectorAll("[id='gx_text']"); 
-     elementList.forEach(element =>{
-        element.classList.add("copyTextCss");
-     })
+  handleKeyDown(event){
+    if (event.ctrlKey && event.keyCode == 67){
+      console.log("handleKeyDown....", event);
+      this.clipboard.copy(this.copiedText.toString().replaceAll(",","\n"));
+    }
   }
-  // handleKeyDown(event){
-  //   if (event.ctrlKey && event.keyCode == 67){
-  //     console.log("handleKeyDown....", event);
-  //     this.clipboard.copy(this.copiedText.toString().replaceAll(",","\n"));
-  //   }
-  // }
 
-  print(){
+  print() {
     window.print();
   }
 
@@ -62,7 +55,6 @@ export class ModalpopupComponent implements OnInit {
   }
 
   handleMouseDown(event){
-    this.initCall();
     document.getElementsByClassName("selWidgetClass").length>0?document.getElementsByClassName("selWidgetClass")[0].remove():"";
     this.mouseDownPrintX = event.pageX;
     this.mouseDownPrintY = event.pageY;
@@ -80,67 +72,52 @@ export class ModalpopupComponent implements OnInit {
     }
   }
   
-  changeTextBGcolor() {
-    let lineArray = document.getElementById("copyDiv").children;
-    let lineObjArray = [];
-    let startTabIndex = this.selection.anchorNode.parentElement.tabIndex
-    let endTabIndex = this.selection.focusNode.parentElement.tabIndex;
-    let startIndex = this.selection.anchorOffset;
-    let endIndex = this.selection.focusOffset;
-
-    if (startTabIndex>endTabIndex){
-      let temp = endTabIndex;
-      endTabIndex = startTabIndex;
-      startTabIndex = temp;
-    }
-
-    if (startIndex>endIndex){
-      let temp = endIndex;
-      endIndex = startIndex;
-      startIndex = temp;
-    }
-    for (let i = 0; i < lineArray.length; i++) {
-      if ((lineArray[i]["tabIndex"] != -1) /*&& (lineArray[i].innerHTML.trim() != "") */ &&
-        (lineArray[i]["tabIndex"] >= startTabIndex && lineArray[i]["tabIndex"] <= endTabIndex)) {
-          lineObjArray.push({ "tabIndex": lineArray[i]["tabIndex"], "value": lineArray[i].innerHTML })
-      }
-    }
-    this.copiedText.forEach((element, index) => {
-      if (element.trim() != "") {
-       lineArray[lineObjArray[index].tabIndex].innerHTML = GXUtils.replaceBetween(lineArray[lineObjArray[index].tabIndex].innerHTML,startIndex, endIndex,"<span class='customselect'>"+element+"</span>")
-      }
-    });
-  }
-
   handleMouseUp(event) {
-    
     if (window.getSelection) {                      //only work if supported
-      this.selection = window.getSelection();      //get the selection object
-      let startIndex = this.selection.anchorOffset;
-      let endIndex = this.selection.focusOffset;
+      var selection = window.getSelection();      //get the selection object
+      let startIndex = selection.anchorOffset;
+      let endIndex = selection.focusOffset;
       let offset = endIndex>=startIndex?endIndex - startIndex: startIndex - endIndex;
-      let selectedLines = this.selection.toString().split("\n");
+      let selectedLines = selection.toString().split("\n");
       let lineCount = selectedLines.length;
-      this.copiedText = [];
-      this.displayString = ``;
-      
+      this.copiedText = []
       for (let i = 0; i < lineCount; i++) {
         if (i == 0) {
           this.copiedText.push(selectedLines[i].slice(0, offset));
-           this.displayString = this.displayString  + selectedLines[i].slice(0, offset) +"\n";
         } else {
-          if (endIndex >= startIndex) {
-            this.copiedText.push(selectedLines[i].slice(startIndex, endIndex));
-            this.displayString = this.displayString  + selectedLines[i].slice(startIndex, endIndex) +"\n";
-          } else {
-            this.copiedText.push(selectedLines[i].slice(endIndex, startIndex));
-            this.displayString = this.displayString  + selectedLines[i].slice(endIndex,startIndex) +"\n";
-          }
+          endIndex>=startIndex?this.copiedText.push(selectedLines[i].slice(startIndex, endIndex)): this.copiedText.push(selectedLines[i].slice(endIndex,startIndex ));
         }
       }
+      
     }
-    this.changeTextBGcolor();
-    this.clipboard.copy(this.displayString)
+    this.ismousedown = false;
+    this.mouseUpPrintX = event.pageX;
+    this.mouseUpPrintY = event.pageY;
+    this.mouseUpOffsetX = event.offsetX;
+    this.mouseUpOffsetY = event.offsetY;
+    if (this.mouseDownPrintX > this.mouseUpPrintX){
+      this.length = this.mouseDownPrintX - this.mouseUpPrintX;
+      this.left = this.mouseUpOffsetX;
+    }else{
+      this.length = this.mouseUpPrintX - this.mouseDownPrintX;
+      this.left = this.mouseDownOffsetX;
+    }
+
+    if (this.mouseDownPrintY > this.mouseUpPrintY){
+      this.height = this.mouseDownPrintY - this.mouseUpPrintY;
+      this.top = this.mouseUpOffsetY;
+    }else{
+      this.height = this.mouseUpPrintY - this.mouseDownPrintY;
+      this.top = this.mouseDownOffsetY;
+    } 
+
+    this.widget.style.width = this.length +"px";
+    this.widget.style.height = this.height +"px";
+    this.widget.style.display = 'block';
+    this.widget.style.top = this.top+"px";
+    this.widget.style.left = this.left+"px";
+    this.widget.style.border = '2px dashed #ccc';
+    this.widget.style.background = '#bbdd0044';
   }
 }
 
@@ -148,3 +125,6 @@ export interface DialogData {
   content: string,
   typeFlag: boolean
 }
+
+
+
