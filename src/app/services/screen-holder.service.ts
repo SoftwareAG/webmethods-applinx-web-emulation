@@ -23,6 +23,8 @@ export class ScreenHolderService {
 
   private _runtimeScreen: GetScreenResponse;
   private _previousScreen: any;
+  private _rawScreenData: GetScreenResponse;
+
   public screenInitialized: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor() { }
@@ -45,5 +47,11 @@ export class ScreenHolderService {
   }
   public isCurrentScreenWindow(): boolean {
     return this._runtimeScreen.windows?.length > 0;
+  }
+  public setRawScreenData(screen: GetScreenResponse){
+    this._rawScreenData = screen;
+  }
+  public getRawScreenData(){
+    return this._rawScreenData;
   }
 }
