@@ -1,9 +1,12 @@
 export declare class ColorThemeProperties {
   'bg-color': string;
+  'input-text-bg-color': string;
+  'input-text-border-bottom': string;
   'text-color': string;
   'input-text-pw': string;
   'input-text': string;
   'screen-btn-color': string;
+  'screen-btn-text-color': string;
   'btn-regular-color': string;
   'btn-outline-color': string
   'btn-hover-color-screen': string;
@@ -14,6 +17,9 @@ export declare class ColorThemeProperties {
   'menu-content-color': string;
   'table-header-background': string;
   'table-header-border-color-left': string;
+  'table-header-border-color-right': string;
+  'table-header-border-color-top': string;
+  'table-header-border-color-bottom': string;
   'table-header-text-color': string;
   'table-body-border-color': string;
   'table-body-alternating1': string;
@@ -22,11 +28,27 @@ export declare class ColorThemeProperties {
   'table-body-select-border-color': string
   'table-body-select-background-color': string;
   'table-body-select-color': string;
+  'table-text-shadow': string;
   'input-bottom-border-gx-lgrn': string;
   'cross-text-color': string;
-  'gx-line': string;
+  'gx-line': string;    
   'gx-blwt-text-color': string;
   'gx-lbl': string;
+  'gx-lgrn': string;
+  'gx-lrd': string;
+  'gx-blbl': string;
+  'gx-blbl-text-color': string;
+  'gx-blrd': string;
+  'gx-lppl': string;
+  'gx-laq': string;
+  'gx-ylw': string;
+  'gx-blgrn': string;
+  'gx-blgrn-text-color': string;
+  'gx-blaq': string;
+  'gx-blaq-text-color': string;
+  'gx-bylw': string;
+  'gx-bylw-text-color': string;
+  'gx-intf': string;
   'text-shadow-gx-lrd-intf': string
   'text-shadow-gx-lwt-gx-intf': string;
 }
