@@ -25,6 +25,8 @@ import {MatSliderModule} from '@angular/material/slider';
 import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatDialogModule, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatRadioModule} from '@angular/material/radio';
+import { MatTooltipModule } from '@angular/material/tooltip';
 //import { MatDialog } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
@@ -116,7 +118,9 @@ const routes: Routes = [
     MatDialogModule,
     MatSliderModule,
     OverlayModule,
-    MatMenuModule, 
+    MatMenuModule,
+    MatRadioModule,
+    MatTooltipModule, 
     // MatDialog,
     LoggerModule.forRoot({serverLoggingUrl: environment.basePath+'/logger', level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.TRACE})
   ],

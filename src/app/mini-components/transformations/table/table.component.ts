@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import {TableTransformation, InputField} from '@softwareag/applinx-rest-apis';
 import {NavigationService} from '../../../services/navigation/navigation.service';
 
@@ -22,7 +22,7 @@ import {NavigationService} from '../../../services/navigation/navigation.service
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css']
 })
-export class TableComponent {
+export class TableComponent implements OnChanges {
 
   @Input() transform: TableTransformation;
 
@@ -30,5 +30,9 @@ export class TableComponent {
 
   onInputValueChange(inputField: InputField): void {
     this.navigationService.setSendableField(inputField);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
   }
 }
