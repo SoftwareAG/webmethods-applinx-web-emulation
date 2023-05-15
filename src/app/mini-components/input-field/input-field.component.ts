@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 import {
   Component,
   ElementRef,
@@ -29,25 +29,25 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { TabAndArrowsService } from 'src/app/services/navigation/tab-and-arrows.service';
 import { ScreenHolderService } from 'src/app/services/screen-holder.service';
 import { GXUtils } from 'src/utils/GXUtils';
-import {NavigationService} from '../../services/navigation/navigation.service';
-import {StorageService} from '../../services/storage.service';
+import { NavigationService } from '../../services/navigation/navigation.service';
+import { StorageService } from '../../services/storage.service';
 
-enum GXDataTypes{
-  ALPHANUMERIC ='ALPHANUMERIC',
-	NUMERIC = 'NUMERIC',
-	ALPHA_ONLY = 'ALPHA_ONLY', //(AS/400)
-	DIGITS_ONLY = 'DIGITS_ONLY',  //(AS/400)
-	SIGNED_NUMERIC = 'SIGNED_NUMERIC',  //(AS/400)
-	KATAKANA_SHIFT = 'KATAKANA_SHIFT',  //(AS/400 Japanese katakana only field)
-	DBCS_ONLY = 'DBCS_ONLY',
-	DBCS_CAN_CREATE_SISO = 'DBCS_CAN_CREATE_SISO',
-	REVERSED = 'REVERSED'  //(AS/400 Hebrew field)
+enum GXDataTypes {
+  ALPHANUMERIC = 'ALPHANUMERIC',
+  NUMERIC = 'NUMERIC',
+  ALPHA_ONLY = 'ALPHA_ONLY', //(AS/400)
+  DIGITS_ONLY = 'DIGITS_ONLY',  //(AS/400)
+  SIGNED_NUMERIC = 'SIGNED_NUMERIC',  //(AS/400)
+  KATAKANA_SHIFT = 'KATAKANA_SHIFT',  //(AS/400 Japanese katakana only field)
+  DBCS_ONLY = 'DBCS_ONLY',
+  DBCS_CAN_CREATE_SISO = 'DBCS_CAN_CREATE_SISO',
+  REVERSED = 'REVERSED'  //(AS/400 Hebrew field)
 }
 
 enum GXDataTypesAllowedChars {
   NUMERIC = '[0-9.,]*',//"01234567890.,"
   DIGITS_ONLY = '[0-9]*', //0123456789"
-  SIGNED_NUMERIC = '[0-9.,+-]*' , //"01234567890.,-+"
+  SIGNED_NUMERIC = '[0-9.,+-]*', //"01234567890.,-+"
   ALPHA_ONLY = '[a-zA-Z]*',
   ANY = '.*'
 }
@@ -67,8 +67,8 @@ export class InputFieldComponent implements OnChanges, OnInit, OnDestroy {
   screenInitializedSubscription: Subscription;
 
   constructor(private navigationService: NavigationService, public storageService: StorageService,
-              private tabAndArrowsService: TabAndArrowsService, private doms : DomSanitizer,
-              private screenHolderService: ScreenHolderService) {}
+    private tabAndArrowsService: TabAndArrowsService, private doms: DomSanitizer,
+    private screenHolderService: ScreenHolderService) { }
 
   ngOnInit(): void {
     if (!this.isFieldCursorPosition(this.navigationService.getCursorPosition())) {
@@ -88,7 +88,7 @@ export class InputFieldComponent implements OnChanges, OnInit, OnDestroy {
     if (this.field.content && this.field.content.trim() === '') {
       this.field.content = '';
     }
-    const field: Field = changes.field.currentValue;
+    const field: Field | any = changes.field.currentValue;
     this.inputField = new InputField();
     if (field.name?.length > 0) {
       this.inputField.setName(field.name);
@@ -100,12 +100,12 @@ export class InputFieldComponent implements OnChanges, OnInit, OnDestroy {
     if (field.position) {
       this.inputField.setPosition(field.position);
     }
-       
-    if (this.field.foreground) {
-      this.fgClass = GXUtils.getFgCssClass(this.field.foreground, this.field.isIntensified);
+
+    if (this.field.foreground || field.fgColor) {
+      this.fgClass = GXUtils.getFgCssClass(this.field.foreground ? this.field.foreground : field.fgColor, this.field.isIntensified ? this.field.isIntensified : field.highIntensified);
     }
-    if (this.field.background) {
-      this.bgClass = GXUtils.getBgCssClass(this.field.background);
+    if (this.field.background || field.bgColor) {
+      this.bgClass = GXUtils.getBgCssClass(this.field.background ? this.field.background : field.bgColor);
     }
   }
 
@@ -115,16 +115,16 @@ export class InputFieldComponent implements OnChanges, OnInit, OnDestroy {
     this.updateCursorPosition();
   }
 
-  private getActiveCursor(): Cursor{
-	return new Cursor(this.computeCursorPosition(), this.inputField.name, this.inputField.index)
+  private getActiveCursor(): Cursor {
+    return new Cursor(this.computeCursorPosition(), this.inputField.name, this.inputField.index)
   }
 
-  private updateCursorPosition(): void{
+  private updateCursorPosition(): void {
     this.navigationService.setCursorPosition(this.getActiveCursor(), this.field.positionInWindow);
   }
 
   onFocus(): void {
-	this.updateCursorPosition();
+    this.updateCursorPosition();
   }
 
   private computeCursorPosition() {
@@ -134,7 +134,7 @@ export class InputFieldComponent implements OnChanges, OnInit, OnDestroy {
     return this.inputField.position;
   }
 
-  getDataType(field: Field): string{
+  getDataType(field: Field): string {
 
     if (!field.visible) {
       return 'password';
@@ -142,17 +142,17 @@ export class InputFieldComponent implements OnChanges, OnInit, OnDestroy {
     return 'text';
   }
 
-  getPattern(field: Field): string{
-    if (field.datatype === GXDataTypes.NUMERIC){
+  getPattern(field: Field): string {
+    if (field.datatype === GXDataTypes.NUMERIC) {
       return GXDataTypesAllowedChars.NUMERIC;
     }
-    if (field.datatype == GXDataTypes.DIGITS_ONLY){
+    if (field.datatype == GXDataTypes.DIGITS_ONLY) {
       return GXDataTypesAllowedChars.DIGITS_ONLY;
     }
-    if (field.datatype == GXDataTypes.SIGNED_NUMERIC){
+    if (field.datatype == GXDataTypes.SIGNED_NUMERIC) {
       return GXDataTypesAllowedChars.SIGNED_NUMERIC;
     }
-    if (field.datatype == GXDataTypes.ALPHA_ONLY){
+    if (field.datatype == GXDataTypes.ALPHA_ONLY) {
       return GXDataTypesAllowedChars.ALPHA_ONLY;
     }
     return GXDataTypesAllowedChars.ANY;
@@ -160,18 +160,18 @@ export class InputFieldComponent implements OnChanges, OnInit, OnDestroy {
 
   private isFieldCursorPosition(cursor: Cursor): boolean {
     const fld = this.field;
-    return ((fld.name === cursor.fieldName) || (cursor.position && 
-              this.field.position?.row === cursor.position.row && 
-              this.field.position?.column === cursor.position.column));
+    return ((fld.name === cursor.fieldName) || (cursor.position &&
+      this.field.position?.row === cursor.position.row &&
+      this.field.position?.column === cursor.position.column));
   }
-  
+
   get position() {
     const pos = this.field.positionInWindow ? this.field.positionInWindow : this.field.position;
     const template = {
-      'grid-row-start': pos.row, 
+      'grid-row-start': pos.row,
       'grid-column-start': pos.column,
-      'grid-column-end': (this.field.length > 1) ? (pos.column+this.field.length) : (pos.column+2),
-      'direction': this.storageService.getLanguage().typingDirectionRTL ? 'rtl': 'ltr'
+      'grid-column-end': (this.field.length > 1) ? (pos.column + this.field.length) : (pos.column + 2),
+      'direction': this.storageService.getLanguage().typingDirectionRTL ? 'rtl' : 'ltr'
     }
     return template;
   }
