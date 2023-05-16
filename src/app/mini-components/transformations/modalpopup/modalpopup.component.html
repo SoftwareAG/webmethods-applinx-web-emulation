@@ -1,8 +1,4 @@
-<div id="copyParentDiv" tabindex="10" (keydown)="handleKeyDown($event)">
-    <div class="modal-header">
-        <div *ngIf="!printFlag">
-            <h5 class="modal-title" id="exampleModalLabel">Clipboard for Copying</h5>
-        </div>
+<div id="copyParentDiv" tabindex="10" >
         <div class="container-fluid" *ngIf="printFlag">
             <div class="row">
                 <div class="col-11 col-sm-11">
@@ -18,13 +14,11 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div id="copyDiv" class="copyWrapper" (mousedown)="handleMouseDown($event)" (mouseup)="handleMouseUp($event)">
-    </div>
-    <div class="modal-footer">
+    <div id="copyDiv" class="copyWrapper crosshair" (mousedown)="handleMouseDown($event)" (mouseup)="handleMouseUp($event)" ></div>
+    <div class="modal-footer unselectable" unselectable="on">
         <div class="instruction">
-            {{copyInstruction}}
+            <span>{{copyInstruction}}</span>
+            <span class="selectbgcolor">{{copyInstruction_bgcolor}}</span>
         </div>
         <mat-dialog-actions>
             <button mat-button mat-dialog-close>Cancel</button>
