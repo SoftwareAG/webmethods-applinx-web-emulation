@@ -15,6 +15,7 @@
  */ 
 
 import { Position } from "@softwareag/applinx-rest-apis";
+import {BlackTheme, WhiteTheme, GreenTheme} from "./GXColorTheme"
 
 enum FOREGROUND_COLOR {
     BLACK = 'gx_blk',
@@ -223,14 +224,17 @@ export class GXUtils {
         str.slice(index + replacement.length)
       );
     }
+	
+	
+    public static replaceBetween (str, start, end, what) {
+      return str.substring(0, start) + what + str.substring(end);
+    };
 
-    public static divElement = "DIV";
-    public static appFieldElement = "APP-FIELD";
-    public static appInputFieldElement = "APP-INPUT-FIELD";
-    public static appTransformGeneratorElement = "APP-TRANSFORM-GENERATOR";
-    public static textFieldType = "text";
-    public static multipleOptionsTransformation = "MultipleOptionsTransformation";
-    public static tableTransformation = "TableTransformation";
-    public static action = "Action";
     public static nationalityWin = "NationalityWin";
+    public static themeColorsList = ['Black', 'White', 'Green'];
+    public static defaultThemeColor = 'White';
+    public static themecolorConfig = {Black: BlackTheme, White: WhiteTheme, Green: GreenTheme}
+	public static copyInstruction = "For Copying, select the text that needs to be copied with mouse, the copied text background color will change to  ";
+    public static copyInstruction_bgcolor = "Blue";
+    public static showHostKeyFlag = false;
 }

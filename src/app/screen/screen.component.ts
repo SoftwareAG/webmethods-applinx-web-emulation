@@ -135,6 +135,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       if (newScreen) {     
         this.navigationService.screenObjectUpdated.next(null);
         this.postGetScreen (newScreen);
+        this.getRawScreenData();
       }
     });
 
@@ -155,7 +156,21 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     this.getScreenSubscription = this.screenService
     .getScreen(this.storageService.getAuthToken(), req)
     .subscribe(
-      screen => this.postGetScreen(screen),   
+      screen => {
+        this.postGetScreen(screen);
+        this.screenHolderService.setRawScreenData(screen)   
+      },    
+      error => {
+        this.logger.error(this.messages.get("FAILED_TO_GET_SCREEN_FROM_REST_API"));
+        this.userExitsEventThrower.fireOnGetScreenError(error);
+      });
+  }
+
+  getRawScreenData(): void {    
+    const req = new GetScreenRequest();
+    this.userExitsEventThrower.firePreGetScreen(req);
+    this.getScreenSubscription = this.screenService.getScreen(this.storageService.getAuthToken(), req).subscribe(
+      screen => this.screenHolderService.setRawScreenData(screen),   
       error => {
         this.logger.error(this.messages.get("FAILED_TO_GET_SCREEN_FROM_REST_API"));
         this.userExitsEventThrower.fireOnGetScreenError(error);

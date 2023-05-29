@@ -3,7 +3,7 @@
 }
 input {
   height: calc(var(--text-font-size) + 2px) !important;
-  line-height: var(--text-font-size) !important;
+  line-height: calc(var(--text-font-size)) !important;
   width: fit-content !important;
   padding: 0px;
   margin-top: -1px;
