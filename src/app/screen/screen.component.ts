@@ -186,10 +186,31 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
     if (!GXUtils.isStringEmptyWithTrim(screenName) && this.navigationService.getRoutingHandler().hasRoute(screenName))
       this.redirectToRoute(screenName);
-    else if (this.isGeneratedPage && !this.screenHolderService.isCurrentScreenWindow()) 
-      this.router.navigate(['instant']);  
-    else 
-      this.processScreen(screen); 
+    else if (this.isGeneratedPage && !this.screenHolderService.isCurrentScreenWindow())
+      this.router.navigate(['instant']);
+    else {
+      let typeAheadArray = GXUtils.getTypeAheadArray().filter(element => element.activeFlag == true);
+      let loopLength = 0;
+      typeAheadArray.forEach(element => {
+        console.log(element);
+      });
+      let textFieldArray = screen.fields.filter(entry => {
+        return entry.protected == false && entry.autoCursorJump == true && entry.visible == true && entry.datatype == "ALPHANUMERIC"
+      })
+      loopLength = (textFieldArray.length <= typeAheadArray.length) ? textFieldArray.length : typeAheadArray.length;
+      for (let i = 0; i < loopLength; i++) {
+        if (typeAheadArray[i].activeFlag) {
+          if (typeAheadArray[i].value == "[Enter]") {
+            this.navigationService.sendKeys('[enter]');
+            this.navigationService.setIsTypeAheadFlag(true);
+          } else {
+            textFieldArray[i].content = (typeAheadArray[i].value != "") ? typeAheadArray[i].value : textFieldArray[i].content;
+          }
+          typeAheadArray[i].activeFlag = false;
+        }
+      }
+      this.processScreen(screen);
+    }
   }
 
   private processScreen(screen: GetScreenResponse): void {

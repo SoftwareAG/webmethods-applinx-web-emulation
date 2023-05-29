@@ -64,13 +64,22 @@ export class AppComponent implements OnInit, OnDestroy {
   zoomStep: number = GXUtils.zoomStep;
   isOpenThemeStyle: boolean = false;
   themeColor: string = GXUtils.defaultThemeColor;
+  typeAheadCharArray : any = [];
+  typeAheadWordArray : any = [];
+  typeAheadCursorPosition : number = 0;
+  typeAheadLeftArrowFlag : boolean = false;
+  typeAheadrightArrowFlag : boolean = false;
+  typeAheadPrevFlag: boolean = false;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
     if (this.screenLockerService.isLocked()) {
+      this.generateTypeAhead(event);
+      GXUtils.setTypeAheadArray(this.typeAheadWordArray)
       return; // windows is loading...
     }
     if (!this.keyboardMappingService.checkKeyboardMappings(event, true, event.keyCode)) {
+      this.typeAheadWordArray = [];
       event.preventDefault();
     }
     if (event.key === 'Enter' && !this.storageService.isConnected()) {
@@ -479,6 +488,72 @@ export class AppComponent implements OnInit, OnDestroy {
     return color.toLowerCase();
   }
 
+    generateTypeAhead(event) {
+//      console.log("Pressed Key ", event.code);
+      if (GXUtils.FUNCTIONARRAY.indexOf(event.code) != -1) {
+        event.preventDefault();
+      } else if (GXUtils.ARROWKEYARRAY.indexOf(event.code) != -1) {
+        if (event.code == GXUtils.ARROWLEFT){
+          if (this.typeAheadCursorPosition < this.typeAheadCharArray.length){
+              this.typeAheadCursorPosition++;
+              this.typeAheadLeftArrowFlag = true;
+          }else{
+            this.typeAheadPrevFlag = true;
+            this.typeAheadLeftArrowFlag = false;
+            this.typeAheadCursorPosition = 0;
+          }
+        }else if (event.code == GXUtils.ARROWRIGHT){
+          this.typeAheadCursorPosition--;
+          // if (this.typeAheadCursorPosition <= 0){
+          //   // move control to Next field 
+          // }
+        }
+        // else if (event.code == GXUtils.ARROWUP){
+        //   // move control to Previous field 
+        // }else if (event.code == GXUtils.ARROWDOWN){
+        //     // move control to Next field 
+        // }
+        event.preventDefault();
+      } else if (GXUtils.IGNOREKEYARRAY.indexOf(event.code) != -1) {
+       // event.preventDefault();
+      }else if (event.key == GXUtils.TAB) {
+        this.typeAheadCursorPosition = 0;
+        if (this.typeAheadCharArray.length > 0) {
+          this.typeAheadWordArray.push({value:this.typeAheadCharArray.toString().replaceAll(",", ""), activeFlag: true});
+          this.typeAheadCharArray = [];
+        } else {
+          this.typeAheadWordArray.push({value:"", activeFlag:true})
+        }
+        event.preventDefault();
+      } else if (event.key == GXUtils.ENTER || event.key == GXUtils.NUMPADENTER) {
+        if (this.typeAheadCharArray.length > 0){
+          this.typeAheadWordArray.push({value:this.typeAheadCharArray.toString().replaceAll(",", ""), activeFlag: true});
+          this.typeAheadCharArray = [];
+        }
+        this.typeAheadWordArray.push({value:"["+GXUtils.ENTER+"]",activeFlag:true});
+      } else if (event.key == GXUtils.BACKSPACE) {
+        this.typeAheadCharArray.pop()
+      } 
+      // else if (event.key == GXUtils.DELETE) {
+        // Delete the element in the current position/selection
+      // } 
+      else {
+        if(this.typeAheadLeftArrowFlag && !this.typeAheadPrevFlag){
+          this.typeAheadCharArray.splice((this.typeAheadCharArray.length - this.typeAheadCursorPosition), 0, event.key);
+          this.typeAheadLeftArrowFlag = false;
+         }
+        // else if(!this.typeAheadLeftArrowFlag && this.typeAheadPrevFlag){
+        //   console.log("Move Control to previous field");
+        //   // move control to previous field
+        // }else if(this.typeAheadrightArrowFlag){
+        //   console.log("Move Control to next field");
+        //   // move control to Next field
+        //}
+        else{
+          this.typeAheadCharArray.push(event.key); // Adding charecters typed by the user
+        }
+      }
+    }
 
 }
 

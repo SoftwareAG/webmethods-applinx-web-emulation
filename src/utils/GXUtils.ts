@@ -216,6 +216,7 @@ export class GXUtils {
     public static zoomMinValue = 10;
     public static zoomMaxValue = 24;
     public static zoomStep = 1;
+    public static typeAheadArray: any = [];
     
     public static replaceString(str, index, replacement) {
       return (
@@ -230,11 +231,35 @@ export class GXUtils {
       return str.substring(0, start) + what + str.substring(end);
     };
 
+    public static setTypeAheadArray(typeAheadArray){
+      this.typeAheadArray = typeAheadArray;
+    }
+
+    public static getTypeAheadArray(){
+      return this.typeAheadArray;
+    }
+
     public static nationalityWin = "NationalityWin";
     public static themeColorsList = ['Black', 'White', 'Green'];
     public static defaultThemeColor = 'White';
     public static themecolorConfig = {Black: BlackTheme, White: WhiteTheme, Green: GreenTheme}
-	public static copyInstruction = "For Copying, select the text that needs to be copied with mouse, the copied text background color will change to  ";
+	  public static copyInstruction = "For Copying, select the text that needs to be copied with mouse, the copied text background color will change to  ";
     public static copyInstruction_bgcolor = "Blue";
     public static showHostKeyFlag = false;
+    public static ENTER = "Enter";
+    public static NUMPADENTER ="NumpadEnter"
+    public static CAPSLOCK = "CapsLock";
+    public static BACKSPACE = "Backspace";
+    public static TAB = "Tab";
+    public static FUNCTIONARRAY = ["F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","F11","F12"];
+    public static ARROWKEYARRAY = ["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp","PageUp", "PageDown"];
+    public static IGNOREKEYARRAY = ["ControlLeft","ControlRight","ShiftRight","ShiftLeft","AltRight","AltLeft","Home", "End", "Insert","Delete"];
+    public static ARROWRIGHT = "ArrowRight"; 
+    public static ARROWLEFT = "ArrowLeft";
+    public static ARROWDOWN = "ArrowDown";
+    public static ARROWUP = "ArrowUp";
+    public static PAGEUP = "PageUp";
+    public static PAGEDOWN = "PageDown";
+    public static DELETE = "Delete";
+    
 }
