@@ -16,6 +16,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NavigationService} from '../../services/navigation/navigation.service';
 import {HostKeyTransformation} from '@softwareag/applinx-rest-apis';
+import { GXUtils } from 'src/utils/GXUtils';
 
 @Component({
   selector: 'app-host-keys-template',
@@ -34,5 +35,9 @@ export class HostKeysTemplateComponent implements OnInit {
 
   onClick(actionValue: string): void {
     this.navigationService.sendKeys(actionValue);
+  }
+
+  resetTypeAhead(){
+    GXUtils.setTypeAheadArray([]);
   }
 }

@@ -4,5 +4,5 @@
       {{hostKey.caption}}
     </button>
   </ng-container>
-  <button id="enter" [ngClass] = "{green_enter: themeColor === 'Green'}" style="margin-top: 10%" class="dlt-button dlt-button-primary" (click)="this.navigationService.sendKeys('[enter]')">Enter</button>
+  <button id="enter" [ngClass] = "{green_enter: themeColor === 'Green'}" style="margin-top: 10%" class="dlt-button dlt-button-primary" (click)="this.resetTypeAhead();this.navigationService.sendKeys('[enter]')">Enter</button>
 </div>

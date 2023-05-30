@@ -75,11 +75,12 @@ export class AppComponent implements OnInit, OnDestroy {
   handleKeyboardEvent(event: KeyboardEvent): void {
     if (this.screenLockerService.isLocked()) {
       this.generateTypeAhead(event);
-      GXUtils.setTypeAheadArray(this.typeAheadWordArray)
+      GXUtils.setTypeAheadArray(this.typeAheadWordArray);
       return; // windows is loading...
     }
     if (!this.keyboardMappingService.checkKeyboardMappings(event, true, event.keyCode)) {
       this.typeAheadWordArray = [];
+      GXUtils.setTypeAheadArray(this.typeAheadWordArray);
       event.preventDefault();
     }
     if (event.key === 'Enter' && !this.storageService.isConnected()) {
