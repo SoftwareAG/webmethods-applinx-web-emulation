@@ -214,6 +214,8 @@ export class AppComponent implements OnInit, OnDestroy {
         error => this.userExitsEventThrower.fireOnDisconnectError(error)
       );
     this.disconnectSubscription.add(() => this.storageService.setNotConnected())
+      this.typeAheadWordArray = [];
+      GXUtils.setTypeAheadArray(this.typeAheadWordArray);
   }
 
   print() {
