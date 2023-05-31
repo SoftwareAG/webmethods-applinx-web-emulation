@@ -189,6 +189,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     else if (this.isGeneratedPage && !this.screenHolderService.isCurrentScreenWindow())
       this.router.navigate(['instant']);
     else {
+      if (GXUtils.ENABLETYPEAHEADFLAG) {
       let typeAheadArray = GXUtils.getTypeAheadArray().filter(element => element.activeFlag == true);
       let loopLength = 0;
       let textFieldArray = screen.fields.filter(entry => {
@@ -198,7 +199,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       loopLength = (textFieldArray.length <= typeAheadArray.length) ? textFieldArray.length : typeAheadArray.length;
       for (let i = 0; i < loopLength; i++) {
         if (typeAheadArray[i].activeFlag) {
-//          console.log("value : "+ typeAheadArray[i].value + " FLAG : "+typeAheadArray[i].activeFlag);
+          //          console.log("value : "+ typeAheadArray[i].value + " FLAG : "+typeAheadArray[i].activeFlag);
           if (typeAheadArray[i].value == "[Enter]") {
             this.navigationService.setIsTypeAheadFlag(true);
             this.navigationService.sendKeys('[enter]');
@@ -206,6 +207,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
             textFieldArray[i].content = (typeAheadArray[i].value != "") ? typeAheadArray[i].value : textFieldArray[i].content;
           }
           typeAheadArray[i].activeFlag = false;
+          }
         }
       }
       this.processScreen(screen);

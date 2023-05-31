@@ -74,8 +74,10 @@ export class AppComponent implements OnInit, OnDestroy {
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
     if (this.screenLockerService.isLocked()) {
-      this.generateTypeAhead(event);
-      GXUtils.setTypeAheadArray(this.typeAheadWordArray);
+      if(GXUtils.ENABLETYPEAHEADFLAG){
+        this.generateTypeAhead(event);
+        GXUtils.setTypeAheadArray(this.typeAheadWordArray);
+      }
       return; // windows is loading...
     }
     if (!this.keyboardMappingService.checkKeyboardMappings(event, true, event.keyCode)) {
@@ -214,8 +216,10 @@ export class AppComponent implements OnInit, OnDestroy {
         error => this.userExitsEventThrower.fireOnDisconnectError(error)
       );
     this.disconnectSubscription.add(() => this.storageService.setNotConnected())
+    if(GXUtils.ENABLETYPEAHEADFLAG){
       this.typeAheadWordArray = [];
       GXUtils.setTypeAheadArray(this.typeAheadWordArray);
+    }
   }
 
   print() {

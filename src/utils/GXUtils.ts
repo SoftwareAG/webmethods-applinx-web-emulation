@@ -261,5 +261,5 @@ export class GXUtils {
     public static PAGEUP = "PageUp";
     public static PAGEDOWN = "PageDown";
     public static DELETE = "Delete";
-    
+    public static ENABLETYPEAHEADFLAG = true;
 }
