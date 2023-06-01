@@ -77,7 +77,7 @@ export class AppComponent implements OnInit, OnDestroy {
       if(GXUtils.ENABLETYPEAHEADFLAG){
         this.generateTypeAhead(event);
         GXUtils.setTypeAheadArray(this.typeAheadWordArray);
-      }
+      } 
       return; // windows is loading...
     }
     if (!this.keyboardMappingService.checkKeyboardMappings(event, true, event.keyCode)) {
@@ -496,7 +496,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
     generateTypeAhead(event) {
-//      console.log("Pressed Key ", event.code);
+     console.log("Pressed Key ", event.code);
       if (GXUtils.FUNCTIONARRAY.indexOf(event.code) != -1) {
         event.preventDefault();
       } else if (GXUtils.ARROWKEYARRAY.indexOf(event.code) != -1) {

@@ -183,6 +183,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     this.screenHolderService.setRuntimeScreen(screen);
     const screenName = screen.name;
     this.logger.debug(this.messages.get("GET_SCREEN") + screenName);
+    let enterFlag = false;
 
     if (!GXUtils.isStringEmptyWithTrim(screenName) && this.navigationService.getRoutingHandler().hasRoute(screenName))
       this.redirectToRoute(screenName);
@@ -191,6 +192,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     else {
       if (GXUtils.ENABLETYPEAHEADFLAG) {
       let typeAheadArray = GXUtils.getTypeAheadArray().filter(element => element.activeFlag == true);
+      console.log("Type Ahead words : ", typeAheadArray);
       let loopLength = 0;
       let textFieldArray = screen.fields.filter(entry => {
         // return entry.protected == false && entry.autoCursorJump == true && entry.visible == true && entry.datatype == "ALPHANUMERIC"
@@ -198,10 +200,11 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       })
       loopLength = (textFieldArray.length <= typeAheadArray.length) ? textFieldArray.length : typeAheadArray.length;
       for (let i = 0; i < loopLength; i++) {
-        if (typeAheadArray[i].activeFlag) {
+        if (typeAheadArray[i].activeFlag && !enterFlag) {
           //          console.log("value : "+ typeAheadArray[i].value + " FLAG : "+typeAheadArray[i].activeFlag);
           if (typeAheadArray[i].value == "[Enter]") {
             this.navigationService.setIsTypeAheadFlag(true);
+            enterFlag = true;
             this.navigationService.sendKeys('[enter]');
           } else {
             textFieldArray[i].content = (typeAheadArray[i].value != "") ? typeAheadArray[i].value : textFieldArray[i].content;
