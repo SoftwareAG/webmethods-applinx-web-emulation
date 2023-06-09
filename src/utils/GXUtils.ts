@@ -217,6 +217,8 @@ export class GXUtils {
     public static zoomMaxValue = 24;
     public static zoomStep = 1;
     public static typeAheadArray: any = [];
+    public static typeaheadNewScreen: boolean = false;
+    public static typeAheadCharArray : any = [];
     
     public static replaceString(str, index, replacement) {
       return (
@@ -239,6 +241,23 @@ export class GXUtils {
       return this.typeAheadArray;
     }
 
+    public static isTypeaheadNewScreen(){
+      return this.typeaheadNewScreen;
+    }
+
+    public static setTypeaheadNewScreen(flag){
+      this.typeaheadNewScreen = flag;
+    }
+
+    public static setTypeAheadCharArray(typeAheadCharArray){
+      this.typeAheadCharArray = typeAheadCharArray;
+      console.log("@Utils : ",this.typeAheadCharArray);
+    }
+
+    public static getTypeAheadCharArray(){
+      return this.typeAheadCharArray;
+    }
+
     public static nationalityWin = "NationalityWin";
     public static themeColorsList = ['Black', 'White', 'Green'];
     public static defaultThemeColor = 'White';
@@ -248,12 +267,11 @@ export class GXUtils {
     public static showHostKeyFlag = false;
     public static ENTER = "Enter";
     public static NUMPADENTER ="NumpadEnter"
-    public static CAPSLOCK = "CapsLock";
     public static BACKSPACE = "Backspace";
     public static TAB = "Tab";
     public static FUNCTIONARRAY = ["F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","F11","F12"];
     public static ARROWKEYARRAY = ["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp","PageUp", "PageDown"];
-    public static IGNOREKEYARRAY = ["ControlLeft","ControlRight","ShiftRight","ShiftLeft","AltRight","AltLeft","Home", "End", "Insert","Delete"];
+    public static IGNOREKEYARRAY = ["ControlLeft","ControlRight","ShiftRight","ShiftLeft","AltRight","AltLeft","Home", "End", "Insert","Delete","CapsLock"];
     public static ARROWRIGHT = "ArrowRight"; 
     public static ARROWLEFT = "ArrowLeft";
     public static ARROWDOWN = "ArrowDown";

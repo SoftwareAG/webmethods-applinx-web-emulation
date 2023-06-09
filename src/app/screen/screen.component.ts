@@ -147,7 +147,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       } else {
         this.onScreenInit(currentScreen);
       }
-    } 
+    }
   }
 
   getScreen(): void {    
@@ -191,13 +191,23 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       this.router.navigate(['instant']);
     else {
       if (GXUtils.ENABLETYPEAHEADFLAG) {
-      let typeAheadArray = GXUtils.getTypeAheadArray().filter(element => element.activeFlag == true);
-      console.log("Type Ahead words : ", typeAheadArray);
+      let typeAheadArray = GXUtils.getTypeAheadArray().filter(element => element.activeFlag == true); 
+      let typeAheadCharArray = GXUtils.getTypeAheadCharArray().toString().replaceAll(",","");
+      if(typeAheadCharArray.length > 0){
+        let obj = {"value":typeAheadCharArray, "activeFlag":true};
+        // console.log("Type Ahead chars :",GXUtils.getTypeAheadCharArray());
+        // console.log("Type Ahead chars-combined :",obj);
+        typeAheadArray.push(obj);
+        GXUtils.setTypeaheadNewScreen(true)
+      }
+        //console.log("Type Ahead words : ", typeAheadArray);
       let loopLength = 0;
       let textFieldArray = screen.fields.filter(entry => {
         // return entry.protected == false && entry.autoCursorJump == true && entry.visible == true && entry.datatype == "ALPHANUMERIC"
-        return entry.protected == false && entry.visible == true && entry.datatype == "ALPHANUMERIC"
-      })
+        if(entry){
+          return entry.protected == false && entry.visible == true && entry.datatype == "ALPHANUMERIC"
+        }
+      });
       loopLength = (textFieldArray.length <= typeAheadArray.length) ? textFieldArray.length : typeAheadArray.length;
       for (let i = 0; i < loopLength; i++) {
         if (typeAheadArray[i].activeFlag && !enterFlag) {
@@ -212,13 +222,17 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
           typeAheadArray[i].activeFlag = false;
           }
         }
+        if(textFieldArray.length > 0 && typeAheadArray.length){
+            screen.cursor.fieldName = textFieldArray[typeAheadArray.length-1].name;
+            screen.cursor.position = textFieldArray[typeAheadArray.length-1].position
+        }
       }
       this.processScreen(screen);
     }
   }
 
   private processScreen(screen: GetScreenResponse): void {
-    if (this.screenHolderService.isCurrentScreenWindow() && !this.isChildWindow) {
+      if (this.screenHolderService.isCurrentScreenWindow() && !this.isChildWindow ) {
       this.shiftFieldsToMainWindow(screen);
       if (screen.windows.length === 1) {
         this.childWindows = [screen];

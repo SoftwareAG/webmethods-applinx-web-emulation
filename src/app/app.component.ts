@@ -76,13 +76,16 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.screenLockerService.isLocked()) {
       if(GXUtils.ENABLETYPEAHEADFLAG){
         this.generateTypeAhead(event);
+      //  console.log(">>>>>>>>>>>>>>> typeAheadCharArray : ", this.typeAheadCharArray)
         GXUtils.setTypeAheadArray(this.typeAheadWordArray);
+        GXUtils.setTypeAheadCharArray(this.typeAheadCharArray);
       } 
       return; // windows is loading...
     }
     if (!this.keyboardMappingService.checkKeyboardMappings(event, true, event.keyCode)) {
       this.typeAheadWordArray = [];
-      GXUtils.setTypeAheadArray(this.typeAheadWordArray);
+        GXUtils.setTypeAheadCharArray(this.typeAheadCharArray);
+        GXUtils.setTypeAheadArray(this.typeAheadWordArray);
       event.preventDefault();
     }
     if (event.key === 'Enter' && !this.storageService.isConnected()) {
@@ -219,6 +222,7 @@ export class AppComponent implements OnInit, OnDestroy {
     if(GXUtils.ENABLETYPEAHEADFLAG){
       this.typeAheadWordArray = [];
       GXUtils.setTypeAheadArray(this.typeAheadWordArray);
+      GXUtils.setTypeAheadCharArray(this.typeAheadCharArray);
     }
   }
 
@@ -245,7 +249,6 @@ export class AppComponent implements OnInit, OnDestroy {
 	  
 	 
       formatTransformation(values, objArray) {
-        console.log("Transformation Values : ", values); // vinoth
         values.forEach(element => {
           if (element.type == 'HostKeyTransformation' && this.showHostKeyFlag) {
             let hostKeyList = element.hostKeys
@@ -497,6 +500,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
     generateTypeAhead(event) {
      console.log("Pressed Key ", event.code);
+     if (GXUtils.isTypeaheadNewScreen()) {
+      this.typeAheadCharArray = [];
+      GXUtils.setTypeaheadNewScreen (false);
+     }
       if (GXUtils.FUNCTIONARRAY.indexOf(event.code) != -1) {
         event.preventDefault();
       } else if (GXUtils.ARROWKEYARRAY.indexOf(event.code) != -1) {
@@ -540,7 +547,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.typeAheadWordArray.push({value:"["+GXUtils.ENTER+"]",activeFlag:true});
       } else if (event.key == GXUtils.BACKSPACE) {
         this.typeAheadCharArray.pop()
-      } 
+      }
       // else if (event.key == GXUtils.DELETE) {
         // Delete the element in the current position/selection
       // } 
