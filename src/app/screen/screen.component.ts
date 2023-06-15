@@ -177,6 +177,91 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       });
   }
 
+  private checkForTypeAheadChars(){
+    let typeAheadCharsArray = GXUtils.getTypeAheadCharsArray();
+    if (typeAheadCharsArray.length>0){
+      let event = {};
+      event["code"] = GXUtils.TAB;
+      GXUtils.appendTypeAheadStringArray(event);
+    }
+  }
+
+  private getTypeAheadFields(screen){
+    return screen.fields.filter(entry => {
+      // return entry.protected == false && entry.autoCursorJump == true && entry.visible == true && entry.datatype == "ALPHANUMERIC"
+      if(entry){
+        return entry.protected == false && entry.datatype == "ALPHANUMERIC";
+      }
+    }); 
+  }
+
+  private readTypeAhead(typeAheadArray, length){
+    for (var i=0;i<length;i++){
+      if(typeAheadArray[i].value == '[Enter]'){
+        this.navigationService.setIsTypeAheadFlag(true);
+        this.navigationService.sendKeys('[enter]');
+      }
+      typeAheadArray[i].activeFlag = false;  
+    } 
+  }
+
+  private setFirstValue(screen, typeAheadArray, textFieldArray){
+    let indexCount=0;
+    let firstFieldFlag = false;
+    let currentIndex = 0;
+    
+    let textFieldCount = textFieldArray.length;
+    let maxIndex = textFieldCount-1
+    if(screen.cursor.fieldName && !firstFieldFlag){
+        let typeAheadObj = typeAheadArray.filter(element => element.activeFlag==true)[0];
+        if(typeAheadObj.value == '[Enter]'){
+          this.navigationService.setIsTypeAheadFlag(true);
+          this.navigationService.sendKeys('[enter]'); 
+        }else{
+          currentIndex = textFieldArray.findIndex(element => element.name == screen.cursor.fieldName);
+          textFieldArray[currentIndex].content = typeAheadObj.value; 
+        }
+        typeAheadObj.activeFlag = false; 
+        firstFieldFlag = true;
+    } 
+    let updatedTypeAheadArray = typeAheadArray.filter(element => element.activeFlag==true)
+    let typeAheadIndex = updatedTypeAheadArray.length;
+    let typeAheadCount = 0;
+    do{
+      if(currentIndex < maxIndex){
+        currentIndex++;
+      }else if(currentIndex == maxIndex){
+        currentIndex = 0;
+      }
+      if (updatedTypeAheadArray.length > 0){
+        if(updatedTypeAheadArray[typeAheadCount].value == '[Enter]'){
+          this.navigationService.setIsTypeAheadFlag(true);
+          this.navigationService.sendKeys('[enter]');
+        } else {
+          textFieldArray[currentIndex].content = updatedTypeAheadArray[typeAheadCount]?.value;
+        }
+        updatedTypeAheadArray[typeAheadCount].activeFlag = false;
+        typeAheadCount++;
+        indexCount++;
+      }
+    }while (indexCount < typeAheadIndex)
+  }
+
+  private setTypeAheadFocus(screen, typeAheadArray, textFieldArray){
+    if(textFieldArray.length > 0 && typeAheadArray.length){
+      screen.cursor.fieldName = textFieldArray[(typeAheadArray.length-1)%textFieldArray.length].name;
+      screen.cursor.position = textFieldArray[(typeAheadArray.length-1)%textFieldArray.length].position
+    } 
+  }
+
+  private sortTextFieldList(textFieldArray, isTabbingRTL){
+    if (isTabbingRTL){
+      textFieldArray.sort((a, b) => a.position.row - b.position.row ||b.position.column - a.position.column); // RTL
+    }else{
+      textFieldArray.sort((a, b) => a.position.row - b.position.row ||a.position.column - b.position.column);  // LTR
+    } 
+  }
+
   private postGetScreen(screen: GetScreenResponse): void {
     this.hostKeyTransforms = [];
     this.userExitsEventThrower.firePostGetScreen(screen);
@@ -190,42 +275,37 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     else if (this.isGeneratedPage && !this.screenHolderService.isCurrentScreenWindow())
       this.router.navigate(['instant']);
     else {
-      if (GXUtils.ENABLETYPEAHEADFLAG) {
-      let typeAheadArray = GXUtils.getTypeAheadArray().filter(element => element.activeFlag == true); 
-      let typeAheadCharArray = GXUtils.getTypeAheadCharArray().toString().replaceAll(",","");
-      if(typeAheadCharArray.length > 0){
-        let obj = {"value":typeAheadCharArray, "activeFlag":true};
-        // console.log("Type Ahead chars :",GXUtils.getTypeAheadCharArray());
-        // console.log("Type Ahead chars-combined :",obj);
-        typeAheadArray.push(obj);
-        GXUtils.setTypeaheadNewScreen(true)
-      }
-        //console.log("Type Ahead words : ", typeAheadArray);
-      let loopLength = 0;
-      let textFieldArray = screen.fields.filter(entry => {
-        // return entry.protected == false && entry.autoCursorJump == true && entry.visible == true && entry.datatype == "ALPHANUMERIC"
-        if(entry){
-          return entry.protected == false && entry.visible == true && entry.datatype == "ALPHANUMERIC"
-        }
-      });
-      loopLength = (textFieldArray.length <= typeAheadArray.length) ? textFieldArray.length : typeAheadArray.length;
-      for (let i = 0; i < loopLength; i++) {
-        if (typeAheadArray[i].activeFlag && !enterFlag) {
-          //          console.log("value : "+ typeAheadArray[i].value + " FLAG : "+typeAheadArray[i].activeFlag);
-          if (typeAheadArray[i].value == "[Enter]") {
-            this.navigationService.setIsTypeAheadFlag(true);
-            enterFlag = true;
-            this.navigationService.sendKeys('[enter]');
-          } else {
-            textFieldArray[i].content = (typeAheadArray[i].value != "") ? typeAheadArray[i].value : textFieldArray[i].content;
+      if (GXUtils.ENABLETYPEAHEADFLAG){
+          // Check for type ahead chars without Enter/Tab and append it to the array
+          this.checkForTypeAheadChars(); 
+          // Get the TypeAhead Fields
+          let textFieldArray = this.getTypeAheadFields(screen); 
+          // Get the typeAhead String array
+          let typeAheadArray = GXUtils.getTypeAheadStringArray().filter(element => element.activeFlag == true);  
+          // let typeAheadArray = [
+          //             {activeFlag: true, value: 'vinoth'},
+          //             {activeFlag: true, value: 'ku'},
+          //             {activeFlag: true, value: 'ra'},
+          //             {activeFlag: true, value: ''},
+          //             {activeFlag: true, value: 'chennai'},
+          //             {activeFlag: true, value: 'BA'}
+          //             ]
+          const isTabbingRTL = screen.language?.tabDirectionRTL;
+          if (textFieldArray.length == 0 && typeAheadArray.length > 0){ 
+            // when there are NO text fields for typeAhead
+            let index = typeAheadArray.findIndex(entry => entry.value == "["+GXUtils.ENTER+"]");
+            if (index == -1){
+              this.readTypeAhead(typeAheadArray, typeAheadArray.length);
+            }else{
+              this.readTypeAhead(typeAheadArray, index+1);
+            }
+          }else if (textFieldArray.length > 0 && typeAheadArray.length > 0){
+            // when there are text fields for typeAhead && typeAhead is present
+            // set the value for the first field mentioned in cursor property
+            this.sortTextFieldList(textFieldArray, isTabbingRTL);
+            this.setFirstValue(screen, typeAheadArray, textFieldArray);
+            this.setTypeAheadFocus(screen, typeAheadArray, textFieldArray);
           }
-          typeAheadArray[i].activeFlag = false;
-          }
-        }
-        if(textFieldArray.length > 0 && typeAheadArray.length){
-            screen.cursor.fieldName = textFieldArray[typeAheadArray.length-1].name;
-            screen.cursor.position = textFieldArray[typeAheadArray.length-1].position
-        }
       }
       this.processScreen(screen);
     }

@@ -75,17 +75,11 @@ export class AppComponent implements OnInit, OnDestroy {
   handleKeyboardEvent(event: KeyboardEvent): void {
     if (this.screenLockerService.isLocked()) {
       if(GXUtils.ENABLETYPEAHEADFLAG){
-        this.generateTypeAhead(event);
-      //  console.log(">>>>>>>>>>>>>>> typeAheadCharArray : ", this.typeAheadCharArray)
-        GXUtils.setTypeAheadArray(this.typeAheadWordArray);
-        GXUtils.setTypeAheadCharArray(this.typeAheadCharArray);
+        this.fnFormTypeaheadDetails(event);
       } 
       return; // windows is loading...
     }
     if (!this.keyboardMappingService.checkKeyboardMappings(event, true, event.keyCode)) {
-      this.typeAheadWordArray = [];
-        GXUtils.setTypeAheadCharArray(this.typeAheadCharArray);
-        GXUtils.setTypeAheadArray(this.typeAheadWordArray);
       event.preventDefault();
     }
     if (event.key === 'Enter' && !this.storageService.isConnected()) {
@@ -498,77 +492,23 @@ export class AppComponent implements OnInit, OnDestroy {
     return color.toLowerCase();
   }
 
-    generateTypeAhead(event) {
-     console.log("Pressed Key ", event.code);
-     if (GXUtils.isTypeaheadNewScreen()) {
-      this.typeAheadCharArray = [];
-      GXUtils.setTypeaheadNewScreen (false);
-     }
-      if (GXUtils.FUNCTIONARRAY.indexOf(event.code) != -1) {
-        event.preventDefault();
-      } else if (GXUtils.ARROWKEYARRAY.indexOf(event.code) != -1) {
-        if (event.code == GXUtils.ARROWLEFT){
-          if (this.typeAheadCursorPosition < this.typeAheadCharArray.length){
-              this.typeAheadCursorPosition++;
-              this.typeAheadLeftArrowFlag = true;
-          }else{
-            this.typeAheadPrevFlag = true;
-            this.typeAheadLeftArrowFlag = false;
-            this.typeAheadCursorPosition = 0;
-          }
-        }else if (event.code == GXUtils.ARROWRIGHT){
-          this.typeAheadCursorPosition--;
-          // if (this.typeAheadCursorPosition <= 0){
-          //   // move control to Next field 
-          // }
-        }
-        // else if (event.code == GXUtils.ARROWUP){
-        //   // move control to Previous field 
-        // }else if (event.code == GXUtils.ARROWDOWN){
-        //     // move control to Next field 
-        // }
-        event.preventDefault();
-      } else if (GXUtils.IGNOREKEYARRAY.indexOf(event.code) != -1) {
-       // event.preventDefault();
-      }else if (event.key == GXUtils.TAB) {
-        this.typeAheadCursorPosition = 0;
-        if (this.typeAheadCharArray.length > 0) {
-          this.typeAheadWordArray.push({value:this.typeAheadCharArray.toString().replaceAll(",", ""), activeFlag: true});
-          this.typeAheadCharArray = [];
-        } else {
-          this.typeAheadWordArray.push({value:"", activeFlag:true})
-        }
-        event.preventDefault();
-      } else if (event.key == GXUtils.ENTER || event.key == GXUtils.NUMPADENTER) {
-        if (this.typeAheadCharArray.length > 0){
-          this.typeAheadWordArray.push({value:this.typeAheadCharArray.toString().replaceAll(",", ""), activeFlag: true});
-          this.typeAheadCharArray = [];
-        }
-        this.typeAheadWordArray.push({value:"["+GXUtils.ENTER+"]",activeFlag:true});
-      } else if (event.key == GXUtils.BACKSPACE) {
-        this.typeAheadCharArray.pop()
-      }
-      // else if (event.key == GXUtils.DELETE) {
-        // Delete the element in the current position/selection
-      // } 
-      else {
-        if(this.typeAheadLeftArrowFlag && !this.typeAheadPrevFlag){
-          this.typeAheadCharArray.splice((this.typeAheadCharArray.length - this.typeAheadCursorPosition), 0, event.key);
-          this.typeAheadLeftArrowFlag = false;
-         }
-        // else if(!this.typeAheadLeftArrowFlag && this.typeAheadPrevFlag){
-        //   console.log("Move Control to previous field");
-        //   // move control to previous field
-        // }else if(this.typeAheadrightArrowFlag){
-        //   console.log("Move Control to next field");
-        //   // move control to Next field
-        //}
-        else{
-          this.typeAheadCharArray.push(event.key); // Adding charecters typed by the user
-        }
-      }
+    fnFormTypeaheadDetails(event){
+      console.log("Pressed Key ", event.code);
+      if (GXUtils.isTypeaheadNewScreen()) {
+        this.typeAheadCharArray = [];
+        GXUtils.setTypeaheadNewScreen (false);
+       }
+       if ( (GXUtils.FUNCTIONARRAY.indexOf(event.code) != -1) || (GXUtils.IGNOREKEYARRAY.indexOf(event.code) != -1) ) {
+            event.preventDefault();
+       } else if (event.key == GXUtils.TAB) {
+            GXUtils.appendTypeAheadStringArray(event);
+            event.preventDefault();
+       } else if (event.key == GXUtils.ENTER || event.key == GXUtils.NUMPADENTER) {
+            GXUtils.appendTypeAheadStringArray(event);
+       } else{
+            GXUtils.appendTypeAheadChar(event.key); // Adding charecters typed by the user
+       }
     }
-
 }
 
 

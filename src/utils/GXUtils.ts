@@ -219,6 +219,8 @@ export class GXUtils {
     public static typeAheadArray: any = [];
     public static typeaheadNewScreen: boolean = false;
     public static typeAheadCharArray : any = [];
+    public static typeAheadCharacterArray : any = [];
+    public static typeAheadStringArray : any = [];
     
     public static replaceString(str, index, replacement) {
       return (
@@ -227,8 +229,7 @@ export class GXUtils {
         str.slice(index + replacement.length)
       );
     }
-	
-	
+		
     public static replaceBetween (str, start, end, what) {
       return str.substring(0, start) + what + str.substring(end);
     };
@@ -251,11 +252,40 @@ export class GXUtils {
 
     public static setTypeAheadCharArray(typeAheadCharArray){
       this.typeAheadCharArray = typeAheadCharArray;
-      console.log("@Utils : ",this.typeAheadCharArray);
     }
 
     public static getTypeAheadCharArray(){
       return this.typeAheadCharArray;
+    }
+
+    public static appendTypeAheadChar(typeAheadChar){
+      this.typeAheadCharacterArray.push(typeAheadChar);
+    }
+
+    public static getTypeAheadCharsArray(){
+        return this.typeAheadCharacterArray;
+    }
+
+    public static getTypeAheadStringArray(){
+        return this.typeAheadStringArray;
+    }
+
+    public static appendTypeAheadStringArray(event){
+      let obj = {}
+      obj["activeFlag"] = true;
+      if (event.code == GXUtils.TAB){
+        obj["value"] = (this.typeAheadCharacterArray.length>0)?this.typeAheadCharacterArray.toString().replaceAll(",", ""):"";
+        this.typeAheadStringArray.push(JSON.parse(JSON.stringify(obj)));
+        this.typeAheadCharacterArray = [];
+      }else if (event.code == GXUtils.ENTER  || event.code == GXUtils.NUMPADENTER){
+        if(this.typeAheadCharacterArray.length>0){
+          obj["value"] = this.typeAheadCharacterArray.toString().replaceAll(",", "");
+          this.typeAheadStringArray.push(JSON.parse(JSON.stringify(obj)));
+          this.typeAheadCharacterArray = [];
+        }
+        obj["value"] = "["+GXUtils.ENTER+"]";  
+        this.typeAheadStringArray.push(obj);
+      }
     }
 
     public static nationalityWin = "NationalityWin";
