@@ -86,6 +86,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   isScreenUpdatedSubscription: Subscription;
   screenObjectUpdatedSubscription: Subscription;
   gridChangedSubscription: Subscription;
+  firstFieldfocusFlag : boolean = false;
 
   constructor(private screenService: ScreenService, private navigationService: NavigationService,
               private storageService: StorageService, private tabAndArrowsService: TabAndArrowsService,
@@ -212,17 +213,20 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     
     let textFieldCount = textFieldArray.length;
     let maxIndex = textFieldCount-1
+    this.firstFieldfocusFlag = (screen.cursor.fieldName == textFieldArray[0].name)?true: false;
     if(screen.cursor.fieldName && !firstFieldFlag){
         let typeAheadObj = typeAheadArray.filter(element => element.activeFlag==true)[0];
-        if(typeAheadObj.value == '[Enter]'){
-          this.navigationService.setIsTypeAheadFlag(true);
-          this.navigationService.sendKeys('[enter]'); 
-        }else{
-          currentIndex = textFieldArray.findIndex(element => element.name == screen.cursor.fieldName);
-          textFieldArray[currentIndex].content = typeAheadObj.value; 
+        if(typeAheadObj){
+            if(typeAheadObj.value == '[Enter]'){
+              this.navigationService.setIsTypeAheadFlag(true);
+              this.navigationService.sendKeys('[enter]'); 
+            }else{
+              currentIndex = textFieldArray.findIndex(element => element.name == screen.cursor.fieldName);
+              textFieldArray[currentIndex].content = typeAheadObj.value; 
+            }
+            typeAheadObj.activeFlag = false; 
+            firstFieldFlag = true;
         }
-        typeAheadObj.activeFlag = false; 
-        firstFieldFlag = true;
     } 
     let updatedTypeAheadArray = typeAheadArray.filter(element => element.activeFlag==true)
     let typeAheadIndex = updatedTypeAheadArray.length;
@@ -248,10 +252,23 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   }
 
   private setTypeAheadFocus(screen, typeAheadArray, textFieldArray){
-    if(textFieldArray.length > 0 && typeAheadArray.length){
-      screen.cursor.fieldName = textFieldArray[(typeAheadArray.length-1)%textFieldArray.length].name;
-      screen.cursor.position = textFieldArray[(typeAheadArray.length-1)%textFieldArray.length].position
-    } 
+    let textboxArayLength = textFieldArray.length;
+    let typeAheadArrayLength = typeAheadArray.length;
+    typeAheadArrayLength = this.firstFieldfocusFlag? typeAheadArrayLength : typeAheadArrayLength - 1;
+    if (textboxArayLength > typeAheadArrayLength){
+      console.log(">")
+        screen.cursor.fieldName = textFieldArray[typeAheadArrayLength].name;
+        screen.cursor.position = textFieldArray[typeAheadArrayLength].position;
+    }else if (textboxArayLength == typeAheadArrayLength){
+      console.log("=")
+        screen.cursor.fieldName = textFieldArray[0].name;
+        screen.cursor.position = textFieldArray[0].position;
+    }else if (textboxArayLength < typeAheadArrayLength){
+      console.log("<")
+        let focusIndex = typeAheadArrayLength%textboxArayLength;
+        screen.cursor.fieldName = textFieldArray[focusIndex].name;
+        screen.cursor.position = textFieldArray[focusIndex].position;
+    }
   }
 
   private sortTextFieldList(textFieldArray, isTabbingRTL){
@@ -282,7 +299,8 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
           let textFieldArray = this.getTypeAheadFields(screen); 
           // Get the typeAhead String array
           let typeAheadArray = GXUtils.getTypeAheadStringArray().filter(element => element.activeFlag == true);  
-          // let typeAheadArray = [
+          //let typeAheadArray = [{"activeFlag":true,"value":"1"},{"activeFlag":true,"value":"2"},{"activeFlag":true,"value":"3"},{"activeFlag":true,"value":"4"},{"activeFlag":true,"value":"5"},{"activeFlag":true,"value":"6"},{"activeFlag":true,"value":"7"},{"activeFlag":true,"value":"8"},{"activeFlag":true,"value":"9"},{"activeFlag":true,"value":"10"},{"activeFlag":true,"value":"11"},{"activeFlag":true,"value":"12"},{"activeFlag":true,"value":"13"},{"activeFlag":true,"value":"14"}];
+          //let typeAheadArray = [
           //             {activeFlag: true, value: 'vinoth'},
           //             {activeFlag: true, value: 'ku'},
           //             {activeFlag: true, value: 'ra'},
