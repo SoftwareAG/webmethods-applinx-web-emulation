@@ -310,4 +310,6 @@ export class GXUtils {
     public static PAGEDOWN = "PageDown";
     public static DELETE = "Delete";
     public static ENABLETYPEAHEADFLAG = true;
+    public static MENU = "Menu";
+    public static UNKNOWN = "UNKNOWN";
 }
