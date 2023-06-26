@@ -330,7 +330,8 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   }
 
   private processScreen(screen: GetScreenResponse): void {
-      if (this.screenHolderService.isCurrentScreenWindow() && !this.isChildWindow ) {
+      if (this.screenHolderService.isCurrentScreenWindow() && !this.isChildWindow && 
+           !(this.screenHolderService.getPreviousScreen().name == GXUtils.MENU && screen.name == GXUtils.UNKNOWN)) {
       this.shiftFieldsToMainWindow(screen);
       if (screen.windows.length === 1) {
         this.childWindows = [screen];
