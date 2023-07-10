@@ -806,23 +806,6 @@ div[name="Menu"]#gx_screenArea input.gx_intf {
 	color: var(--primary-text-color);
 }
 
-
-.copyWrapper {
-	position: relative;
-	height: 100% !important;
-	width: 100% !important;
-}
-
-.selWidgetClass {
-	display: block;
-	position: absolute;
-}
-
-.instruction {
-	font-size: small;
-	font-style: italic;
-}
-
 .crosshair {
 	cursor: crosshair;
 }

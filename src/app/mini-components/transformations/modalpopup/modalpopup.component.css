@@ -5,3 +5,8 @@ display: flex;
 div.modal-footer {
     justify-content: space-between;
 }
+
+.mat-dialog-actions{
+    padding: 0;
+    min-height: 0;
+}

@@ -221,6 +221,7 @@ export class GXUtils {
     public static typeAheadCharArray : any = [];
     public static typeAheadCharacterArray : any = [];
     public static typeAheadStringArray : any = [];
+    public static copyFlag : boolean = false;
     
     public static replaceString(str, index, replacement) {
       return (
@@ -286,6 +287,14 @@ export class GXUtils {
         obj["value"] = "["+GXUtils.ENTER+"]";  
         this.typeAheadStringArray.push(obj);
       }
+    }
+
+    public static setCopyFlag(flag){
+      this.copyFlag = flag;
+    }
+
+    public static getCopyFlag(){
+      return this.copyFlag;
     }
 
     public static nationalityWin = "NationalityWin";
