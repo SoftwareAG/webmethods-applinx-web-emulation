@@ -15,7 +15,7 @@ This implementation of the instant, on-the-fly conversion to HTML web applicatio
 
 ## Prerequisites
 
-* NodeJS (release builds are currently built with v12.19.0)
+* NodeJS (release builds are currently built with v16.14)
 
 * NPM (Included with NodeJS)
   For more information on installing Node.js, see [nodejs.org](https://nodejs.org). 
