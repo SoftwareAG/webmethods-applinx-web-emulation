@@ -30,16 +30,16 @@
         itemStyle="color:white" (click)="zoom()">
       </sag-topnav-item>
       <mat-menu #menu="matMenu">
-        <div id="silder-default-btn">
-          <button type="button" (click)="setDefaultZoom()">Default</button>
-        </div>
         <div id="slider">
-          <mat-slider thumbLabel vertical [displayWith]="formatLabel" [value]="zoomDefault" [step]="zoomStep"
-            [min]="zoomMinValue" [max]="zoomMaxValue" (valueChange)=onZoomChange($event)
+          <mat-slider thumbLabel class="panelCustom" vertical [displayWith]="formatLabel" [value]="zoomDefault"
+            [step]="zoomStep" [min]="zoomMinValue" [max]="zoomMaxValue" (valueChange)=onZoomChange($event)
             aria-label="units"></mat-slider>
+          <div id="silder-default-btn">
+            <i class="dlt-icon-restore" title="Default" itemIcon="dlt-icon-zoom-in" (click)="setDefaultZoom()"
+              aria-hidden="true"></i>
+          </div>
         </div>
       </mat-menu>
-
       <sag-topnav-item [matMenuTriggerFor]="matMenuTheme" title="Style" itemType="button" itemIcon="dlt-icon-palette"
         itemStyle="color:white" (click)="Style()">
       </sag-topnav-item>
@@ -47,7 +47,9 @@
         <mat-radio-group [(ngModel)]="themeColor">
           <mat-menu-content style="display: flex; flex-direction: column; padding: 0px 8px 0px 15px;">
             <mat-menu-item *ngFor="let color of themeColors; index as i">
-              <mat-radio-button [id] = "getColor(color)"  [style.--border-color]="getColor(color)" [value]="color" [matTooltip]="color" [matTooltipPosition]="'after'" (change)="changeBackgroundColor($event.value)"></mat-radio-button>
+              <mat-radio-button [id]="getColor(color)" [style.--border-color]="getColor(color)" [value]="color"
+                [matTooltip]="color" [matTooltipPosition]="'after'"
+                (change)="changeBackgroundColor($event.value)"></mat-radio-button>
             </mat-menu-item>
           </mat-menu-content>
         </mat-radio-group>
@@ -82,7 +84,7 @@
     </div>
     <div id="app-host-keys-btns" class="hostKeys key-transform-container hostKeys-btns-container"
       *ngIf="hostKeyTransforms">
-      <app-host-keys-template [transformations]="hostKeyTransforms" [themeColor] = "themeColor">
+      <app-host-keys-template [transformations]="hostKeyTransforms" [themeColor]="themeColor">
       </app-host-keys-template>
     </div>
   </div>
