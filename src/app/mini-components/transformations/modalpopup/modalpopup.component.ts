@@ -33,8 +33,10 @@ export class ModalpopupComponent implements OnInit {
   left: any;
   top: any;
   ismousedown = false;
+  copyFlag : boolean;
 
   ngOnInit(): void {
+    this.copyFlag = GXUtils.getCopyFlag();
     this.initCall();
   }
 
