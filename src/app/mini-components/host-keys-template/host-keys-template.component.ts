@@ -37,7 +37,9 @@ export class HostKeysTemplateComponent implements OnInit {
     this.navigationService.sendKeys(actionValue);
   }
 
-  resetTypeAhead(){
-    GXUtils.setTypeAheadArray([]);
+  onEnter(){
+    if(GXUtils.setTypeAheadEnterFlag){
+      this.onClick('[enter]');
+    }
   }
 }

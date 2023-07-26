@@ -218,10 +218,13 @@ export class GXUtils {
     public static zoomStep = 1;
     public static typeAheadArray: any = [];
     public static typeaheadNewScreen: boolean = false;
-    public static typeAheadCharArray : any = [];
+    public static typeAheadObjArray : any = [];
     public static typeAheadCharacterArray : any = [];
     public static typeAheadStringArray : any = [];
     public static copyFlag : boolean = false;
+    public static objOrder = 0;
+    public static fieldOrder = 0;
+    public static typeAheadEnterFlag = false;
     
     public static replaceString(str, index, replacement) {
       return (
@@ -235,30 +238,6 @@ export class GXUtils {
       return str.substring(0, start) + what + str.substring(end);
     };
 
-    public static setTypeAheadArray(typeAheadArray){
-      this.typeAheadArray = typeAheadArray;
-    }
-
-    public static getTypeAheadArray(){
-      return this.typeAheadArray;
-    }
-
-    public static isTypeaheadNewScreen(){
-      return this.typeaheadNewScreen;
-    }
-
-    public static setTypeaheadNewScreen(flag){
-      this.typeaheadNewScreen = flag;
-    }
-
-    public static setTypeAheadCharArray(typeAheadCharArray){
-      this.typeAheadCharArray = typeAheadCharArray;
-    }
-
-    public static getTypeAheadCharArray(){
-      return this.typeAheadCharArray;
-    }
-
     public static appendTypeAheadChar(typeAheadChar){
       this.typeAheadCharacterArray.push(typeAheadChar);
     }
@@ -267,25 +246,74 @@ export class GXUtils {
         return this.typeAheadCharacterArray;
     }
 
+    public static setTypeAheadCharsArray(objArray){
+      this.typeAheadCharacterArray = objArray;
+    }
+
     public static getTypeAheadStringArray(){
         return this.typeAheadStringArray;
     }
 
+    public static setTypeAheadStringArray(objArray){
+      this.typeAheadStringArray = objArray;
+    }
+
+    public static setTypeAheadObjArray(objArray){
+      this.typeAheadObjArray = objArray;
+    }
+
+    public static getTypeAheadObjArray(){
+        return this.typeAheadObjArray;
+    }
+
+    public static setTypeAheadEnterFlag(){
+      this.typeAheadEnterFlag = this.typeAheadObjArray.filter(element => element.executed == false).length == 0;
+    }
+
+    public static getTypeAheadEnterFlag(){
+      return this.typeAheadEnterFlag;
+    }
+
     public static appendTypeAheadStringArray(event){
-      let obj = {}
-      obj["activeFlag"] = true;
+      // console.log("Event Code ......",event.code)
       if (event.code == GXUtils.TAB){
-        obj["value"] = (this.typeAheadCharacterArray.length>0)?this.typeAheadCharacterArray.toString().replaceAll(",", ""):"";
-        this.typeAheadStringArray.push(JSON.parse(JSON.stringify(obj)));
-        this.typeAheadCharacterArray = [];
+        //console.log("tab");
+            let strObj = {};
+            strObj["value"]= (this.typeAheadCharacterArray.length>0)?this.typeAheadCharacterArray.toString().replaceAll(",", ""):" ";
+            strObj["active"] = true;
+            strObj["fieldOrder"] = this.fieldOrder++;
+            this.typeAheadStringArray.push(strObj);
+            this.typeAheadCharacterArray = [];
       }else if (event.code == GXUtils.ENTER  || event.code == GXUtils.NUMPADENTER){
-        if(this.typeAheadCharacterArray.length>0){
-          obj["value"] = this.typeAheadCharacterArray.toString().replaceAll(",", "");
-          this.typeAheadStringArray.push(JSON.parse(JSON.stringify(obj)));
-          this.typeAheadCharacterArray = [];
-        }
-        obj["value"] = "["+GXUtils.ENTER+"]";  
-        this.typeAheadStringArray.push(obj);
+        //console.log("ENTER");
+            let strObj = {};
+            strObj["value"] = this.typeAheadCharacterArray.toString().replaceAll(",", "");
+            strObj["active"] = true;
+            strObj["fieldOrder"] = this.fieldOrder++;
+            this.typeAheadCharacterArray = [];
+            if(strObj["value"].length>0){
+              this.typeAheadStringArray.push(strObj);
+            }
+            let obj = {};
+            obj["executed"] = false;
+            obj["inputFields"] = this.typeAheadStringArray;
+            obj["objOrder"] = this.objOrder++;
+            this.typeAheadStringArray = [];
+            this.typeAheadObjArray.push(obj);
+      }else if(event.code == GXUtils.IMPLICITTAB){
+//        console.log("IMPLICITTAB");
+            let strObj = {};
+            strObj["value"]= (this.typeAheadCharacterArray.length>0)?this.typeAheadCharacterArray.toString().replaceAll(",", ""):" ";
+            strObj["active"] = true;
+            strObj["fieldOrder"] = this.fieldOrder++;
+            this.typeAheadStringArray.push(strObj);
+            this.typeAheadCharacterArray = [];
+            let obj = {};
+            obj["executed"] = false;
+            obj["inputFields"] = this.typeAheadStringArray;
+            obj["objOrder"] = this.objOrder++;
+            this.typeAheadStringArray = [];
+            this.typeAheadObjArray.push(obj);
       }
     }
 
@@ -308,6 +336,7 @@ export class GXUtils {
     public static NUMPADENTER ="NumpadEnter"
     public static BACKSPACE = "Backspace";
     public static TAB = "Tab";
+    public static IMPLICITTAB = "ImplicitTab";
     public static FUNCTIONARRAY = ["F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","F11","F12"];
     public static ARROWKEYARRAY = ["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp","PageUp", "PageDown"];
     public static IGNOREKEYARRAY = ["ControlLeft","ControlRight","ShiftRight","ShiftLeft","AltRight","AltLeft","Home", "End", "Insert","Delete","CapsLock"];

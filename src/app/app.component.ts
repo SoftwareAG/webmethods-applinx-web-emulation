@@ -64,12 +64,6 @@ export class AppComponent implements OnInit, OnDestroy {
   zoomStep: number = GXUtils.zoomStep;
   isOpenThemeStyle: boolean = false;
   themeColor: string = GXUtils.defaultThemeColor;
-  typeAheadCharArray : any = [];
-  typeAheadWordArray : any = [];
-  typeAheadCursorPosition : number = 0;
-  typeAheadLeftArrowFlag : boolean = false;
-  typeAheadrightArrowFlag : boolean = false;
-  typeAheadPrevFlag: boolean = false;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
@@ -214,9 +208,9 @@ export class AppComponent implements OnInit, OnDestroy {
       );
     this.disconnectSubscription.add(() => this.storageService.setNotConnected())
     if(GXUtils.ENABLETYPEAHEADFLAG){
-      this.typeAheadWordArray = [];
-      GXUtils.setTypeAheadArray(this.typeAheadWordArray);
-      GXUtils.setTypeAheadCharArray(this.typeAheadCharArray);
+      GXUtils.setTypeAheadObjArray([]);
+      GXUtils.setTypeAheadStringArray([]);
+      GXUtils.setTypeAheadCharsArray([]);
     }
   }
 
@@ -495,21 +489,19 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
     fnFormTypeaheadDetails(event){
-      console.log("Pressed Key ", event.code);
-      if (GXUtils.isTypeaheadNewScreen()) {
-        this.typeAheadCharArray = [];
-        GXUtils.setTypeaheadNewScreen (false);
-       }
-       if ( (GXUtils.FUNCTIONARRAY.indexOf(event.code) != -1) || (GXUtils.IGNOREKEYARRAY.indexOf(event.code) != -1) ) {
+     // console.log("KEY Pressed is ", event.code);
+      if(event.code){
+          if ( (GXUtils.FUNCTIONARRAY.indexOf(event.code) != -1) || (GXUtils.IGNOREKEYARRAY.indexOf(event.code) != -1) ) {
             event.preventDefault();
-       } else if (event.key == GXUtils.TAB) {
-            GXUtils.appendTypeAheadStringArray(event);
-            event.preventDefault();
-       } else if (event.key == GXUtils.ENTER || event.key == GXUtils.NUMPADENTER) {
-            GXUtils.appendTypeAheadStringArray(event);
-       } else{
-            GXUtils.appendTypeAheadChar(event.key); // Adding charecters typed by the user
-       }
+          } else if (event.key == GXUtils.TAB) {
+                GXUtils.appendTypeAheadStringArray(event); // adding textbox entries in a page
+                event.preventDefault();
+          } else if (event.key == GXUtils.ENTER || event.key == GXUtils.NUMPADENTER) {
+                GXUtils.appendTypeAheadStringArray(event); // adding pages to an array
+          } else{
+                GXUtils.appendTypeAheadChar(event.key); // Adding charecters typed by the user
+          }
+      }
     }
 }
 
