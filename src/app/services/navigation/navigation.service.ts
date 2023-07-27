@@ -76,7 +76,7 @@ export class NavigationService {
   
 
   checkScreenUpdated () {
-    if (this.isThereError) {
+    if (this.isThereError || !this.storageService.isConnected()) {
       return;
     } 
     const req = new GetScreenRequest();                           
@@ -116,8 +116,10 @@ export class NavigationService {
       }
     }
 
-  getHostScreenNumber (): Observable<GetScreenNumberResponse>{         
-    return this.screenService.getScreenNumber(this.storageService.getAuthToken());    
+  getHostScreenNumber (): Observable<GetScreenNumberResponse>{  
+    let token = this.storageService.getAuthToken();     
+    if ( this.storageService.isConnected())  
+      return this.screenService.getScreenNumber(token);    
   }
 
   sendKeys(sendKey: string): void {
@@ -157,10 +159,10 @@ export class NavigationService {
       this.checkForIntermidateScreen();
       
     }, errorResponse => {
-      this.logger.error(errorResponse);
-      this.errorHandler(errorResponse, false);
-      this.userExitsEventThrower.fireOnSendKeyError(errorResponse);   
-      this.screenLockerService.setLocked(false);
+       // this.logger.error(errorResponse);
+        this.errorHandler(errorResponse, false);
+        this.userExitsEventThrower.fireOnSendKeyError(errorResponse);   
+        this.screenLockerService.setLocked(false);
     });
   }
 
@@ -244,16 +246,18 @@ export class NavigationService {
   }
   
   handleScreenIdMismatch(errorResponse: HttpErrorResponse): void {
-    this.infoService.getInfo(this.storageService.getAuthToken()).subscribe((response: GetInfoResponse) => {
-      if (response.sessionConnected && this.getScreenId() !== response.screenId) {
-          this.logger.info(this.messages.get("SCREENID_MISMATCH_OCCURED_DURING_SENDKEYS_CALL"));
-          this.setScreenId(response.screenId);
-          this.tearDown();
-          this.isScreenUpdated.next(true);
-      } else {
-        this.logger.error(errorResponse.message, errorResponse.error);
-      }
-    });
+    let token = this.storageService.getAuthToken();     
+    if ( this.storageService.isConnected()) 
+      this.infoService.getInfo(token).subscribe((response: GetInfoResponse) => {
+        if (response.sessionConnected && this.getScreenId() !== response.screenId) {
+            this.logger.info(this.messages.get("SCREENID_MISMATCH_OCCURED_DURING_SENDKEYS_CALL"));
+            this.setScreenId(response.screenId);
+            this.tearDown();
+            this.isScreenUpdated.next(true);
+        } else {
+          this.logger.error(errorResponse.message, errorResponse.error);
+        }
+      });
   }
 
   tearDown(): void {
