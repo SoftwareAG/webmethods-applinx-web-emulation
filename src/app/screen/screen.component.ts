@@ -147,7 +147,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       } else {
         this.onScreenInit(currentScreen);
       }
-    } 
+    }
   }
 
   getScreen(): void {    
@@ -186,14 +186,16 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
     if (!GXUtils.isStringEmptyWithTrim(screenName) && this.navigationService.getRoutingHandler().hasRoute(screenName))
       this.redirectToRoute(screenName);
-    else if (this.isGeneratedPage && !this.screenHolderService.isCurrentScreenWindow()) 
-      this.router.navigate(['instant']);  
-    else 
-      this.processScreen(screen); 
+    else if (this.isGeneratedPage && !this.screenHolderService.isCurrentScreenWindow())
+      this.router.navigate(['instant']);
+    else {
+      this.processScreen(screen);
+    }
   }
 
   private processScreen(screen: GetScreenResponse): void {
-    if (this.screenHolderService.isCurrentScreenWindow() && !this.isChildWindow) {
+      if (this.screenHolderService.isCurrentScreenWindow() && !this.isChildWindow && 
+           !(this.screenHolderService.getPreviousScreen().name == GXUtils.MENU && screen.name == GXUtils.UNKNOWN)) {
       this.shiftFieldsToMainWindow(screen);
       if (screen.windows.length === 1) {
         this.childWindows = [screen];
@@ -204,6 +206,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       if (this.hasChildWindows()) this.childWindows = [];
       if (!this.isChildWindow) this.onScreenInit(screen);
     }
+
   }
 
   private redirectToRoute(screenName: string): void {
@@ -283,17 +286,19 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       }
     });
     if (currentWindowName != GXUtils.nationalityWin) {
-    screen.transformations.forEach((transform) => {
-          transform.position = {row: transform.position.row - windowBounds.startRow + 1, 
-                                column: transform.position.column - windowBounds.startCol +1};
-          transform.regionsToHide?.forEach(region => {
-            region.topLeft.row = 0;
-            region.topLeft.column = 0;
-            region.bottomRight.row = 0;
-            region.bottomRight.column = 0;
-            transform.regionsToHide.push(region);
-       });
-  });
+          screen.transformations.forEach((transform) => {
+            if(transform.position){    
+                transform.position = {row: transform.position.row - windowBounds.startRow + 1, 
+                                      column: transform.position.column - windowBounds.startCol +1};
+            }  
+            transform.regionsToHide?.forEach(region => {
+              region.topLeft.row = 0;
+              region.topLeft.column = 0;
+              region.bottomRight.row = 0;
+              region.bottomRight.column = 0;
+              transform.regionsToHide.push(region);
+        });
+        });
 }
    }
   

@@ -260,6 +260,7 @@ export class NavigationService {
     this.sendableFields.clear();
     this.tabAndArrowsService.tearDown();
   }
+
 }
 
 class RoutingHandler {

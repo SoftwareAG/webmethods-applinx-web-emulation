@@ -207,16 +207,18 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   print() {
+    GXUtils.setCopyFlag(false);
     this.getScreenData(true);
   }
 
   copy() {
+    GXUtils.setCopyFlag(true);
     this.getScreenData(false);
   }
   
     generateObjectArray(values, objArray) {
     values.forEach(element => {
-      let obj = {};
+       let obj = {};
       obj["row"] = element?element.position.row:"";
       obj["col"] = element?element.position.column:"";
       obj["size"] = element?element.length:"";
@@ -229,7 +231,6 @@ export class AppComponent implements OnInit, OnDestroy {
 	  
 	 
       formatTransformation(values, objArray) {
-        console.log("Transformation Values : ", values); // vinoth
         values.forEach(element => {
           if (element.type == 'HostKeyTransformation' && this.showHostKeyFlag) {
             let hostKeyList = element.hostKeys
@@ -478,7 +479,6 @@ export class AppComponent implements OnInit, OnDestroy {
     }
     return color.toLowerCase();
   }
-
 
 }
 

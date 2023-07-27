@@ -216,6 +216,7 @@ export class GXUtils {
     public static zoomMinValue = 10;
     public static zoomMaxValue = 24;
     public static zoomStep = 1;
+    public static copyFlag : boolean = false;
     
     public static replaceString(str, index, replacement) {
       return (
@@ -224,17 +225,25 @@ export class GXUtils {
         str.slice(index + replacement.length)
       );
     }
-	
-	
+		
     public static replaceBetween (str, start, end, what) {
       return str.substring(0, start) + what + str.substring(end);
     };
+    public static setCopyFlag(flag){
+      this.copyFlag = flag;
+    }
+
+    public static getCopyFlag(){
+      return this.copyFlag;
+    }
 
     public static nationalityWin = "NationalityWin";
     public static themeColorsList = ['Black', 'White', 'Green'];
     public static defaultThemeColor = 'White';
     public static themecolorConfig = {Black: BlackTheme, White: WhiteTheme, Green: GreenTheme}
-	public static copyInstruction = "For Copying, select the text that needs to be copied with mouse, the copied text background color will change to  ";
+	  public static copyInstruction = "For Copying, select the text that needs to be copied with mouse, the copied text background color will change to  ";
     public static copyInstruction_bgcolor = "Blue";
     public static showHostKeyFlag = false;
+    public static MENU = "Menu";
+    public static UNKNOWN = "UNKNOWN";
 }

@@ -142,7 +142,7 @@ export class KeyboardMappingService {
 					     this.logger.error(this.messages.get("NO") + methodName + this.messages.get("SUCH_FUNCTION_FOR_KEYCODE") + keyMap.keyCode + this.messages.get("ADDITIONALKEY") + keyMap.additionalKey);
 				    }			
 			    }else{
-				    this.navigationService.sendKeys(keyFunc);
+						this.navigationService.sendKeys(keyFunc);
 			    }				
 			    if (result != null) {
 			    	keyFunc = result;				

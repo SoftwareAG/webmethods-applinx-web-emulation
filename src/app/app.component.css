@@ -24,9 +24,10 @@
     margin-left: 1rem;
     padding-right: 1rem;
 }
-
-::ng-deep .mat-menu-panel {
-    background-color: #1776bf;
+::ng-deep .mat-menu-content {
+    display: flex;
+    flex-direction: column;
+    padding-right: 8px;
 }
 
 .maindiv {
@@ -108,27 +109,44 @@ select {
     padding: 19.5px;
 }
 
-#slider /deep/ .mat-accent .mat-slider-track-fill {
-    background: white;
+#slider {
+    background-color: #1776bf;
+    color: white;
 }
 
-#slider /deep/ .mat-slider.mat-accent .mat-slider-thumb-label {
+.panelCustom {
+    margin-left: 5px;
+}
+
+::ng-deep.mat-accent .mat-slider-track-fill {
+    background-color: white!important;                                          ;
+}
+
+.mat-slider.mat-slider-vertical{
+    height: 12px;
+    border-radius: 10px
+  }
+  
+  ::ng-deep.mat-slider.mat-slider-min-value.mat-slider-thumb-label-showing .mat-slider-thumb {
+    background-color: white;
+  }
+
+::ng-deep.mat-slider.mat-accent .mat-slider-thumb-label {
     background-color: white;
 }
 
-#slider /deep/ .mat-slider.mat-accent .mat-slider-thumb {
+::ng-deep.mat-slider.mat-accent .mat-slider-thumb {
     background: white;
 }
 
-#slider /deep/ .mat-slider.mat-accent .mat-slider-thumb-label-text {
+::ng-deep.mat-slider.mat-accent .mat-slider-thumb-label-text {
     color: #1776bf;
 }
 
 /* vertical */
 
-#slider /deep/ .mat-slider {
-    padding: unset;
-    margin: 8px 14px 8px 18px;
+ ::ng-deep.mat-slider-thumb {
+    background-color: white;
 }
 
 ::ng-deep .cdk-overlay-pane .mat-menu-panel {
@@ -140,16 +158,20 @@ select {
     margin: 8px 14px 8px 14px;
 }
 
-#silder-default-btn button {
+#silder-default-btn i {
     background: #1776bf;
     color: white;
     border: unset;
+    margin-left: 7px;
 }
 
 
 ::ng-deep .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle,::ng-deep .mat-radio-container .mat-radio-outer-circle  {
     border-color: var(--border-color);
     border-radius: unset !important;
+    height: 14px;
+    width: 14px;
+    margin-left: 6.5px;
 }
 
 ::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle {
@@ -160,6 +182,12 @@ select {
 
 ::ng-deep .mat-radio-checked .mat-radio-inner-circle {
     transform: scale(0.7) !important;
+    width: 13px;
+    height: 14px;
+    left: 7px;
+    right: 3px;
+    top: opx;
+    bottom: 146px;
 }
 
 ::ng-deep .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
@@ -168,4 +196,5 @@ select {
 
 ::ng-deep .mat-menu-panel {
     overflow: unset !important;
+    background-color: #1776bf;
 }
