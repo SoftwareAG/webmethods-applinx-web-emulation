@@ -86,7 +86,6 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   isScreenUpdatedSubscription: Subscription;
   screenObjectUpdatedSubscription: Subscription;
   gridChangedSubscription: Subscription;
-  firstFieldfocusFlag : boolean = false;
 
   constructor(private screenService: ScreenService, private navigationService: NavigationService,
               private storageService: StorageService, private tabAndArrowsService: TabAndArrowsService,
@@ -178,71 +177,12 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       });
   }
 
-  private checkForTypeAheadChars(){
-    let typeAheadStringArray = GXUtils.getTypeAheadStringArray();
-    let typeAheadCharsArray = GXUtils.getTypeAheadCharsArray();
-    if (typeAheadCharsArray.length>0 || typeAheadStringArray.length>0){
-      let event = {};
-      event["code"] = GXUtils.IMPLICITTAB;
-      GXUtils.appendTypeAheadStringArray(event);
-    }
-  }
-
-  private getTypeAheadFields(screen){
-    return screen.fields.filter(entry => {
-      // return entry.protected == false && entry.autoCursorJump == true && entry.visible == true && entry.datatype == "ALPHANUMERIC"
-      if(entry){
-        return entry.protected == false && entry.datatype == "ALPHANUMERIC";
-      }
-    }); 
-  }
-
-  private readTypeAhead(typeAheadArray, length){
-    for (var i=0;i<length;i++){
-      if(typeAheadArray[i].value == '[Enter]'){
-        this.navigationService.setIsTypeAheadFlag(true);
-        this.navigationService.sendKeys('[enter]');
-      }
-      typeAheadArray[i].activeFlag = false;  
-    } 
-  }
-
-  private setTypeAheadFocus(screen, typeAheadArray, textFieldArray){
-    let textboxArayLength = textFieldArray.length;
-    let typeAheadArrayLength = typeAheadArray[0].inputFields.length-1;
-    if(typeAheadArrayLength > -1){
-        if (textboxArayLength > typeAheadArrayLength){
-       //   console.log(">")
-            screen.cursor.fieldName = textFieldArray[typeAheadArrayLength].name;
-            screen.cursor.position = textFieldArray[typeAheadArrayLength].position;
-        }else if (textboxArayLength == typeAheadArrayLength){
-       //   console.log("=")
-            screen.cursor.fieldName = textFieldArray[0].name;
-            screen.cursor.position = textFieldArray[0].position;
-        }else if (textboxArayLength < typeAheadArrayLength){
-       //   console.log("<")
-            let focusIndex = typeAheadArrayLength%textboxArayLength;
-            screen.cursor.fieldName = textFieldArray[focusIndex].name;
-            screen.cursor.position = textFieldArray[focusIndex].position;
-        }
-      }
-  }
-
-  private sortTextFieldList(textFieldArray, isTabbingRTL){
-    if (isTabbingRTL){
-      textFieldArray.sort((a, b) => a.position.row - b.position.row ||b.position.column - a.position.column); // RTL
-    }else{
-      textFieldArray.sort((a, b) => a.position.row - b.position.row ||a.position.column - b.position.column);  // LTR
-    } 
-  }
-
   private postGetScreen(screen: GetScreenResponse): void {
     this.hostKeyTransforms = [];
     this.userExitsEventThrower.firePostGetScreen(screen);
     this.screenHolderService.setRuntimeScreen(screen);
     const screenName = screen.name;
     this.logger.debug(this.messages.get("GET_SCREEN") + screenName);
-    let enterFlag = false;
 
     if (!GXUtils.isStringEmptyWithTrim(screenName) && this.navigationService.getRoutingHandler().hasRoute(screenName))
       this.redirectToRoute(screenName);
@@ -267,73 +207,6 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       if (!this.isChildWindow) this.onScreenInit(screen);
     }
 
-    if(GXUtils.ENABLETYPEAHEADFLAG){
-      // Check for type ahead chars without Enter/Tab and append it to the array
-      const isTabbingRTL = screen.language?.tabDirectionRTL;
-      this.checkForTypeAheadChars(); 
-
-      // Get the TypeAhead Fields
-      let textFieldArray = this.getTypeAheadFields(screen); 
-      let textFieldLength = textFieldArray.length;
-      
-      // Get the typeAhead Object array
-      let typeAheadArray = GXUtils.getTypeAheadObjArray().filter(element => element.executed == false);  
-     // console.log(">>>>>>>>>>>>>",GXUtils.getTypeAheadObjArray())
-      let typeAheadLength = GXUtils.getTypeAheadObjArray().length
-      if (typeAheadArray.length > 0){
-          this.navigationService.setIsTypeAheadFlag(true);
-       //   let typeAheadArrayLength = typeAheadArray[0].inputFields.length;
-          if (textFieldLength == 0){
-            typeAheadArray[0].executed = true;
-          }else{
-            this.sortTextFieldList(textFieldArray, isTabbingRTL);
-          //  let typeaheadInputFields = typeAheadArray[0].inputFields;
-            this.setFirstValue(screen, typeAheadArray, textFieldArray);
-            typeAheadArray[0].executed = true;
-            this.setTypeAheadFocus(screen, typeAheadArray, textFieldArray)
-          }
-         if (typeAheadArray[0]["objOrder"] < typeAheadLength){
-            // Logic to navigae to next page....
-            this.navigationService.sendKeys('[enter]'); 
-          }
-      }
-      // else{
-      //   console.log ("Page Load complete ->->->->->->->->->->->->")
-      // }
-    } 
-  }
-
-  private setFirstValue(screen, typeAheadArray, textFieldArray){
-    // console.log("screen:",JSON.stringify(screen));
-    // console.log("typeAheadArray:", JSON.stringify(typeAheadArray));
-    // console.log("textFieldArray:",JSON.stringify(textFieldArray));
-    let indexCount = 0;
-    let textFieldCount = textFieldArray.length;
-    let typeAheadCount = typeAheadArray[0].inputFields.length;
-    let typeAheadObjArray = [];
-    let maxIndex = textFieldCount-1;
-    let currentIndex = 0;
-    let firstFieldFlag = false;
-    let firstTypeAheadObj = typeAheadArray[0].inputFields.filter(element => element.active==true)[0];
-      if(firstTypeAheadObj && screen.cursor.fieldName && !firstFieldFlag){
-        currentIndex = textFieldArray.findIndex(element => element.name == screen.cursor.fieldName);
-        textFieldArray[currentIndex].content = firstTypeAheadObj.value; 
-        firstFieldFlag = true;
-        firstTypeAheadObj.active = false;
-      }
-    do{
-      typeAheadObjArray = typeAheadArray[0].inputFields.filter(element => element.active==true);
-      if (typeAheadObjArray.length>0){
-          if(currentIndex < maxIndex){
-            currentIndex++;
-          }else if(currentIndex == maxIndex){
-            currentIndex = 0;
-          }
-          textFieldArray[currentIndex].content = typeAheadObjArray[0].value;
-          typeAheadObjArray[0].active = false;
-          indexCount++;
-      }
-    }while (indexCount < typeAheadCount-1)
   }
 
   private redirectToRoute(screenName: string): void {

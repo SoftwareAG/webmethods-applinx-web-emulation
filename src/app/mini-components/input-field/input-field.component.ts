@@ -124,7 +124,6 @@ export class InputFieldComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   onFocus(): void {
-    this.navigationService.setTextboxFocusFlag(this.inputElement.nativeElement.id)
     this.updateCursorPosition();
   }
 

@@ -216,15 +216,7 @@ export class GXUtils {
     public static zoomMinValue = 10;
     public static zoomMaxValue = 24;
     public static zoomStep = 1;
-    public static typeAheadArray: any = [];
-    public static typeaheadNewScreen: boolean = false;
-    public static typeAheadObjArray : any = [];
-    public static typeAheadCharacterArray : any = [];
-    public static typeAheadStringArray : any = [];
     public static copyFlag : boolean = false;
-    public static objOrder = 0;
-    public static fieldOrder = 0;
-    public static typeAheadEnterFlag = false;
     
     public static replaceString(str, index, replacement) {
       return (
@@ -237,86 +229,6 @@ export class GXUtils {
     public static replaceBetween (str, start, end, what) {
       return str.substring(0, start) + what + str.substring(end);
     };
-
-    public static appendTypeAheadChar(typeAheadChar){
-      this.typeAheadCharacterArray.push(typeAheadChar);
-    }
-
-    public static getTypeAheadCharsArray(){
-        return this.typeAheadCharacterArray;
-    }
-
-    public static setTypeAheadCharsArray(objArray){
-      this.typeAheadCharacterArray = objArray;
-    }
-
-    public static getTypeAheadStringArray(){
-        return this.typeAheadStringArray;
-    }
-
-    public static setTypeAheadStringArray(objArray){
-      this.typeAheadStringArray = objArray;
-    }
-
-    public static setTypeAheadObjArray(objArray){
-      this.typeAheadObjArray = objArray;
-    }
-
-    public static getTypeAheadObjArray(){
-        return this.typeAheadObjArray;
-    }
-
-    public static setTypeAheadEnterFlag(){
-      this.typeAheadEnterFlag = this.typeAheadObjArray.filter(element => element.executed == false).length == 0;
-    }
-
-    public static getTypeAheadEnterFlag(){
-      return this.typeAheadEnterFlag;
-    }
-
-    public static appendTypeAheadStringArray(event){
-      // console.log("Event Code ......",event.code)
-      if (event.code == GXUtils.TAB){
-        //console.log("tab");
-            let strObj = {};
-            strObj["value"]= (this.typeAheadCharacterArray.length>0)?this.typeAheadCharacterArray.toString().replaceAll(",", ""):" ";
-            strObj["active"] = true;
-            strObj["fieldOrder"] = this.fieldOrder++;
-            this.typeAheadStringArray.push(strObj);
-            this.typeAheadCharacterArray = [];
-      }else if (event.code == GXUtils.ENTER  || event.code == GXUtils.NUMPADENTER){
-        //console.log("ENTER");
-            let strObj = {};
-            strObj["value"] = this.typeAheadCharacterArray.toString().replaceAll(",", "");
-            strObj["active"] = true;
-            strObj["fieldOrder"] = this.fieldOrder++;
-            this.typeAheadCharacterArray = [];
-            if(strObj["value"].length>0){
-              this.typeAheadStringArray.push(strObj);
-            }
-            let obj = {};
-            obj["executed"] = false;
-            obj["inputFields"] = this.typeAheadStringArray;
-            obj["objOrder"] = this.objOrder++;
-            this.typeAheadStringArray = [];
-            this.typeAheadObjArray.push(obj);
-      }else if(event.code == GXUtils.IMPLICITTAB){
-//        console.log("IMPLICITTAB");
-            let strObj = {};
-            strObj["value"]= (this.typeAheadCharacterArray.length>0)?this.typeAheadCharacterArray.toString().replaceAll(",", ""):" ";
-            strObj["active"] = true;
-            strObj["fieldOrder"] = this.fieldOrder++;
-            this.typeAheadStringArray.push(strObj);
-            this.typeAheadCharacterArray = [];
-            let obj = {};
-            obj["executed"] = false;
-            obj["inputFields"] = this.typeAheadStringArray;
-            obj["objOrder"] = this.objOrder++;
-            this.typeAheadStringArray = [];
-            this.typeAheadObjArray.push(obj);
-      }
-    }
-
     public static setCopyFlag(flag){
       this.copyFlag = flag;
     }
@@ -332,22 +244,6 @@ export class GXUtils {
 	  public static copyInstruction = "For Copying, select the text that needs to be copied with mouse, the copied text background color will change to  ";
     public static copyInstruction_bgcolor = "Blue";
     public static showHostKeyFlag = false;
-    public static ENTER = "Enter";
-    public static NUMPADENTER ="NumpadEnter"
-    public static BACKSPACE = "Backspace";
-    public static TAB = "Tab";
-    public static IMPLICITTAB = "ImplicitTab";
-    public static FUNCTIONARRAY = ["F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","F11","F12"];
-    public static ARROWKEYARRAY = ["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp","PageUp", "PageDown"];
-    public static IGNOREKEYARRAY = ["ControlLeft","ControlRight","ShiftRight","ShiftLeft","AltRight","AltLeft","Home", "End", "Insert","Delete","CapsLock"];
-    public static ARROWRIGHT = "ArrowRight"; 
-    public static ARROWLEFT = "ArrowLeft";
-    public static ARROWDOWN = "ArrowDown";
-    public static ARROWUP = "ArrowUp";
-    public static PAGEUP = "PageUp";
-    public static PAGEDOWN = "PageDown";
-    public static DELETE = "Delete";
-    public static ENABLETYPEAHEADFLAG = true;
     public static MENU = "Menu";
     public static UNKNOWN = "UNKNOWN";
 }

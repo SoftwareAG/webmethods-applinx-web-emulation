@@ -48,8 +48,6 @@ export class NavigationService {
   isScreenUpdated: BehaviorSubject<boolean> = new BehaviorSubject(false);
   screenObjectUpdated: BehaviorSubject<GetScreenResponse> = new BehaviorSubject(null);
   private isThereError: boolean = false; // if true - stops sampling screen every 5 seconds
-  private isTypeAheadFlag : boolean = false;
-  private textboxFocusID: string = "";
   constructor(private screenService: ScreenService, 
               private screenLockerService: ScreenLockerService, private router: Router,
               private infoService: InfoService, 
@@ -123,9 +121,7 @@ export class NavigationService {
   }
 
   sendKeys(sendKey: string): void {
-    let textboxID = this.getTextboxFocusFlag();
-    document.getElementById(textboxID)?.blur();
-    if (this.screenLockerService.isLocked() && !this.getIsTypeAheadFlag()) {
+    if (this.screenLockerService.isLocked()) {
       return; // windows is loading...
     }
 
@@ -265,21 +261,6 @@ export class NavigationService {
     this.tabAndArrowsService.tearDown();
   }
 
-  setIsTypeAheadFlag(flag){
-    this.isTypeAheadFlag = flag
-  }
-  
-  getIsTypeAheadFlag(){
-    return this.isTypeAheadFlag;
-  }
-
-  setTextboxFocusFlag(textboxFocusID){
-    this.textboxFocusID = textboxFocusID
-  }
-
-  getTextboxFocusFlag(){
-    return this.textboxFocusID;
-  }
 }
 
 class RoutingHandler {

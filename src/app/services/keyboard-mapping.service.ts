@@ -23,7 +23,6 @@ import { NavigationService } from './navigation/navigation.service';
 import { IJSFunctionService } from '../../common/js-functions/ijs-functions.service';
 import { Inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
-import { GXUtils } from 'src/utils/GXUtils';
 
 @Injectable({
   providedIn: 'root'
@@ -143,9 +142,7 @@ export class KeyboardMappingService {
 					     this.logger.error(this.messages.get("NO") + methodName + this.messages.get("SUCH_FUNCTION_FOR_KEYCODE") + keyMap.keyCode + this.messages.get("ADDITIONALKEY") + keyMap.additionalKey);
 				    }			
 			    }else{
-				    if(GXUtils.setTypeAheadEnterFlag){
 						this.navigationService.sendKeys(keyFunc);
-					}
 			    }				
 			    if (result != null) {
 			    	keyFunc = result;				
