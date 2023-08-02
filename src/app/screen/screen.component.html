@@ -20,7 +20,7 @@
 
   <div name="windowTitle" 
       *ngIf="isChildWindow && m_screen.windows[index].title"
-      style="display: flex; margin-top: -0.7rem; background-color: white;"
+      style="display: flex; margin-top: -0.7rem; background-color: Hidden; position: relative; top: 10px;"
       [ngStyle]="titlePosition">
       <span *ngFor="let ch of m_screen.windows[index].title.split(''); index as i">{{ch != ' ' ? ch : '&nbsp;'}}</span>
   </div>

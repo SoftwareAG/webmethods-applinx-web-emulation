@@ -1,2 +1,2 @@
 ApplinX Angular Web Emulation
-Copyright (c) 2021-2022 Software AG
+Copyright (c) 2023 Software AG

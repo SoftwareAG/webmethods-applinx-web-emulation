@@ -48,19 +48,8 @@ export class ModalpopupComponent implements OnInit {
       element.classList.add("copyTextCss");
     })
   }
-  // handleKeyDown(event){
-  //   if (event.ctrlKey && event.keyCode == 67){
-  //     console.log("handleKeyDown....", event);
-  //     this.clipboard.copy(this.copiedText.toString().replaceAll(",","\n"));
-  //   }
-  // }
 
-  print() {
-    window.print();
-  }
 
-  close() {
-  }
 
   handleMouseDown(event){
     this.initCall();
