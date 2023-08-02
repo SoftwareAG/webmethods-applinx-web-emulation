@@ -15,7 +15,7 @@ This implementation of the instant, on-the-fly conversion to HTML web applicatio
 
 ## Prerequisites
 
-* NodeJS (release builds are currently built with v12.19.0)
+* NodeJS (release builds are currently built with v16.10.0)
 
 * NPM (Included with NodeJS)
   For more information on installing Node.js, see [nodejs.org](https://nodejs.org). 
@@ -65,7 +65,10 @@ The final Web Application will be in the *dist* directory and can be deployed to
 * Generated Pages: When the Instant Web Application, which enables enhancements such as relatively simple visual changes, does not meet all the requirements, it is recommended to generate Angular pages that can be modified, customized or further enhanced.*
 * Keyboard Mappings: Page specific actions can be mapped to a keyboard key (or to a combination of two keyboard keys).*
 * Logger: *Pretty-print & Server-side logging available.*
-
+* Copy:Allows end-users to conveniently duplicate the contents of the current screen onto a pop-up window, to copy the field's contents as needed.
+* Print:Allows end-users to preview the contents of the current screen and print it.     
+* Zoom:Allows end-users to adjust the size of the current screen
+* Style:Allows end-users to change the colors set for the displayed screens
 
 ## Configuration
 
