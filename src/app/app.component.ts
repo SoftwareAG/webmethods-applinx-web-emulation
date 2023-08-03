@@ -229,6 +229,15 @@ export class AppComponent implements OnInit, OnDestroy {
     });
       }
 	  
+      formatTransformationOfWindows(windowDetails, objArray){
+        windowDetails.forEach(windowData => {
+          let obj = objArray.filter(entry => entry.row == windowData.bounds.startRow && 
+              (entry.col > windowData.bounds.startCol));
+          obj[0].data =  windowData.title;
+          let paddingLength = Math.ceil(((windowData.bounds.endCol-windowData.bounds.startCol) - windowData.title.length)/2)
+          obj[0].col =  windowData.bounds.startCol+paddingLength;
+        });
+      }
 	 
       formatTransformation(values, objArray) {
         values.forEach(element => {
@@ -283,7 +292,10 @@ export class AppComponent implements OnInit, OnDestroy {
     let formattedArray = [];
     let maxLine = 0;
     this.generateObjectArray(rawData.fields, objArray);
-    this.formatTransformation(rawData.transformations, objArray)
+    this.formatTransformation(rawData.transformations, objArray);
+    if (rawData && rawData.windows){
+      this.formatTransformationOfWindows(rawData.windows, objArray);
+    }
     console.log(objArray);
     let lineNo = 0;
     objArray.sort((a, b) => {
