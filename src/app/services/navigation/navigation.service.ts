@@ -152,8 +152,9 @@ export class NavigationService {
     const returnScreen = new ReturnScreen (shouldReturnScreen);
     const sendKeysRequest = new SendKeysRequest(sendKey, this.cursorPosition, this.screenSize, Array.from(this.sendableFields.values()),returnScreen);//,returnScreen
     this.userExitsEventThrower.firePreSendKey(sendKeysRequest); 
+    this.tearDown();      
     this.screenService.updateScreen(sendKeysRequest, this.screenId, this.storageService.getAuthToken()).subscribe(newScreen => {
-      this.tearDown();      
+      // this.tearDown();      
       this.userExitsEventThrower.firePostSendKey(newScreen);
       this.screenObjectUpdated.next (newScreen);      
       this.checkForIntermidateScreen();
