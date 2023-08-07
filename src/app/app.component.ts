@@ -218,14 +218,20 @@ export class AppComponent implements OnInit, OnDestroy {
   
     generateObjectArray(values, objArray) {
     values.forEach(element => {
-       let obj = {};
-      obj["row"] = element?element.position.row:"";
-      obj["col"] = element?element.position.column:"";
-      obj["size"] = element?element.length:"";
-      obj["data"]= element?element.content:"";
-      obj["protected"] = element?element.protected:"";
-      obj["visible"] = element ? element.visible : "";
-      objArray.push(obj);
+        let obj = {};
+        obj["row"] = element?element.position.row:"";
+        obj["col"] = element?element.position.column:"";
+        obj["size"] = element?element.length:"";
+        obj["data"]= element?element.content:"";
+        obj["protected"] = element?element.protected:"";
+        if (!element.visible){
+          let strLen = element.content.length;
+          obj["data"]= new Array(strLen).join(' ') 
+        }else{
+          obj["data"]= element?element.content:"";
+        }
+        obj["visible"] = element ? element.visible : "";
+        objArray.push(obj);
     });
       }
 	  
@@ -234,7 +240,8 @@ export class AppComponent implements OnInit, OnDestroy {
           let obj = objArray.filter(entry => entry.row == windowData.bounds.startRow && 
               (entry.col > windowData.bounds.startCol));
           obj[0].data =  windowData.title;
-          let paddingLength = Math.ceil(((windowData.bounds.endCol-windowData.bounds.startCol) - windowData.title.length)/2)
+          let paddingLength = Math.ceil(((windowData.bounds.endCol-windowData.bounds.startCol) 
+                                            - (windowData.title?windowData.title.length:0))/2)
           obj[0].col =  windowData.bounds.startCol+paddingLength;
         });
       }
