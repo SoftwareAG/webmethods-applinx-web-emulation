@@ -49,6 +49,7 @@ export class AppComponent implements OnInit, OnDestroy {
   hostKeyTransforms: HostKeyTransformation[];
   loginComponent: WebLoginComponent;
   displayScreen = false;
+  hostKeysBool: boolean = false;
   showHostKeyFlag : boolean = GXUtils.showHostKeyFlag;
   errorMessage: string;
 
@@ -372,6 +373,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   setHostKeys(hostkeys: HostKeyTransformation[]): void {
     this.hostKeyTransforms = hostkeys;
+    if(hostkeys[0]?.hostKeys?.length>12) {
+      this.hostKeysBool = true;
+    }
   }
 
   onActivate(component) {

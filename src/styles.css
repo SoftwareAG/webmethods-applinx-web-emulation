@@ -195,6 +195,7 @@ table.gx_tbl tr td blink.gx_af {
 	BORDER-LEFT: WHITE 1px;
 	BORDER-RIGHT: WHITE 1px;
 	BORDER-TOP: var(--input-text-bg-color) 1px;
+	BORDER:HIDDEN
 }
 
 /* AS400 */
@@ -227,6 +228,7 @@ input::-ms-clear {
 	BORDER-LEFT: WHITE 1px;
 	BORDER-RIGHT: WHITE 1px;
 	BORDER-TOP: var(--input-text-bg-color) 1px;
+	BORDER:HIDDEN;
 }
 
 div[name='Login']#gx_screenArea input.gx_intf,
@@ -747,7 +749,13 @@ input.gx_usr {}
 	border-color: var(--btn-outline-color);
 }
 
-#app-host-keys-btns app-host-keys-template .hostKeysContainer {
+.multiplehostKeysContainer #on-hover.dlt-button-secondary:hover {
+	background-color: var(--btn-hover-color);
+	outline: var(--btn-outline-color);
+	border-color: var(--btn-outline-color);
+}
+
+app-host-keys-btns app-host-keys-template .hostKeysContainer {
 	width: auto;
 }
 
