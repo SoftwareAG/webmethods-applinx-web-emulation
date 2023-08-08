@@ -373,8 +373,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   setHostKeys(hostkeys: HostKeyTransformation[]): void {
     this.hostKeyTransforms = hostkeys;
-    if(hostkeys[0]?.hostKeys?.length>12) {
-      this.hostKeysBool = true;
+    if(hostkeys !== null) {
+      if(hostkeys[0]?.hostKeys?.length>12) {
+        this.hostKeysBool = true;
+      }
     }
   }
 
