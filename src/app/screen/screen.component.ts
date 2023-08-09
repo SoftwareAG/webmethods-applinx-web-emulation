@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Software AG
+ * Copyright 2023 Software AG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -193,7 +193,17 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     }
   }
 
+  private setVisibleLines(screen: GetScreenResponse) {
+    let inVisibleFieldsDetails = screen.fields.filter(element => element.visible == false);
+    inVisibleFieldsDetails.forEach(element => {
+      if (element.content.trim() == "") {
+        element.visible = true
+      }
+    })
+    }
+
   private processScreen(screen: GetScreenResponse): void {
+      this.setVisibleLines(screen);
       if (this.screenHolderService.isCurrentScreenWindow() && !this.isChildWindow && 
            !(this.screenHolderService.getPreviousScreen().name == GXUtils.MENU && screen.name == GXUtils.UNKNOWN)) {
       this.shiftFieldsToMainWindow(screen);

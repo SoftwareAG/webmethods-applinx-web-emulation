@@ -13,6 +13,7 @@ span {
   overflow: visible !important;
   border-style: none;
   border-width: thin;
+  margin-top: -3px;
 }
 .blink_me {
   animation: blinker 1s linear infinite;

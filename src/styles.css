@@ -747,7 +747,13 @@ input.gx_usr {}
 	border-color: var(--btn-outline-color);
 }
 
-#app-host-keys-btns app-host-keys-template .hostKeysContainer {
+.multiplehostKeysContainer #on-hover.dlt-button-secondary:hover {
+	background-color: var(--btn-hover-color);
+	outline: var(--btn-outline-color);
+	border-color: var(--btn-outline-color);
+}
+
+app-host-keys-btns app-host-keys-template .hostKeysContainer {
 	width: auto;
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Software AG
+ * Copyright 2023 Software AG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,6 +49,7 @@ export class AppComponent implements OnInit, OnDestroy {
   hostKeyTransforms: HostKeyTransformation[];
   loginComponent: WebLoginComponent;
   displayScreen = false;
+  hostKeysBool: boolean = false;
   showHostKeyFlag : boolean = GXUtils.showHostKeyFlag;
   errorMessage: string;
 
@@ -218,17 +219,33 @@ export class AppComponent implements OnInit, OnDestroy {
   
     generateObjectArray(values, objArray) {
     values.forEach(element => {
-       let obj = {};
-      obj["row"] = element?element.position.row:"";
-      obj["col"] = element?element.position.column:"";
-      obj["size"] = element?element.length:"";
-      obj["data"]= element?element.content:"";
-      obj["protected"] = element?element.protected:"";
-      obj["visible"] = element ? element.visible : "";
-      objArray.push(obj);
+        let obj = {};
+        obj["row"] = element?element.position.row:"";
+        obj["col"] = element?element.position.column:"";
+        obj["size"] = element?element.length:"";
+        obj["data"]= element?element.content:"";
+        obj["protected"] = element?element.protected:"";
+        if (!element.visible){
+          let strLen = element.content.length;
+          obj["data"]= new Array(strLen).join(' ') 
+        }else{
+          obj["data"]= element?element.content:"";
+        }
+        obj["visible"] = element ? element.visible : "";
+        objArray.push(obj);
     });
       }
 	  
+      formatTransformationOfWindows(windowDetails, objArray){
+        windowDetails.forEach(windowData => {
+          let obj = objArray.filter(entry => entry.row == windowData.bounds.startRow && 
+              (entry.col > windowData.bounds.startCol));
+          obj[0].data =  windowData.title;
+          let paddingLength = Math.ceil(((windowData.bounds.endCol-windowData.bounds.startCol) 
+                                            - (windowData.title?windowData.title.length:0))/2)
+          obj[0].col =  windowData.bounds.startCol+paddingLength;
+        });
+      }
 	 
       formatTransformation(values, objArray) {
         values.forEach(element => {
@@ -283,7 +300,10 @@ export class AppComponent implements OnInit, OnDestroy {
     let formattedArray = [];
     let maxLine = 0;
     this.generateObjectArray(rawData.fields, objArray);
-    this.formatTransformation(rawData.transformations, objArray)
+    this.formatTransformation(rawData.transformations, objArray);
+    if (rawData && rawData.windows){
+      this.formatTransformationOfWindows(rawData.windows, objArray);
+    }
     console.log(objArray);
     let lineNo = 0;
     objArray.sort((a, b) => {
@@ -353,6 +373,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   setHostKeys(hostkeys: HostKeyTransformation[]): void {
     this.hostKeyTransforms = hostkeys;
+    if(hostkeys !== null) {
+      if(hostkeys[0]?.hostKeys?.length>12) {
+        this.hostKeysBool = true;
+      }
+    }
   }
 
   onActivate(component) {

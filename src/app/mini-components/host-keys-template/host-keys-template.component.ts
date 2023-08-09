@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Software AG
+ * Copyright 2023 Software AG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ export class HostKeysTemplateComponent implements OnInit {
 
   @Input() transformations: HostKeyTransformation[];
   @Input() themeColor: string;
+  @Input() multipleHostKeys: boolean;
 
   constructor(public navigationService: NavigationService) { }
 
