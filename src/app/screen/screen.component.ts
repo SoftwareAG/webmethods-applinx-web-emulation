@@ -193,7 +193,17 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     }
   }
 
+  private setVisibleLines(screen: GetScreenResponse) {
+    let inVisibleFieldsDetails = screen.fields.filter(element => element.visible == false);
+    inVisibleFieldsDetails.forEach(element => {
+      if (element.content.trim() == "") {
+        element.visible = true
+      }
+    })
+    }
+
   private processScreen(screen: GetScreenResponse): void {
+      this.setVisibleLines(screen);
       if (this.screenHolderService.isCurrentScreenWindow() && !this.isChildWindow && 
            !(this.screenHolderService.getPreviousScreen().name == GXUtils.MENU && screen.name == GXUtils.UNKNOWN)) {
       this.shiftFieldsToMainWindow(screen);
@@ -252,12 +262,6 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     this.navigationService.setScreenSize(screen.screenSize);
     this.navigationService.setCursorPosition(screen.cursor);
     screen.fields = this.screenProcessorService.processRegionsToHide(screen.fields, screen.transformations);
-    let inVisibleFieldsDetails = screen.fields.filter(element => element.visible == false);
-    inVisibleFieldsDetails.forEach(element => {
-      if (element.content.trim() == "") {
-        element.visible = true
-      }
-    })
     this.m_screen = screen;
     this.screenLockerService.setLocked(false);
     //Example of injecting keyboard mapping

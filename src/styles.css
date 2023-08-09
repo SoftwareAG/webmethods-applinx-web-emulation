@@ -195,7 +195,6 @@ table.gx_tbl tr td blink.gx_af {
 	BORDER-LEFT: WHITE 1px;
 	BORDER-RIGHT: WHITE 1px;
 	BORDER-TOP: var(--input-text-bg-color) 1px;
-	BORDER:HIDDEN
 }
 
 /* AS400 */
@@ -228,7 +227,6 @@ input::-ms-clear {
 	BORDER-LEFT: WHITE 1px;
 	BORDER-RIGHT: WHITE 1px;
 	BORDER-TOP: var(--input-text-bg-color) 1px;
-	BORDER:HIDDEN;
 }
 
 div[name='Login']#gx_screenArea input.gx_intf,
