@@ -235,12 +235,41 @@ export class AppComponent implements OnInit, OnDestroy {
         objArray.push(obj);
     });
       }
+
+      formatTranformationOfPopupLines(windowDetails, objArray){
+        let windowCount = windowDetails.length;
+        let winStartRow = windowDetails[windowCount-1].bounds.startRow;
+        let winEndRow = windowDetails[windowCount-1].bounds.endRow;
+        let winStartCol = windowDetails[windowCount-1].bounds.startCol;
+//        console.log("Start Row : "+winStartRow +" End Row : "+ winEndRow +" Start Col :"+ winStartCol);
+        let windowLines = objArray.filter(element => element.row >= winStartRow  && element.row <= winEndRow
+                && element.col < winStartCol )
+        // console.log("windowLines : ", windowLines)
+        while (winStartRow <= winEndRow){
+          let rowLines = windowLines.filter(entry => entry.row == winStartRow);
+          const maxColEntry = rowLines.reduce((maxCol, selectedCol ) =>{
+            return selectedCol.col > maxCol.col? selectedCol: maxCol;
+          })
+          // console.log("maxColEntry ================ ", maxColEntry);
+          winStartRow++;
+          let headerStrlength = winStartCol - maxColEntry.col;
+          maxColEntry.data = maxColEntry.data.slice(0,headerStrlength);
+        }
+      }
 	  
       formatTransformationOfWindows(windowDetails, objArray){
+        this.formatTranformationOfPopupLines(windowDetails, objArray);
+        let windowCount = windowDetails.length;
+        let endcol = windowDetails[windowCount-1].bounds.startCol;
         windowDetails.forEach(windowData => {
           let obj = objArray.filter(entry => entry.row == windowData.bounds.startRow && 
               (entry.col > windowData.bounds.startCol));
-          obj[0].data =  windowData.title;
+          if(windowData.index == windowCount - 1){
+            obj[0].data =  windowData.title;
+          }else{
+            let headerStrlength = endcol - obj[0].col;
+            obj[0].data =  windowData.title.slice(0,headerStrlength);
+          }
           let paddingLength = Math.ceil(((windowData.bounds.endCol-windowData.bounds.startCol) 
                                             - (windowData.title?windowData.title.length:0))/2)
           obj[0].col =  windowData.bounds.startCol+paddingLength;
