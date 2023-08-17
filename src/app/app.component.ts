@@ -241,16 +241,24 @@ export class AppComponent implements OnInit, OnDestroy {
         let winStartRow = windowDetails[windowCount-1].bounds.startRow;
         let winEndRow = windowDetails[windowCount-1].bounds.endRow;
         let winStartCol = windowDetails[windowCount-1].bounds.startCol;
-//        console.log("Start Row : "+winStartRow +" End Row : "+ winEndRow +" Start Col :"+ winStartCol);
+        let nonPopupLines = objArray.filter(element => element.row < winStartRow || element.row > winEndRow);
+        // get lines Matching Header lines
+        for (let i=0;i<windowDetails.length-1;i++){
+          let temp = nonPopupLines.filter(element => windowDetails[i].bounds.startRow == element.row 
+              && windowDetails[i].bounds.startCol >= element.col 
+              && windowDetails[i].bounds.startCol <= element.col + element.size);
+          if(temp.length > 0){
+            let position = Math.floor(temp[0].data.length/2)
+            temp[0].data = new Array(position).join(' ')+windowDetails[i].title;
+          }
+        }
         let windowLines = objArray.filter(element => element.row >= winStartRow  && element.row <= winEndRow
                 && element.col < winStartCol )
-        // console.log("windowLines : ", windowLines)
         while (winStartRow <= winEndRow){
           let rowLines = windowLines.filter(entry => entry.row == winStartRow);
           const maxColEntry = rowLines.reduce((maxCol, selectedCol ) =>{
             return selectedCol.col > maxCol.col? selectedCol: maxCol;
           })
-          // console.log("maxColEntry ================ ", maxColEntry);
           winStartRow++;
           let headerStrlength = winStartCol - maxColEntry.col;
           maxColEntry.data = maxColEntry.data.slice(0,headerStrlength);
@@ -552,7 +560,6 @@ export class AppComponent implements OnInit, OnDestroy {
     }
     return color.toLowerCase();
   }
-
 }
 
 
