@@ -20,10 +20,10 @@
   <sag-topnav *ngIf="!isSmallScreen()" brandsrc='assets/images/ApplinX-all white.svg' scrollStyle=""
     brandtitle='ApplinX Web Application' brandheight='56' brandwidth='196'>
     <sag-topnav-right right>
-      <sag-topnav-item itemType="button" [disable]='false' title="Copy text from host screen" (click)="copy()" itemId="copy" itemName=""
+      <sag-topnav-item itemType="button" [disable]='false' title="Copy" (click)="copy()" itemId="copy" itemName=""
         itemIcon="dlt-icon-copy" itemStyle="color:white">
       </sag-topnav-item>
-      <sag-topnav-item itemType="button" [disable]='false' title="Print host screen snapshot" (click)="print()" itemId="print" itemName=""
+      <sag-topnav-item itemType="button" [disable]='false' title="Print" (click)="print()" itemId="print" itemName=""
         itemIcon="dlt-icon-print" itemStyle="color:white">
       </sag-topnav-item>
       <sag-topnav-item [matMenuTriggerFor]="menu" title="Zoom" itemType="button" itemIcon="dlt-icon-zoom-in"
