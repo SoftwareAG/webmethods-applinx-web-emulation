@@ -10,9 +10,9 @@
                 'grid-row-end': (m_screen.windows[index].bounds.endRow+1), 'grid-column-end': m_screen.windows[index].bounds.endCol+1,
                 'border-style': (m_screen.windows[index].boundsIncludeBorder) ? 'solid' : 'none', 'width': 'max-content !important',
                 'z-index': this.index+1}
-                : {'grid-template-columns': m_screen ? 'repeat(minmax(0px, 1fr))'  : 'repeat(80, 1fr)',
+                : {'grid-template-columns': m_screen ? 'repeat(auto-fit,minmax(0px, 1fr))'  : 'repeat(80, 1fr)',
                   'grid-template-rows': (m_screen  && m_screen.fields.length) ? 'repeat(auto-fit, minmax(calc(var(--text-font-size) + 2px), 1fr))' : 'repeat(24, 1fr)',
-                  'z-index': 0, 'width': 'min-content', 'margin-top': '1rem'}">
+                  'z-index': 0, 'width': '812px', 'margin-top': '1rem'}">
 
   <div name="emptyArray" *ngIf="!isChildWindow" style="display: contents; z-index: -999;">
     <span [ngStyle]="{'grid-row': 1 / 1, 'grid-column-start': 1+i}" *ngFor="let item of screenWidthArray; index as i">&nbsp;</span>
