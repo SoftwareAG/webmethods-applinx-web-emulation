@@ -194,7 +194,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   }
 
   private setVisibleLines(screen: GetScreenResponse) {
-    let inVisibleFieldsDetails = screen.fields.filter(element => element && element.visible == false);
+    let inVisibleFieldsDetails = screen.fields.filter(element => element.visible == false);
     inVisibleFieldsDetails.forEach(element => {
       if (element.content.trim() == "") {
         element.visible = true
