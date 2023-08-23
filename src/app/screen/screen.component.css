@@ -2,9 +2,11 @@
   column-gap: 0;
   row-gap: 0.2% !important;
   display: grid;
+
   background-color: #ffffff;
   font-size: 100%;
   font-family: "Lucida Console", Monaco, "Menlo-Regular", monospace,"Courier New","Noto Sans Mono CJK JP","IPA Mincho";
+
   border-style: none;
   border-width: thin;
 }
