@@ -236,10 +236,53 @@ export class AppComponent implements OnInit, OnDestroy {
     });
       }
 	  
+      formatTranformationOfPopupLines(windowDetails, objArray){
+        let windowCount = windowDetails.length;
+        let winStartRow = windowDetails[windowCount-1].bounds.startRow;
+        let winEndRow = windowDetails[windowCount-1].bounds.endRow;
+        let winStartCol = windowDetails[windowCount-1].bounds.startCol;
+        let nonPopupLines = objArray.filter(element => element.row < winStartRow || element.row > winEndRow);
+        // get lines Matching Header lines
+        for (let i=0;i<windowDetails.length-1;i++){
+          let temp = nonPopupLines.filter(element => windowDetails[i].bounds.startRow == element.row 
+              && windowDetails[i].bounds.startCol >= element.col 
+              && windowDetails[i].bounds.startCol <= element.col + element.size);
+          if(temp.length > 0){
+            let position = Math.floor(temp[0].data.length/2)
+            temp[0].data = new Array(position).join(' ')+windowDetails[i].title;
+          }
+        }
+        let windowLines = objArray.filter(element => element.row >= winStartRow  && element.row <= winEndRow
+                && element.col < winStartCol )
+        while (winStartRow <= winEndRow){
+          let rowLines = windowLines.filter(entry => entry.row == winStartRow);
+          const maxColEntry = rowLines.reduce((maxCol, selectedCol ) =>{
+            return selectedCol.col > maxCol.col? selectedCol: maxCol;
+          })
+          winStartRow++;
+          let headerStrlength = winStartCol - maxColEntry.col;
+          maxColEntry.data = maxColEntry.data.slice(0,headerStrlength);
+        }
+      }
+      
       formatTransformationOfWindows(windowDetails, objArray){
+        this.formatTranformationOfPopupLines(windowDetails, objArray);
+        let windowCount = windowDetails.length;
+        let endcol = windowDetails[windowCount-1].bounds.startCol;
         windowDetails.forEach(windowData => {
           let obj = objArray.filter(entry => entry.row == windowData.bounds.startRow && 
               (entry.col > windowData.bounds.startCol));
+              if (obj.length>0){
+                if(windowData.index == windowCount - 1){
+                  obj[0].data =  windowData.title;
+                }else{
+                  let headerStrlength = endcol - obj[0].col;
+                  obj[0].data =  windowData.title.slice(0,headerStrlength);
+                }
+                let paddingLength = Math.ceil(((windowData.bounds.endCol-windowData.bounds.startCol) 
+                                                  - (windowData.title?windowData.title.length:0))/2)
+                obj[0].col =  windowData.bounds.startCol+paddingLength;
+            }
           obj[0].data =  windowData.title;
           let paddingLength = Math.ceil(((windowData.bounds.endCol-windowData.bounds.startCol) 
                                             - (windowData.title?windowData.title.length:0))/2)
