@@ -263,6 +263,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     this.navigationService.setCursorPosition(screen.cursor);
     screen.fields = this.screenProcessorService.processRegionsToHide(screen.fields, screen.transformations);
     this.m_screen = screen;
+    GXUtils.setSpanColor();
     this.screenLockerService.setLocked(false);
     //Example of injecting keyboard mapping
     // this.keyboardMappingService.addKeyboardMapping(GXAdditionalKey.NONE, GXKeyCodes.F3, popup, true, cancel);

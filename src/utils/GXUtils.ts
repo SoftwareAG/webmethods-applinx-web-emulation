@@ -246,4 +246,27 @@ export class GXUtils {
     public static showHostKeyFlag = false;
     public static MENU = "Menu";
     public static UNKNOWN = "UNKNOWN";
+    public static colorBlack = 'Black';
+    public static colorWhite = 'White';
+    public static colorGreen = 'Green';
+    public static spanColor : string;
+
+    public static setSpanColor(){
+      let screenArea = document.getElementById("gx_screenArea");
+      if (screenArea){
+        let spans = screenArea.querySelectorAll('span');
+        if (this.spanColor == GXUtils.colorGreen){
+          this.spanColor = GXUtils.colorBlack
+        }
+        spans.forEach(sp =>{
+          sp.style.borderColor = this.spanColor;
+          sp.style.borderStyle = "solid";
+          sp.style.borderWidth = ".1px";
+        } )
+      }
+    }
+
+    public static setCurrentSpanColor(color){
+      this.spanColor = color;
+    }
 }

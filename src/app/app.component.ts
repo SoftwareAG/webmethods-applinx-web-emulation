@@ -535,6 +535,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
     //this is for delite button hover
     // document.documentElement.style.setProperty('--dlt-color-interactive-primary-hover', this.themecolorConfig[color]['btn-hover-color']);
+    GXUtils.setCurrentSpanColor(color)
+    GXUtils.setSpanColor();
   }
 
   setDefaultZoom() {
