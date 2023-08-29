@@ -283,10 +283,6 @@ export class AppComponent implements OnInit, OnDestroy {
                                                   - (windowData.title?windowData.title.length:0))/2)
                 obj[0].col =  windowData.bounds.startCol+paddingLength;
             }
-          obj[0].data =  windowData.title;
-          let paddingLength = Math.ceil(((windowData.bounds.endCol-windowData.bounds.startCol) 
-                                            - (windowData.title?windowData.title.length:0))/2)
-          obj[0].col =  windowData.bounds.startCol+paddingLength;
         });
       }
 	 
