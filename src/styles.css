@@ -831,3 +831,7 @@ div[name="Menu"]#gx_screenArea input.gx_intf {
 	-moz-user-select: none;
 	-webkit-user-select: none;
 }
+
+#gx_screenArea span{
+	padding-right: .65px;
+}
