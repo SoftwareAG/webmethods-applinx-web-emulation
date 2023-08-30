@@ -242,6 +242,7 @@ export class AppComponent implements OnInit, OnDestroy {
         let winEndRow = windowDetails[windowCount-1].bounds.endRow;
         let winStartCol = windowDetails[windowCount-1].bounds.startCol;
         let nonPopupLines = objArray.filter(element => element.row < winStartRow || element.row > winEndRow);
+        let maxColEntry : any;
         // get lines Matching Header lines
         for (let i=0;i<windowDetails.length-1;i++){
           let temp = nonPopupLines.filter(element => windowDetails[i].bounds.startRow == element.row 
@@ -256,12 +257,14 @@ export class AppComponent implements OnInit, OnDestroy {
                 && element.col < winStartCol )
         while (winStartRow <= winEndRow){
           let rowLines = windowLines.filter(entry => entry.row == winStartRow);
-          const maxColEntry = rowLines.reduce((maxCol, selectedCol ) =>{
-            return selectedCol.col > maxCol.col? selectedCol: maxCol;
-          })
+          if(rowLines.length>0){
+            maxColEntry = rowLines.reduce((maxCol, selectedCol ) =>{
+              return selectedCol.col > maxCol.col? selectedCol: maxCol;
+            })
+            let headerStrlength = winStartCol - maxColEntry.col;
+            maxColEntry.data = maxColEntry.data.slice(0,headerStrlength);
+          }
           winStartRow++;
-          let headerStrlength = winStartCol - maxColEntry.col;
-          maxColEntry.data = maxColEntry.data.slice(0,headerStrlength);
         }
       }
       
@@ -342,6 +345,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.formatTransformation(rawData.transformations, objArray);
     if (rawData && rawData.windows){
       this.formatTransformationOfWindows(rawData.windows, objArray);
+      // this.drawBorderForPopUp(rawData.windows, objArray)
     }
     console.log(objArray);
     let lineNo = 0;
