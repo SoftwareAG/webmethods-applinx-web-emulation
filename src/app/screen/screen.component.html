@@ -8,7 +8,7 @@
                 'grid-template-rows': m_screen ? 'repeat('+m_screen.windows[index].bounds.rows+', 1fr)' : 'repeat(24, 1fr)',
                 'grid-row-start':  (m_screen.windows[index].bounds.startRow), 'grid-column-start': m_screen.windows[index].bounds.startCol,
                 'grid-row-end': (m_screen.windows[index].bounds.endRow+1), 'grid-column-end': m_screen.windows[index].bounds.endCol+1,
-                'border-style': (m_screen.windows[index].boundsIncludeBorder) ? 'solid' : 'none', 'width': 'max-content !important',
+                'border-style': (m_screen.windows[index].boundsIncludeBorder) && (m_screen.transformations[0].type !== 'TableTransformation' && (m_screen.transformations[0].type !== 'HostKeyTransformation' && m_screen.windows[0].title == null) || (m_screen.transformations[0].type === 'HostKeyTransformation' && m_screen.windows[0].title !== null)) ? 'solid' : 'none', 'width': 'max-content !important',
                 'z-index': this.index+1}
                 : {'grid-template-columns': m_screen ? 'repeat(minmax(0px, 1fr))'  : 'repeat(80, 1fr)',
                   'grid-template-rows': (m_screen  && m_screen.fields.length) ? 'repeat(auto-fit, minmax(calc(var(--text-font-size) + 2px), 1fr))' : 'repeat(24, 1fr)',
