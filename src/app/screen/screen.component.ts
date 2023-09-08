@@ -268,16 +268,29 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     // this.keyboardMappingService.addKeyboardMapping(GXAdditionalKey.NONE, GXKeyCodes.F3, popup, true, cancel);
   }
 
-  /**
+  /*
    * Find fields (like messageLine) which are out of child-window bounds. their position is in main screen.
    * Shift these fields to the main screen.
-  **/
+  */
    private shiftFieldsToMainWindow(screen: GetScreenResponse): void {
     const lastWindowIndex = screen.windows.length - 1;
     const windowBounds = screen.windows[lastWindowIndex].bounds;
     const mainScreenFields = new Map<string, number>();
     const currentWindowName = screen.name;
     this.m_screen.fields = this.m_screen.fields.filter(f => f);
+    let currentScreenFields = screen.fields
+    let prevScreenFields = this.m_screen.fields
+    let prevScreenFieldsArray = [];
+    let currentScreenFieldsArray = [];
+
+    prevScreenFields.forEach((prevElement, index) => {
+      if(prevElement){
+          prevScreenFieldsArray.push({key:this.fieldToString(prevElement), value:prevElement.content, index: index})
+      }
+    });
+    currentScreenFields.forEach((currentElement, index) => {
+      currentScreenFieldsArray.push({key:this.fieldToString(currentElement), value:currentElement.content, index: index})
+    });
     this.m_screen.fields.forEach((fld, i) => mainScreenFields.set(this.fieldToString(fld), i));
 
     // NEED TO FIX TABLE ITEMS POSITION AND MAYBE OTHER TRANSFORMATIONS
@@ -286,6 +299,12 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
             const index = mainScreenFields.get(this.fieldToString(field));
             if (!isNaN(index)) {
               this.m_screen.fields[index] = null;
+              prevScreenFieldsArray.forEach((entry, prevIndex) =>{
+                let selectedIndex = currentScreenFieldsArray.map(e => e.key).indexOf(entry.key);
+                if ( selectedIndex == -1){
+                  this.m_screen.fields[prevIndex] = null;
+                }
+              })
             }
             this.m_screen.fields.push(field);
             fields[i] = null;
