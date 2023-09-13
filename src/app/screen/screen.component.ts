@@ -87,6 +87,21 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   screenObjectUpdatedSubscription: Subscription;
   gridChangedSubscription: Subscription;
 
+  tableTransfIndex: any;
+  hostKeyTransIndex: any;
+  tableTransfBool: boolean = false;
+  hostKeyTransBool: boolean = false;
+  wareHouseScreen: boolean = false;
+  mainMapScrn: boolean = false;
+  shipBillAddScrn: boolean = false;
+  attentionScrn: boolean = false;
+
+  popupScrBorder = ['This is the Main Map.'];
+  borderScrn: boolean = false
+  popUpScrBorderOff = [' SHIP/BILL ADDRESS ', 'List of Warehouse Types   ', ' ATTENTION ','         FAMILY          ','          LINE           ']
+  borderOffScrn: boolean = false;
+  iscarGxarScrn: boolean = true;
+
   constructor(private screenService: ScreenService, private navigationService: NavigationService,
               private storageService: StorageService, private tabAndArrowsService: TabAndArrowsService,
               private keyboardMappingService: KeyboardMappingService, private userExitsEventThrower: UserExitsEventThrowerService,
@@ -263,10 +278,44 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     this.navigationService.setCursorPosition(screen.cursor);
     screen.fields = this.screenProcessorService.processRegionsToHide(screen.fields, screen.transformations);
     this.m_screen = screen;
+    this.getIndexOfScreenType(this.m_screen);
     this.screenLockerService.setLocked(false);
     //Example of injecting keyboard mapping
     // this.keyboardMappingService.addKeyboardMapping(GXAdditionalKey.NONE, GXKeyCodes.F3, popup, true, cancel);
   }
+
+  /**
+   * Get Index of Screen Type
+   */
+  getIndexOfScreenType(m_screen: any) {
+    if(m_screen?.transformations?.length>0) {
+      m_screen?.transformations?.forEach((field: any, i: number) => {
+        if(field?.type === 'HostKeyTransformation') {
+          this.hostKeyTransIndex = m_screen?.transformations.findIndex( (trans: { type: string; }) => trans.type === 'HostKeyTransformation' );
+          this.hostKeyTransBool = this.hostKeyTransIndex !== null || this.hostKeyTransIndex !== undefined ? true : false;
+        }
+      })
+      
+  } else {
+          if(m_screen?.transformations?.length === 0 && m_screen?.windows?.length > 0) {
+            this.hostKeyTransBool = true;
+            m_screen?.windows.forEach((win: any, i:number) => {
+              if(win?.title === null && win?.title !== '') {
+                this.iscarGxarScrn = false;
+                this.hostKeyTransBool = false;
+              }
+            })
+        }
+      }
+  m_screen?.fields.forEach((field: any, i: number) => {
+    if(this.popUpScrBorderOff.includes(field?.content)) {
+      this.borderOffScrn = true;
+    }
+    if(this.popupScrBorder.includes(field?.content)) {
+      this.borderScrn = true;
+    }
+  })
+}
 
   /*
    * Find fields (like messageLine) which are out of child-window bounds. their position is in main screen.
