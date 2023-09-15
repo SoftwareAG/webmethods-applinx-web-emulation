@@ -98,7 +98,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
   popupScrBorder = ['This is the Main Map.'];
   borderScrn: boolean = false
-  popUpScrBorderOff = ['SHIP/BILL ADDRESS', 'List of Warehouse Types   ', ' ATTENTION ','FAMILY','LINE']
+  popUpScrBorderOff = ['SHIP/BILL ADDRESS', 'List of Warehouse Types   ', 'ATTENTION','FAMILY','LINE']
   borderOffScrn: boolean = false;
   iscarGxarScrn: boolean = true;
 
