@@ -267,8 +267,117 @@ export class AppComponent implements OnInit, OnDestroy {
           winStartRow++;
         }
       }
-	  
-      formatTransformationOfWindows(windowDetails, objArray){
+	      formatPopupBorder(windowDetails, objArray){
+        let windowDetailsReverse = JSON.parse(JSON.stringify(windowDetails)).reverse();
+        let windowCount = windowDetailsReverse.length;
+        let startRowTop = windowDetailsReverse[0].bounds.startRow;
+        let startColTop = windowDetailsReverse[0].bounds.startCol;
+        let endRowTop = windowDetailsReverse[0].bounds.endRow;
+        let endColTop = windowDetailsReverse[0].bounds.endCol;
+        let VerticalBorderObj = {
+          col:0,
+          data: '|',
+          row: 0,
+          protected: true,
+          size: 1,
+          visible: true
+        };
+        let HorizontalBorderObj = {
+          col:0,
+          data: '-',
+          row: 0,
+          protected: true,
+          size: 1,
+          visible: true
+        };
+        windowDetailsReverse.forEach((element,index) => {
+          let startCol = element.bounds.startCol;
+          let endCol = element.bounds.endCol;
+          let startRow = element.bounds.startRow;
+          let endRow = element.bounds.endRow;
+          for (let rowEntry=startRow;rowEntry<endRow;rowEntry++){
+              if (rowEntry>=startRowTop && rowEntry<=endRowTop && index ==0){
+              VerticalBorderObj.col = startCol;
+              VerticalBorderObj.row = rowEntry;
+              objArray.push(JSON.parse(JSON.stringify(VerticalBorderObj)));
+              VerticalBorderObj.col = endCol;
+              VerticalBorderObj.row = rowEntry;
+              objArray.push(JSON.parse(JSON.stringify(VerticalBorderObj)));
+            }
+            if (index>0){
+              if(rowEntry < startRowTop || rowEntry > endRowTop){
+                VerticalBorderObj.col = startCol;
+                VerticalBorderObj.row = rowEntry;
+                objArray.push(JSON.parse(JSON.stringify(VerticalBorderObj)));
+                VerticalBorderObj.col = endCol;
+                VerticalBorderObj.row = 1+rowEntry;
+                objArray.push(JSON.parse(JSON.stringify(VerticalBorderObj))); 
+              }else if (rowEntry > startRowTop || rowEntry < endRowTop){
+                if (startCol < startColTop){
+                  VerticalBorderObj.col = startCol;
+                  VerticalBorderObj.row = rowEntry;
+                  objArray.push(JSON.parse(JSON.stringify(VerticalBorderObj)));
+                }else if (endCol > endColTop){
+                  VerticalBorderObj.col =endCol;
+                  VerticalBorderObj.row =1-rowEntry;
+                  objArray.push(JSON.parse(JSON.stringify(VerticalBorderObj)));
+                }
+              }
+            }
+          }
+          for (let colEntry=startCol;colEntry<endCol;colEntry++){
+            if (colEntry>=startColTop && colEntry<=endColTop && index ==0){
+              HorizontalBorderObj.col = colEntry;
+              HorizontalBorderObj.row = startRow-1;
+              objArray.push(JSON.parse(JSON.stringify(HorizontalBorderObj)));
+              HorizontalBorderObj.col = colEntry;
+              HorizontalBorderObj.row = endRow;
+              objArray.push(JSON.parse(JSON.stringify(HorizontalBorderObj)));
+            }
+            if (index>0){
+              if(colEntry < startColTop || colEntry > endColTop){
+                HorizontalBorderObj.col = colEntry;
+                HorizontalBorderObj.row = startRow-1;
+                objArray.push(JSON.parse(JSON.stringify(HorizontalBorderObj)));
+  
+                HorizontalBorderObj.col = colEntry ;
+                HorizontalBorderObj.row = endRow;
+                objArray.push(JSON.parse(JSON.stringify(HorizontalBorderObj))); 
+              }else if (colEntry > startColTop || colEntry < endColTop){
+                if (startRow < startRowTop){
+                    HorizontalBorderObj.col = colEntry;
+                    HorizontalBorderObj.row = startRow-1;
+                   objArray.push(JSON.parse(JSON.stringify(HorizontalBorderObj)));
+                 }else if (endRow > endRowTop){
+                  HorizontalBorderObj.col = colEntry;
+                  HorizontalBorderObj.row = endRow;
+                  objArray.push(JSON.parse(JSON.stringify(HorizontalBorderObj)));
+                }
+              }
+            }
+          }
+           });
+      }
+        formatTransformationOfWindows(windowDetails, name, objArray){
+        let pipeCount = 0;
+        let iPhanCount = 0;
+        let unknownScrBool = true;
+        if(name === 'UNKNOWN') {
+          objArray.forEach((field: any, i: number) => {
+            if(field?.data === '|') {
+              pipeCount = pipeCount + 1;
+            }
+            if(field?.data === ':') {
+              iPhanCount = iPhanCount + 1;
+            }
+          })
+          if(pipeCount > 10 || iPhanCount > 10) {
+            unknownScrBool = false;
+          }
+        }
+        if(name !== 'PHQ02_SHPADR' && name !== 'PHU01_CNF' && name !=='OWT23_SFL1' && name !=='JCQ01A_CTL' && unknownScrBool) {
+        this.formatPopupBorder(windowDetails, objArray)
+        }      
         this.formatTranformationOfPopupLines(windowDetails, objArray);
         let windowCount = windowDetails.length;
         let endcol = windowDetails[windowCount-1].bounds.startCol;
@@ -279,7 +388,7 @@ export class AppComponent implements OnInit, OnDestroy {
               if(windowData.index == windowCount - 1){
                 obj[0].data =  windowData.title;
               }else{
-                let headerStrlength = endcol - obj[0].col;
+                let headerStrlength = endcol - obj[0].col; 
                 obj[0].data =  windowData.title.slice(0,headerStrlength);
               }
               let paddingLength = Math.ceil(((windowData.bounds.endCol-windowData.bounds.startCol) 
@@ -344,10 +453,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.generateObjectArray(rawData.fields, objArray);
     this.formatTransformation(rawData.transformations, objArray);
     if (rawData && rawData.windows){
-      this.formatTransformationOfWindows(rawData.windows, objArray);
+      this.formatTransformationOfWindows(rawData.windows, rawData?.name, objArray);
       // this.drawBorderForPopUp(rawData.windows, objArray)
     }
-    console.log(objArray);
     let lineNo = 0;
     objArray.sort((a, b) => {
       return a.row - b.row;
