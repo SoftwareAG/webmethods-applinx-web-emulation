@@ -94,7 +94,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 #gx_screenArea {
 	font-family: "Lucida Console", Monaco, "Menlo-Regular", monospace, "Courier New", "Noto Sans Mono CJK JP", "IPA Mincho";
 	color: var(--primary-text-color);
-	padding-bottom: 8%;
+	/* padding-bottom: 8%; */
 	margin-top: 0em !important;
 	font-size: var(--text-font-size);
 }
