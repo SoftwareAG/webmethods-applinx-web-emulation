@@ -310,7 +310,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 VerticalBorderObj.row = rowEntry;
                 objArray.push(JSON.parse(JSON.stringify(VerticalBorderObj)));
                 VerticalBorderObj.col = endCol;
-                VerticalBorderObj.row = rowEntry;
+                VerticalBorderObj.row = 1+rowEntry;
                 objArray.push(JSON.parse(JSON.stringify(VerticalBorderObj))); 
               }else if (rowEntry > startRowTop || rowEntry < endRowTop){
                 if (startCol < startColTop){
@@ -319,7 +319,7 @@ export class AppComponent implements OnInit, OnDestroy {
                   objArray.push(JSON.parse(JSON.stringify(VerticalBorderObj)));
                 }else if (endCol > endColTop){
                   VerticalBorderObj.col =endCol;
-                  VerticalBorderObj.row =rowEntry;
+                  VerticalBorderObj.row =1-rowEntry;
                   objArray.push(JSON.parse(JSON.stringify(VerticalBorderObj)));
                 }
               }
