@@ -16,6 +16,7 @@
 import {
   Component,
   ElementRef,
+  HostListener,
   Input,
   OnChanges,
   OnDestroy,
@@ -44,13 +45,13 @@ enum GXDataTypes {
   REVERSED = 'REVERSED'  //(AS/400 Hebrew field)
 }
 
-enum GXDataTypesAllowedChars {
-  NUMERIC = '[0-9.,]*',//"01234567890.,"
-  DIGITS_ONLY = '[0-9]*', //0123456789"
-  SIGNED_NUMERIC = '[0-9.,+-]*', //"01234567890.,-+"
-  ALPHA_ONLY = '[a-zA-Z]*',
-  ANY = '.*'
-}
+// enum GXDataTypesAllowedChars {
+//   NUMERIC = '[0-9.,]*',//"01234567890.,"
+//   DIGITS_ONLY = '[0-9]*', //0123456789"
+//   SIGNED_NUMERIC = '[0-9.,+-]*', //"01234567890.,-+"
+//   ALPHA_ONLY = '[a-zA-Z]*',
+//   ANY = '.*'
+// }
 
 @Component({
   selector: 'app-input-field',
@@ -65,6 +66,18 @@ export class InputFieldComponent implements OnChanges, OnInit, OnDestroy {
   fgClass: string;
   bgClass: string;
   screenInitializedSubscription: Subscription;
+
+  @HostListener('keypress', ['$event'])
+  onKeyPress(event: any): void {
+    let pressedKey = event.key;
+    let fieldDataType = this.field.datatype;
+    if (((fieldDataType == GXDataTypes.NUMERIC) && ((!/[0-9,.]/.test(pressedKey)))) || 
+        ((fieldDataType == GXDataTypes.DIGITS_ONLY) && ((!/[0-9]/.test(pressedKey)))) ||
+        ((fieldDataType == GXDataTypes.SIGNED_NUMERIC) && ((!/[0-9.,+-]/.test(pressedKey)))) ||
+        ((fieldDataType == GXDataTypes.ALPHA_ONLY) && ((!/[a-zA-Z]/.test(pressedKey))))){
+      event.preventDefault();
+    } 
+  }
 
   constructor(private navigationService: NavigationService, public storageService: StorageService,
     private tabAndArrowsService: TabAndArrowsService, private doms: DomSanitizer,
@@ -142,21 +155,21 @@ export class InputFieldComponent implements OnChanges, OnInit, OnDestroy {
     return 'text';
   }
 
-  getPattern(field: Field): string {
-    if (field.datatype === GXDataTypes.NUMERIC) {
-      return GXDataTypesAllowedChars.NUMERIC;
-    }
-    if (field.datatype == GXDataTypes.DIGITS_ONLY) {
-      return GXDataTypesAllowedChars.DIGITS_ONLY;
-    }
-    if (field.datatype == GXDataTypes.SIGNED_NUMERIC) {
-      return GXDataTypesAllowedChars.SIGNED_NUMERIC;
-    }
-    if (field.datatype == GXDataTypes.ALPHA_ONLY) {
-      return GXDataTypesAllowedChars.ALPHA_ONLY;
-    }
-    return GXDataTypesAllowedChars.ANY;
-  }
+  // getPattern(field: Field): string {
+  //   if (field.datatype === GXDataTypes.NUMERIC) {
+  //     return GXDataTypesAllowedChars.NUMERIC;
+  //   }
+  //   if (field.datatype == GXDataTypes.DIGITS_ONLY) {
+  //     return GXDataTypesAllowedChars.DIGITS_ONLY;
+  //   }
+  //   if (field.datatype == GXDataTypes.SIGNED_NUMERIC) {
+  //     return GXDataTypesAllowedChars.SIGNED_NUMERIC;
+  //   }
+  //   if (field.datatype == GXDataTypes.ALPHA_ONLY) {
+  //     return GXDataTypesAllowedChars.ALPHA_ONLY;
+  //   }
+  //   return GXDataTypesAllowedChars.ANY;
+  // }
 
   private isFieldCursorPosition(cursor: Cursor): boolean {
     const fld = this.field;
