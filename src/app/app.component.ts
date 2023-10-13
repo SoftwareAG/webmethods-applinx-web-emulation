@@ -113,7 +113,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private keyboardMappingService: KeyboardMappingService, public screenLockerService: ScreenLockerService,
     private screenHolderService: ScreenHolderService, private userExitsEventThrower: UserExitsEventThrowerService,
     private logger: NGXLogger, private httpClient: HttpClient, private messages: MessagesService,
-    private oAuth2handler: OAuth2HandlerService, private matDialog: MatDialog, 
+    private oAuth2handler: OAuth2HandlerService, private matDialog: MatDialog,
     private infoService: InfoService) {
     this.userExitsEventThrower.clearEventListeners();
     this.userExitsEventThrower.addEventListener(new LifecycleUserExits(infoService, navigationService, storageService, keyboardMappingService, logger));
@@ -235,7 +235,7 @@ export class AppComponent implements OnInit, OnDestroy {
         objArray.push(obj);
     });
       }
-
+	  
       formatTranformationOfPopupLines(windowDetails, objArray){
         let windowCount = windowDetails.length;
         let winStartRow = windowDetails[windowCount-1].bounds.startRow;
@@ -267,7 +267,7 @@ export class AppComponent implements OnInit, OnDestroy {
           winStartRow++;
         }
       }
-	  
+      
       formatTransformationOfWindows(windowDetails, objArray){
         this.formatTranformationOfPopupLines(windowDetails, objArray);
         let windowCount = windowDetails.length;
@@ -275,17 +275,17 @@ export class AppComponent implements OnInit, OnDestroy {
         windowDetails.forEach(windowData => {
           let obj = objArray.filter(entry => entry.row == windowData.bounds.startRow && 
               (entry.col > windowData.bounds.startCol));
-          if (obj.length>0){
-              if(windowData.index == windowCount - 1){
-                obj[0].data =  windowData.title;
-              }else{
-                let headerStrlength = endcol - obj[0].col;
-                obj[0].data =  windowData.title.slice(0,headerStrlength);
-              }
-              let paddingLength = Math.ceil(((windowData.bounds.endCol-windowData.bounds.startCol) 
-                                                - (windowData.title?windowData.title.length:0))/2)
-              obj[0].col =  windowData.bounds.startCol+paddingLength;
-          }
+              if (obj.length>0){
+                if(windowData.index == windowCount - 1){
+                  obj[0].data =  windowData.title;
+                }else{
+                  let headerStrlength = endcol - obj[0].col;
+                  obj[0].data =  windowData.title.slice(0,headerStrlength);
+                }
+                let paddingLength = Math.ceil(((windowData.bounds.endCol-windowData.bounds.startCol) 
+                                                  - (windowData.title?windowData.title.length:0))/2)
+                obj[0].col =  windowData.bounds.startCol+paddingLength;
+            }
         });
       }
 	 
@@ -566,6 +566,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
     return color.toLowerCase();
   }
+
 }
 
 
