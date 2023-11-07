@@ -246,4 +246,108 @@ export class GXUtils {
     public static showHostKeyFlag = false;
     public static MENU = "Menu";
     public static UNKNOWN = "UNKNOWN";
+    public static ENTER = "Enter";
+    public static NUMPADENTER ="NumpadEnter"
+    public static BACKSPACE = "Backspace";
+    public static TAB = "Tab";
+    public static IMPLICITTAB = "ImplicitTab";
+    public static FUNCTIONARRAY = ["F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","F11","F12"];
+    public static ARROWKEYARRAY = ["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp","PageUp", "PageDown"];
+    public static IGNOREKEYARRAY = ["ControlLeft","ControlRight","ShiftRight","ShiftLeft","AltRight","AltLeft","Home", "End", "Insert","Delete","CapsLock"];
+    public static ARROWRIGHT = "ArrowRight"; 
+    public static ARROWLEFT = "ArrowLeft";
+    public static ARROWDOWN = "ArrowDown";
+    public static ARROWUP = "ArrowUp";
+    public static PAGEUP = "PageUp";
+    public static PAGEDOWN = "PageDown";
+    public static DELETE = "Delete";
+    public static ENABLETYPEAHEADFLAG = true; // Variable to enable/disable type ahead
+    public static fieldOrder = 0;
+    public static typeAheadCharacterArray : any = [];
+    public static typeAheadStringArray: any = [];
+    public static pagesArray: any = [];
+    public static pageNo: number = 0;
+    public static typeAhead = "TYPEAHEAD" 
+    public static currentPage = "CURRENTPAGE" 
+    public static implicitFlag = false;
+    public static dataTypes = {
+      ALPHANUMERIC : 'ALPHANUMERIC',
+      NUMERIC : 'NUMERIC',
+      ALPHA_ONLY : 'ALPHA_ONLY', //(AS/400)
+      DIGITS_ONLY : 'DIGITS_ONLY',  //(AS/400)
+      SIGNED_NUMERIC : 'SIGNED_NUMERIC',  //(AS/400)
+      KATAKANA_SHIFT : 'KATAKANA_SHIFT',  //(AS/400 Japanese katakana only field)
+      DBCS_ONLY : 'DBCS_ONLY',
+      DBCS_CAN_CREATE_SISO : 'DBCS_CAN_CREATE_SISO',
+      REVERSED : 'REVERSED'  //(AS/400 Hebrew field)
+    }
+
+    public static appendTypeAheadChar(typeAheadChar){
+      this.typeAheadCharacterArray.push(typeAheadChar);
+    }
+
+    public static getTypeAheadCharsArray(){
+      return this.typeAheadCharacterArray;
+  }
+  public static getTypeAheadStringArray(){
+    return this.typeAheadStringArray;
+}
+
+  public static createWord(){
+    let strObj = {};
+    strObj["value"] = this.typeAheadCharacterArray.length>0?this.typeAheadCharacterArray.toString().replaceAll(",", ""):null;
+    strObj["active"] = true;
+    strObj["fieldOrder"] = this.fieldOrder++;
+    return strObj
+  }
+
+  public static createPage(nextPageFlag){
+      let pageObj = {}
+      pageObj["inputs"] = this.typeAheadStringArray;
+      pageObj["visited"] = false;
+      pageObj["pageNo"] = this.pageNo++;
+      pageObj["nextPage"] = nextPageFlag;
+      return pageObj;
+  }
+
+  public static appendTypeAheadPageArray(){
+    this.pagesArray.push(this.createPage(false));  
+    this.typeAheadStringArray = [];
+  }
+
+  public static getPageArray(){
+    return this.pagesArray;
+  }
+
+  public static appendTypeAheadStringArray(event) {
+    let implicitTabFlag = false;
+    if (event.code == GXUtils.IMPLICITTAB) {
+        this.typeAheadStringArray.push(this.createWord());
+        implicitTabFlag = true;
+        this.setImplicitFlag(true);
+    } else if (event.code == GXUtils.TAB) {
+        this.typeAheadStringArray.push(this.createWord());
+        implicitTabFlag = false;
+    } else if (event.code == GXUtils.ENTER || event.key == GXUtils.NUMPADENTER) {
+        implicitTabFlag = false;
+        this.typeAheadStringArray.push(this.createWord());
+        this.pagesArray.push(this.createPage(true));
+        this.fieldOrder = 0;
+        this.typeAheadStringArray = [];
+    }
+    if (implicitTabFlag) {
+      this.pagesArray.push(this.createPage(false));
+      this.typeAheadStringArray = [];
+      implicitTabFlag = false;
+    }
+    this.typeAheadCharacterArray = [];
+  }
+
+  public static getImplicitFlag(){
+    return this.implicitFlag;
+  }
+
+  public static setImplicitFlag(value){
+    this.implicitFlag = value;
+  }
 }

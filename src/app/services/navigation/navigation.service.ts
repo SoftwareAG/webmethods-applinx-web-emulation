@@ -123,10 +123,9 @@ export class NavigationService {
   }
 
   sendKeys(sendKey: string): void {
-    if (this.screenLockerService.isLocked()) {
+    if (this.screenLockerService.isLocked() && !GXUtils.ENABLETYPEAHEADFLAG) {
       return; // windows is loading...
     }
-
     this.getHostScreenNumber().subscribe (
       screenNumberResponse => {
         if (screenNumberResponse.screenNumber  > this.getScreenId()) {
