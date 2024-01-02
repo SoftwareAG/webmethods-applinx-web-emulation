@@ -27,8 +27,10 @@ import {MatDialogModule, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatRadioModule} from '@angular/material/radio';
 import { MatTooltipModule } from '@angular/material/tooltip';
-//import { MatDialog } from '@angular/material/dialog';
-
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AppComponent } from './app.component';
 import { ApiModule, Configuration, ConfigurationParameters} from '@softwareag/applinx-rest-apis'
 import { ScreenComponent } from './screen/screen.component';
@@ -64,6 +66,8 @@ import { ScreenHolderService } from './services/screen-holder.service';
 import { OAuth2HandlerService } from './services/oauth2-handler.service';
 import { RouteGuardService } from './services/route-guard.service';
 import { ScreenProcessorService } from './services/screen-processor.service'
+import { MacroComponent } from './macro/macro.component';
+import { SharedService } from './services/shared.service';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -101,6 +105,7 @@ const routes: Routes = [
     CalendarComponent,
     LineComponent,
     CheckboxComponent,
+    MacroComponent,
   ].concat(generatedPages),
   imports: [
     ApiModule.forRoot(apiConfigFactory),
@@ -117,6 +122,11 @@ const routes: Routes = [
     MatProgressSpinnerModule,
     MatDialogModule,
     MatSliderModule,
+    MatSelectModule,
+    MatInputModule,
+    ScrollingModule,
+    // MatSnackBar,
+    MatSnackBarModule,
     OverlayModule,
     MatMenuModule,
     MatRadioModule,
@@ -137,6 +147,7 @@ const routes: Routes = [
     OAuth2HandlerService,
     RouteGuardService,
     ScreenProcessorService,
+    SharedService,
     { provide: MAT_DIALOG_DATA, useValue: {} },
     {provide: 'IJSFunctionService', useClass: JSMethodsService}
   ],  

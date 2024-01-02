@@ -34,6 +34,9 @@ import { HostKeyTransformation, Cursor, SessionService, InfoService } from '@sof
 import { MatDialog } from '@angular/material/dialog';
 import { ModalpopupComponent } from './mini-components/transformations/modalpopup/modalpopup.component';
 import { GXUtils } from 'src/utils/GXUtils';
+import { MacroComponent } from './macro/macro.component';
+import { SharedService } from './services/shared.service';
+import { ConfigurationService } from './services/configuration.service';
 
 @Component({
   selector: 'app-root',
@@ -65,10 +68,19 @@ export class AppComponent implements OnInit, OnDestroy {
   zoomStep: number = GXUtils.zoomStep;
   isOpenThemeStyle: boolean = false;
   themeColor: string = GXUtils.defaultThemeColor;
+  macroButtonCol: string
+  recMacroTitle: any;
+  changeRecColor: boolean = false;
+  recordStop: boolean = false;
+  macroEvents = GXUtils.MACRO;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
     if (this.screenLockerService.isLocked()) {
+      if(GXUtils.ENABLETYPEAHEADFLAG){
+        this.fnFormTypeaheadDetails(event);
+        console.log("Key Pressed : ", event.key)
+      }
       return; // windows is loading...
     }
     if (!this.keyboardMappingService.checkKeyboardMappings(event, true, event.keyCode)) {
@@ -80,6 +92,24 @@ export class AppComponent implements OnInit, OnDestroy {
     } else if (this.storageService.isConnected() && this.tabAndArrowsService.handleArrows(event)) {
       event.preventDefault();
     }
+  }
+  fnFormTypeaheadDetails(event: KeyboardEvent) {
+    //throw new Error('Method not implemented.');
+    if(event.code){
+      if ( (GXUtils.FUNCTIONARRAY.indexOf(event.code) != -1) || (GXUtils.IGNOREKEYARRAY.indexOf(event.code) != -1) ) {
+        event.preventDefault();
+      } 
+      else if (event.key == GXUtils.TAB) {
+            GXUtils.appendTypeAheadStringArray(event); // adding textbox entries in a page
+            event.preventDefault();
+      } 
+      else if (event.key == GXUtils.ENTER || event.key == GXUtils.NUMPADENTER) {
+            GXUtils.appendTypeAheadStringArray(event); // adding pages to an array
+      } 
+      else{
+            GXUtils.appendTypeAheadChar(event.key); // Adding charecters typed by the user
+      }
+  }
   }
 
   @HostListener('focusin', ['$event'])
@@ -114,6 +144,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private screenHolderService: ScreenHolderService, private userExitsEventThrower: UserExitsEventThrowerService,
     private logger: NGXLogger, private httpClient: HttpClient, private messages: MessagesService,
     private oAuth2handler: OAuth2HandlerService, private matDialog: MatDialog,
+    private sharedService: SharedService, private configurationService: ConfigurationService,
     private infoService: InfoService) {
     this.userExitsEventThrower.clearEventListeners();
     this.userExitsEventThrower.addEventListener(new LifecycleUserExits(infoService, navigationService, storageService, keyboardMappingService, logger));
@@ -133,6 +164,14 @@ export class AppComponent implements OnInit, OnDestroy {
     } else if (window.innerWidth > 1800) {
       this.zoomDefault = 20;
     }
+
+    this.sharedService.data$.subscribe(data => {
+      // Handle the data received from the modal component
+      this.changeRecColor = data !== '' && data !== null ? true : false;
+    });
+
+    let macTitle = this.sharedService;
+    this.recMacroTitle = macTitle.getRecMacroTitle;
     document.documentElement.style.setProperty('--text-font-size', this.zoomDefault + 'px');
   }
 
@@ -476,6 +515,34 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.hostConnectionSubscription) {
       this.hostConnectionSubscription.unsubscribe();
     }
+  }
+
+ macro(){
+    this.recordStop = this.sharedService.getMacroRecordFlag();
+  }
+
+  openMacro(paramType: string) {
+    const dialogRef = this.matDialog.open(MacroComponent,
+      {
+        data: {paramType},
+        height: 'auto',
+        width: '40%',
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+      this.changeRecColor = this.sharedService.getMacroRecordFlag(); // Changing the color of macro icon when it is in record mode
+    });
+  }
+
+  stopRecord() {
+    this.sharedService.setMacroRecordFlag();
+    this.sharedService.stopMacroRecording(this.configurationService.applicationName);
+    this.changeRecColor = this.sharedService.getMacroRecordFlag();
+  }
+
+  handleClick() {
+    alert("CLICKED")
   }
 
 

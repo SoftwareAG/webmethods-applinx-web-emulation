@@ -29,6 +29,7 @@ import { TabAndArrowsService } from './tab-and-arrows.service';
 import { StatusCodes } from 'http-status-codes';
 import { GetScreenNumberResponse } from '@softwareag/applinx-rest-apis/lib/model/getScreenNumberResponse';
 import { GXConst } from '../enum.service';
+import { SharedService } from '../shared.service';
 
 @Injectable({
   providedIn: 'root'
@@ -55,7 +56,9 @@ export class NavigationService {
               private storageService: StorageService,
               private tabAndArrowsService: TabAndArrowsService,
               private userExitsEventThrower: UserExitsEventThrowerService,
-              private messages: MessagesService) {
+              private messages: MessagesService,
+              private sharedService: SharedService,
+              ) {
     this.sendableFields = new Map<string, InputField>();
     this.setRoutingHandler();
     this.checkHostScreenUpdate();
@@ -123,10 +126,10 @@ export class NavigationService {
   }
 
   sendKeys(sendKey: string): void {
-    if (this.screenLockerService.isLocked()) {
+    // console.log("sendKey", sendKey)
+    if (this.screenLockerService.isLocked() && !GXUtils.ENABLETYPEAHEADFLAG) {
       return; // windows is loading...
     }
-
     this.getHostScreenNumber().subscribe (
       screenNumberResponse => {
         if (screenNumberResponse.screenNumber  > this.getScreenId()) {
@@ -150,7 +153,9 @@ export class NavigationService {
     this.screenLockerService.setLocked(true);
     const shouldReturnScreen = true;
     const returnScreen = new ReturnScreen (shouldReturnScreen);
+    // console.log("returnScreen : ", returnScreen);
     const sendKeysRequest = new SendKeysRequest(sendKey, this.cursorPosition, this.screenSize, Array.from(this.sendableFields.values()),returnScreen);//,returnScreen
+    // console.log("sendKeysRequest : ", sendKeysRequest);
     this.userExitsEventThrower.firePreSendKey(sendKeysRequest); 
     this.tearDown();      
     this.screenService.updateScreen(sendKeysRequest, this.screenId, this.storageService.getAuthToken()).subscribe(newScreen => {
@@ -158,7 +163,13 @@ export class NavigationService {
       this.userExitsEventThrower.firePostSendKey(newScreen);
       this.screenObjectUpdated.next (newScreen);      
       this.checkForIntermidateScreen();
-      
+      if(this.sharedService.getMacroRecordFlag()){
+        console.log("Macro Enabled..........")
+        this.sharedService.recordMacro(sendKeysRequest);
+      }else{
+        console.log("Macro disabled..........")
+      }
+          
     }, errorResponse => {
        // this.logger.error(errorResponse);
         this.errorHandler(errorResponse, false);

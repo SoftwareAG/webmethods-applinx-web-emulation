@@ -20,9 +20,30 @@
   <sag-topnav *ngIf="!isSmallScreen()" brandsrc='assets/images/ApplinX-all white.svg' scrollStyle=""
     brandtitle='ApplinX Web Application' brandheight='56' brandwidth='196'>
     <sag-topnav-right right>
+      <sag-topnav-item [matMenuTriggerFor]="matMenuMacro1" [disable]='false' title="Macro1" itemType="button" class="macro-topNav" (click)="macro()">
+      </sag-topnav-item>
+      <mat-icon class="macro-main"  [ngStyle] = "{'color' : changeRecColor ? 'red' : 'white'}"></mat-icon>
+      <mat-menu #matMenuMacro1="matMenu">
+          <mat-menu-content style="display: flex; flex-direction: row; padding: -1px 8px 0px 15px;">
+            <div title={{macroEvents.play}} *ngIf = "!recordStop" class="dlt-icon-play macro-icon" (click)="openMacro('play')"></div>
+            <div title={{macroEvents.record}} *ngIf = "!recordStop" class="dlt-icon-stop-circle macro-icon" (click)="openMacro('record')"></div>
+            <div title={{macroEvents.stop}} *ngIf = "recordStop" class="dlt-icon-stop macro-icon" (click)="stopRecord()"></div>
+            <div title={{macroEvents.view}} *ngIf = "!recordStop" class="dlt-icon-password-show macro-icon" (click)="openMacro('view')"></div>
+            <div title={{macroEvents.remove}} *ngIf = "!recordStop" class="dlt-icon-delete macro-icon" (click)="openMacro('remove')"></div>
+          </mat-menu-content>
+      </mat-menu>
       <sag-topnav-item itemType="button" [disable]='false' title="Copy text from host screen" (click)="copy()" itemId="copy" itemName=""
         itemIcon="dlt-icon-copy" itemStyle="color:white">
       </sag-topnav-item>
+      <!-- <mat-menu #matMenuMacro="matMenu">
+          <mat-menu-content style="display: flex; flex-direction: column; padding: 0px 8px 0px 15px;">
+    
+            <div title="Play" class="dlt-icon-play macro-icon1" (click)="openMacro('play')"></div>
+            <div title="Record" class="dlt-icon-stop-circle macro-icon1" (click)="openMacro('record')"></div>
+            <div title="View" class="dlt-icon-cloud-search macro-icon1" (click)="openMacro('view')"></div>
+            <div title="Remove" class="dlt-icon-delete macro-icon1" (click)="openMacro('remove')"></div>
+          </mat-menu-content>
+      </mat-menu>  -->
       <sag-topnav-item itemType="button" [disable]='false' title="Print host screen snapshot" (click)="print()" itemId="print" itemName=""
         itemIcon="dlt-icon-print" itemStyle="color:white">
       </sag-topnav-item>
@@ -70,11 +91,6 @@
       </sag-topnav-item>
     </sag-topnav-right>
   </sag-topnav>
-
-
-
-
-
 
   <div class="middle-container">
     <div *ngIf="!isSmallScreen()" class="flexContainer" [hidden]="!displayScreen">

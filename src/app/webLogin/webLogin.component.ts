@@ -132,6 +132,7 @@ export class WebLoginComponent implements OnInit {
     if (!this.username.value && this.authMethod !== GXConst.DISABLED) {
       return;
     }
+    sessionStorage.setItem("userName", JSON.stringify(this.username.value));
     const createSessionRequest = new CreateSessionRequest(this.configurationService.applicationName, 
       this.configurationService.connectionPool);
     if (this.configurationService.sessionOptions) {
