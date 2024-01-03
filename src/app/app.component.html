@@ -20,9 +20,9 @@
   <sag-topnav *ngIf="!isSmallScreen()" brandsrc='assets/images/ApplinX-all white.svg' scrollStyle=""
     brandtitle='ApplinX Web Application' brandheight='56' brandwidth='196'>
     <sag-topnav-right right>
-      <sag-topnav-item [matMenuTriggerFor]="matMenuMacro1" [disable]='false' title="Macro1" itemType="button" class="macro-topNav" (click)="macro()">
+      <sag-topnav-item [matMenuTriggerFor]="matMenuMacro1" [disable]='false' title="Macro" itemType="button" class="macro-topNav" (click)="macro()">
       </sag-topnav-item>
-      <mat-icon class="macro-main"  [ngStyle] = "{'color' : changeRecColor ? 'red' : 'white'}"></mat-icon>
+      <mat-icon class="macro-main"  [ngStyle] = "{'color' : changeRecColor ? 'red' : 'white'}">video_settings</mat-icon>
       <mat-menu #matMenuMacro1="matMenu">
           <mat-menu-content style="display: flex; flex-direction: row; padding: -1px 8px 0px 15px;">
             <div title={{macroEvents.play}} *ngIf = "!recordStop" class="dlt-icon-play macro-icon" (click)="openMacro('play')"></div>
