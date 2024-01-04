@@ -82,8 +82,8 @@ export class SharedService {
       //console.log("Stop recording me....."+ this.macroDetails["txtRecordMacro"])
       // console.log("Application Name : ",this.fileService.applicationName);
       this.applicationName = applicationName;
-      let userName = "vinoth" //sessionStorage.getItem('userName')
-     // this.macroObj["userName"] = "vinoth" //sessionStorage.getItem('userName'); //userName.substring(1, userName.length - 1);
+      let userName = "Vinoth" //sessionStorage.getItem('userName')
+     // this.macroObj["userName"] = "Vinoth" //sessionStorage.getItem('userName'); //userName.substring(1, userName.length - 1);
       //this.macroObj["name"] = this.macroName;
       this.macroObj["simulateDelay"] = this.macroDetails.chkboxSimulateDelay;
       this.macroObj["steps"] = this.macroRecordArray;

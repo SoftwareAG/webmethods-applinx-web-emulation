@@ -30,7 +30,7 @@ import { LifecycleUserExits } from './user-exits/LifecycleUserExits';
 import { UserExitsEventThrowerService } from './services/user-exits-event-thrower.service';
 import { OAuth2HandlerService } from './services/oauth2-handler.service';
 import { MessagesService } from './services/messages.service';
-import { HostKeyTransformation, Cursor, SessionService, InfoService } from '@softwareag/applinx-rest-apis';
+import { HostKeyTransformation, Cursor, SessionService, InfoService, MacroService } from '@softwareag/applinx-rest-apis';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalpopupComponent } from './mini-components/transformations/modalpopup/modalpopup.component';
 import { GXUtils } from 'src/utils/GXUtils';
@@ -73,7 +73,9 @@ export class AppComponent implements OnInit, OnDestroy {
   changeRecColor: boolean = false;
   recordStop: boolean = false;
   macroEvents = GXUtils.MACRO;
-
+  macroFileListSubscription: Subscription;
+  macroList: any;
+  listFlag: any;
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
     if (this.screenLockerService.isLocked()) {
@@ -145,7 +147,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private logger: NGXLogger, private httpClient: HttpClient, private messages: MessagesService,
     private oAuth2handler: OAuth2HandlerService, private matDialog: MatDialog,
     private sharedService: SharedService, private configurationService: ConfigurationService,
-    private infoService: InfoService) {
+    private infoService: InfoService,private macroService: MacroService,) {
     this.userExitsEventThrower.clearEventListeners();
     this.userExitsEventThrower.addEventListener(new LifecycleUserExits(infoService, navigationService, storageService, keyboardMappingService, logger));
     this.getLoggerConfiguration();
@@ -518,13 +520,23 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
  macro(){
+  let token = this.storageService.getAuthToken();
+    let user = "vinothzhere" //sessionStorage.getItem('userName');
+    this.macroFileListSubscription = this.macroService
+        .getMacro(user,'', token)
+        .subscribe(data =>{
+        console.log(data)
+        this.macroList = data.fileList;
+        this.listFlag = this.macroList?.length === 0 || this.macroList === undefined ? true : false;
+      })
     this.recordStop = this.sharedService.getMacroRecordFlag();
   }
 
   openMacro(paramType: string) {
+    let viewFlag = this.listFlag;
     const dialogRef = this.matDialog.open(MacroComponent,
       {
-        data: {paramType},
+        data: {paramType, viewFlag},
         height: 'auto',
         width: '40%',
       });

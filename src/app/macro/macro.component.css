@@ -62,10 +62,7 @@ ul,li {
 
 .chkSimulate {
     word-break: break-all;
-    padding: 10px;
-
 }
-
 
 .scroballablemarco {
 
@@ -110,12 +107,9 @@ li {
     color: white;
     text-align: center;
     height: 32px;
-     /* top: 10%;  */
-    /* left: 45%  */
-    /* transform: translateX(-50%); */
-    /* height: -50;
-    width: 20;
-    z-index: -1; */ 
+    display: flex;
+    align-items: center;
+    justify-content: center; 
 }
 
 .input-record {
@@ -133,4 +127,16 @@ li {
     51%, 100% {
       opacity: 0;
     }
+  }
+
+  ::ng-deep .mat-checkbox-ripple .mat-ripple-element {
+    background-color: #1776bf !important;
+  }
+
+  ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: #1776bf !important;
+  }
+
+  ::ng-deep .mat-checkbox-interminate.mat-accent .mat-checkbox-background {
+    background-color: #1776bf !important;
   }

@@ -20,10 +20,17 @@
   <sag-topnav *ngIf="!isSmallScreen()" brandsrc='assets/images/ApplinX-all white.svg' scrollStyle=""
     brandtitle='ApplinX Web Application' brandheight='56' brandwidth='196'>
     <sag-topnav-right right>
-      <sag-topnav-item [matMenuTriggerFor]="matMenuMacro1" [disable]='false' title="Macro" itemType="button" class="macro-topNav" (click)="macro()">
-      </sag-topnav-item>
-      <mat-icon class="macro-main"  [ngStyle] = "{'color' : changeRecColor ? 'red' : 'white'}">video_settings</mat-icon>
-      <mat-menu #matMenuMacro1="matMenu">
+        <div *ngIf = "this.changeRecColor">
+         <sag-topnav-item itemType="button" [matMenuTriggerFor]="matMenuMacro1" [disable]='false' title="Macro" (click)="macro()" itemId="copy" itemName=""
+          itemIcon="dlt-icon-submit-document" itemStyle="color: #B22222">
+         </sag-topnav-item>
+        </div>
+        <div *ngIf = "!this.changeRecColor">
+         <sag-topnav-item itemType="button" [matMenuTriggerFor]="matMenuMacro1" [disable]='false' title="Macro" (click)="macro()" itemId="copy" itemName=""
+          itemIcon="dlt-icon-submit-document" itemStyle="color: white">
+         </sag-topnav-item>
+       </div>
+       <mat-menu #matMenuMacro1="matMenu">
           <mat-menu-content style="display: flex; flex-direction: row; padding: -1px 8px 0px 15px;">
             <div title={{macroEvents.play}} *ngIf = "!recordStop" class="dlt-icon-play macro-icon" (click)="openMacro('play')"></div>
             <div title={{macroEvents.record}} *ngIf = "!recordStop" class="dlt-icon-stop-circle macro-icon" (click)="openMacro('record')"></div>
@@ -35,15 +42,6 @@
       <sag-topnav-item itemType="button" [disable]='false' title="Copy text from host screen" (click)="copy()" itemId="copy" itemName=""
         itemIcon="dlt-icon-copy" itemStyle="color:white">
       </sag-topnav-item>
-      <!-- <mat-menu #matMenuMacro="matMenu">
-          <mat-menu-content style="display: flex; flex-direction: column; padding: 0px 8px 0px 15px;">
-    
-            <div title="Play" class="dlt-icon-play macro-icon1" (click)="openMacro('play')"></div>
-            <div title="Record" class="dlt-icon-stop-circle macro-icon1" (click)="openMacro('record')"></div>
-            <div title="View" class="dlt-icon-cloud-search macro-icon1" (click)="openMacro('view')"></div>
-            <div title="Remove" class="dlt-icon-delete macro-icon1" (click)="openMacro('remove')"></div>
-          </mat-menu-content>
-      </mat-menu>  -->
       <sag-topnav-item itemType="button" [disable]='false' title="Print host screen snapshot" (click)="print()" itemId="print" itemName=""
         itemIcon="dlt-icon-print" itemStyle="color:white">
       </sag-topnav-item>

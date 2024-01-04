@@ -68,6 +68,7 @@ import { RouteGuardService } from './services/route-guard.service';
 import { ScreenProcessorService } from './services/screen-processor.service'
 import { MacroComponent } from './macro/macro.component';
 import { SharedService } from './services/shared.service';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -130,7 +131,8 @@ const routes: Routes = [
     OverlayModule,
     MatMenuModule,
     MatRadioModule,
-    MatTooltipModule, 
+    MatTooltipModule,
+    MatCheckboxModule, 
     // MatDialog,
     LoggerModule.forRoot({serverLoggingUrl: environment.basePath+'/logger', level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.TRACE})
   ],

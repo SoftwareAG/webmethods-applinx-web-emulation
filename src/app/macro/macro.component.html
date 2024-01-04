@@ -19,7 +19,7 @@
     <div class="d-flex flex-column align-items-end">
       <span>
         <button *ngIf="!macroListFlag" type="submit" [disabled]="!playMacroForm.valid" class="dlt-button dlt-button-primary m-1">Play</button>
-        <button class="dlt-button dlt-button-secondary m-1" mat-dialog-close>Cancel</button>
+        <button class="dlt-button dlt-button-primary m-1" mat-dialog-close>Cancel</button>
       </span>
     </div>
   </form>
@@ -33,18 +33,18 @@
       <input matInput type="text" name="txtRecordMacro" id="txtRecordMacro" [(ngModel)]="txtRecordMacro" required>
     </mat-form-field>
     <span class="chkSimulate"><br>
-      <br>
-      <input type="checkbox" name="chkboxSimulateDelay" id="chkboxSimulateDelay"
-        [(ngModel)]="chkboxSimulateDelay">Simulate host Delays.<br>
+        <br>
+        <mat-checkbox name="chkboxSimulateDelay" id="chkboxSimulateDelay"
+        [(ngModel)]="chkboxSimulateDelay">Simulate host Delay
+      </mat-checkbox>
     </span>
     <div class="d-flex flex-column align-items-end">
       <span>
         <button type="submit" [disabled]="!recordMacroForm.valid"
           class="dlt-button dlt-button-primary m-1">Record</button>
-        <button class="dlt-button dlt-button-secondary m-1" mat-dialog-close>Cancel</button>
+        <button class="dlt-button dlt-button-primary m-1" mat-dialog-close>Cancel</button>
       </span>
     </div>
-
   </form>
 </div>
 
@@ -128,7 +128,7 @@
       <span>
         <button *ngIf="!macroListFlag" type="submit" [disabled]="!deleteMacroForm.valid"
           class="dlt-button dlt-button-primary m-1">Delete</button>
-        <button class="dlt-button dlt-button-secondary m-1" mat-dialog-close>Cancel</button>
+        <button class="dlt-button dlt-button-primary m-1" mat-dialog-close>Cancel</button>
       </span>
     </div>
   </form>

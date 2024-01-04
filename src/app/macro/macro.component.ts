@@ -75,7 +75,8 @@ export class MacroComponent {
   ngOnInit() {
     console.log(sessionStorage.getItem('userName'));
     this.applicationName = this.fileService.applicationName;
-    this.getMacroList( "vinotH".toLowerCase()); // sessionStorage.getItem('userName').toLowerCase();
+    this.macroListFlag = this.data.viewFlag;
+    this.getMacroList( "Vinoth".toLowerCase()); // sessionStorage.getItem('userName').toLowerCase();
     this.viewMacroFlag = false;
     this.parameter = this.data.paramType;
     switch(this.parameter) {
@@ -103,7 +104,7 @@ export class MacroComponent {
     // console.log("userName : ", user);
     // console.log("Token : ", this.storageService.getAuthToken());
     let token = this.storageService.getAuthToken();
-    // vinoth
+    // Vinoth
     console.log("Application Name : ",this.fileService.applicationName);
     this.macroFileListSubscription = this.macroService
         .getMacro(user, this.applicationName,token)
@@ -129,7 +130,7 @@ export class MacroComponent {
     let selDeleteMacro = form.value.selDeleteMacro +".json"
     //console.log("Form : "+ selDeleteMacro);
     let token = this.storageService.getAuthToken();
-    let userName = "vinoth" //sessionStorage.getItem('userName')
+    let userName = "Vinoth" //sessionStorage.getItem('userName')
     this.macroDeleteSubscription = this.macroService
             //  .deleteMacro(selDeleteMacro+".json",userName,this.applicationName, token)
               .deleteMacro(selDeleteMacro,userName,this.applicationName, token)
@@ -157,7 +158,7 @@ export class MacroComponent {
   onViewMacro(form) {
     console.log("Form : ", form);
     let selViewMacro = form.value.selViewMacro+".json";
-    let userName = "vinoth" //sessionStorage.getItem('userName')
+    let userName = "Vinoth" //sessionStorage.getItem('userName')
     console.log("File Name : ", selViewMacro )
     let token = this.storageService.getAuthToken();
     console.log("TOKEN_GEN:", token);
@@ -201,7 +202,7 @@ export class MacroComponent {
     console.log(form)
     let selectedMacro = form.value.selPlayMacro+".json";
     let macroContent 
-    let userName = "vinoth" //sessionStorage.getItem('userName')
+    let userName = "Vinoth" //sessionStorage.getItem('userName')
     console.log("File Name : ", selectedMacro )
     let token = this.storageService.getAuthToken();
     console.log("TOKEN_GEN:", token);
