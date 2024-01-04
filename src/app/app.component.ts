@@ -76,23 +76,27 @@ export class AppComponent implements OnInit, OnDestroy {
   macroFileListSubscription: Subscription;
   macroList: any;
   listFlag: any;
+  popupFlag : boolean = false;
+
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
-    if (this.screenLockerService.isLocked()) {
-      if(GXUtils.ENABLETYPEAHEADFLAG){
-        this.fnFormTypeaheadDetails(event);
-        console.log("Key Pressed : ", event.key)
+    if(!this.popupFlag){
+      if (this.screenLockerService.isLocked()) {
+        if(GXUtils.ENABLETYPEAHEADFLAG){
+          this.fnFormTypeaheadDetails(event);
+          console.log("Key Pressed : ", event.key)
+        }
+        return; // windows is loading...
       }
-      return; // windows is loading...
-    }
-    if (!this.keyboardMappingService.checkKeyboardMappings(event, true, event.keyCode)) {
-      event.preventDefault();
-    }
-    if (event.key === 'Enter' && !this.storageService.isConnected()) {
-      this.loginComponent.onConnect();
-      event.preventDefault();
-    } else if (this.storageService.isConnected() && this.tabAndArrowsService.handleArrows(event)) {
-      event.preventDefault();
+      if (!this.keyboardMappingService.checkKeyboardMappings(event, true, event.keyCode)) {
+        event.preventDefault();
+      }
+      if (event.key === 'Enter' && !this.storageService.isConnected()) {
+        this.loginComponent.onConnect();
+        event.preventDefault();
+      } else if (this.storageService.isConnected() && this.tabAndArrowsService.handleArrows(event)) {
+        event.preventDefault();
+      }
     }
   }
   fnFormTypeaheadDetails(event: KeyboardEvent) {
@@ -540,9 +544,10 @@ export class AppComponent implements OnInit, OnDestroy {
         height: 'auto',
         width: '40%',
       });
-
+    this.popupFlag = true;
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
+      this.popupFlag = false;
       this.changeRecColor = this.sharedService.getMacroRecordFlag(); // Changing the color of macro icon when it is in record mode
     });
   }

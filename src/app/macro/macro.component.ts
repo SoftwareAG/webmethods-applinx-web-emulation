@@ -222,8 +222,12 @@ export class MacroComponent {
                     .playMacro(playObj,token).subscribe(response =>{
                       console.log("2")
                       console.log(response)
+                    },
+                    error =>{
+                      this.openSnackBar(error.error.message);
                     })
-            })
+            }
+            )
             console.log("this.selViewMacroContent @ play: ", this.selViewMacroContent);
     
     this.matDialog.closeAll();
