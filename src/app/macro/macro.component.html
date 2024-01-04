@@ -85,7 +85,7 @@
     <div class="d-flex flex-column align-items-end">
       <span>
         <button *ngIf="!macroListFlag" type="submit" [disabled]="!viewMacroForm.valid" class="dlt-button dlt-button-primary m-1">View</button>
-        <button class="dlt-button dlt-button-secondary m-1" mat-dialog-close>Cancel</button>
+        <button class="dlt-button dlt-button-primary m-1" mat-dialog-close>Cancel</button>
       </span>
     </div>
     <div id="divViewMacro" *ngIf="viewMacroFlag" style="height:300px;overflow:scroll">
