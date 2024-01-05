@@ -69,9 +69,6 @@ export class AppComponent implements OnInit, OnDestroy {
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
     if (this.screenLockerService.isLocked()) {
-      if(GXUtils.ENABLETYPEAHEADFLAG){
-        this.fnFormTypeaheadDetails(event);
-      }
       return; // windows is loading...
     }
     if (!this.keyboardMappingService.checkKeyboardMappings(event, true, event.keyCode)) {
@@ -83,24 +80,6 @@ export class AppComponent implements OnInit, OnDestroy {
     } else if (this.storageService.isConnected() && this.tabAndArrowsService.handleArrows(event)) {
       event.preventDefault();
     }
-  }
-  fnFormTypeaheadDetails(event: KeyboardEvent) {
-    //throw new Error('Method not implemented.');
-    if(event.code){
-      if ( (GXUtils.FUNCTIONARRAY.indexOf(event.code) != -1) || (GXUtils.IGNOREKEYARRAY.indexOf(event.code) != -1) ) {
-        event.preventDefault();
-      } 
-      else if (event.key == GXUtils.TAB) {
-            GXUtils.appendTypeAheadStringArray(event); // adding textbox entries in a page
-            event.preventDefault();
-      } 
-      else if (event.key == GXUtils.ENTER || event.key == GXUtils.NUMPADENTER) {
-            GXUtils.appendTypeAheadStringArray(event); // adding pages to an array
-      } 
-      else{
-            GXUtils.appendTypeAheadChar(event.key); // Adding charecters typed by the user
-      }
-  }
   }
 
   @HostListener('focusin', ['$event'])
