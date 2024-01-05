@@ -20,6 +20,25 @@
   <sag-topnav *ngIf="!isSmallScreen()" brandsrc='assets/images/ApplinX-all white.svg' scrollStyle=""
     brandtitle='ApplinX Web Application' brandheight='56' brandwidth='196'>
     <sag-topnav-right right>
+        <div *ngIf = "this.changeRecColor">
+         <sag-topnav-item itemType="button" [matMenuTriggerFor]="matMenuMacro1" [disable]='false' title="Macro" (click)="macro()" itemId="copy" itemName=""
+          itemIcon="dlt-icon-submit-document" itemStyle="color: #B22222">
+         </sag-topnav-item>
+        </div>
+        <div *ngIf = "!this.changeRecColor">
+         <sag-topnav-item itemType="button" [matMenuTriggerFor]="matMenuMacro1" [disable]='false' title="Macro" (click)="macro()" itemId="copy" itemName=""
+          itemIcon="dlt-icon-submit-document" itemStyle="color: white">
+         </sag-topnav-item>
+       </div>
+       <mat-menu #matMenuMacro1="matMenu">
+          <mat-menu-content style="display: flex; flex-direction: row; padding: -1px 8px 0px 15px;">
+            <div title={{macroEvents.play}} *ngIf = "!recordStop" class="dlt-icon-play macro-icon" (click)="openMacro('play')"></div>
+            <div title={{macroEvents.record}} *ngIf = "!recordStop" class="dlt-icon-stop-circle macro-icon" (click)="openMacro('record')"></div>
+            <div title={{macroEvents.stop}} *ngIf = "recordStop" class="dlt-icon-stop macro-icon" (click)="stopRecord()"></div>
+            <div title={{macroEvents.view}} *ngIf = "!recordStop" class="dlt-icon-password-show macro-icon" (click)="openMacro('view')"></div>
+            <div title={{macroEvents.remove}} *ngIf = "!recordStop" class="dlt-icon-delete macro-icon" (click)="openMacro('remove')"></div>
+          </mat-menu-content>
+      </mat-menu>
       <sag-topnav-item itemType="button" [disable]='false' title="Copy text from host screen" (click)="copy()" itemId="copy" itemName=""
         itemIcon="dlt-icon-copy" itemStyle="color:white">
       </sag-topnav-item>
@@ -70,11 +89,6 @@
       </sag-topnav-item>
     </sag-topnav-right>
   </sag-topnav>
-
-
-
-
-
 
   <div class="middle-container">
     <div *ngIf="!isSmallScreen()" class="flexContainer" [hidden]="!displayScreen">

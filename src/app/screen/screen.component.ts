@@ -33,8 +33,8 @@ import {popup} from '../../assets/JSfunctions/scripts';
 import {cancel} from '../../assets/JSfunctions/scripts';
 import {GXUtils} from 'src/utils/GXUtils'
 import { Field, GetScreenRequest,
-  GetScreenResponse,
-  HostKeyTransformation,
+  GetScreenResponse, 
+  HostKeyTransformation, 
   ScreenService, InputField, ScreenBounds } from '@softwareag/applinx-rest-apis';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
@@ -42,8 +42,11 @@ import { ScreenHolderService } from '../services/screen-holder.service';
 import { UserExitsEventThrowerService } from '../services/user-exits-event-thrower.service';
 import { NGXLogger } from 'ngx-logger';
 import { MessagesService } from '../services/messages.service';
+import { SharedService } from '../services/shared.service'
 import { ScreenProcessorService } from '../services/screen-processor.service';
 import { ScreenLockerService } from '../services/screen-locker.service'
+import { MatDialog } from '@angular/material/dialog';
+import { MacroComponent } from '../macro/macro.component';
 
 @Component({
   selector: 'app-screen',
@@ -86,7 +89,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   isScreenUpdatedSubscription: Subscription;
   screenObjectUpdatedSubscription: Subscription;
   gridChangedSubscription: Subscription;
-
+  inputFields: any = [];
   intensifiedScr: boolean = false;
 
   constructor(private screenService: ScreenService, private navigationService: NavigationService,
@@ -94,7 +97,8 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
               private keyboardMappingService: KeyboardMappingService, private userExitsEventThrower: UserExitsEventThrowerService,
               private ref: ElementRef, private router: Router, private screenHolderService: ScreenHolderService,
               private logger: NGXLogger, private messages: MessagesService,         
-              private screenProcessorService: ScreenProcessorService, private screenLockerService: ScreenLockerService ) {}
+              private screenProcessorService: ScreenProcessorService, private screenLockerService: ScreenLockerService,
+              private dataService: SharedService,) {}
               
   ngAfterViewInit(): void {
     if (!this.isChildWindow) {
@@ -159,6 +163,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     .getScreen(this.storageService.getAuthToken(), req)
     .subscribe(
       screen => {
+        console.log("Vinothzhereee : ", screen)
         this.postGetScreen(screen);
         this.screenHolderService.setRawScreenData(screen)   
       },    
@@ -180,6 +185,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   }
 
   private postGetScreen(screen: GetScreenResponse): void {
+    console.log("Vinoth-2 screen@postGetScreen : ", screen)
     this.hostKeyTransforms = [];
     this.userExitsEventThrower.firePostGetScreen(screen);
     this.screenHolderService.setRuntimeScreen(screen);
@@ -205,6 +211,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     }
 
   private processScreen(screen: GetScreenResponse): void {
+    console.log("Vinoth 3 : screen@processScreen : ", screen)
       this.setVisibleLines(screen);
       if (this.screenHolderService.isCurrentScreenWindow() && !this.isChildWindow && 
            !(this.screenHolderService.getPreviousScreen().name == GXUtils.MENU && screen.name == GXUtils.UNKNOWN)) {
@@ -218,7 +225,6 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       if (this.hasChildWindows()) this.childWindows = [];
       if (!this.isChildWindow) this.onScreenInit(screen);
     }
-
   }
 
   private redirectToRoute(screenName: string): void {
@@ -265,10 +271,17 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     this.navigationService.setCursorPosition(screen.cursor);
     screen.fields = this.screenProcessorService.processRegionsToHide(screen.fields, screen.transformations);
     this.m_screen = screen;
+    console.log("this.m_screen : ", this.m_screen)
+    this.getInputFieldsCon(this.m_screen)
     this.addOrRemoveBorder(this.m_screen);
     this.screenLockerService.setLocked(false);
     //Example of injecting keyboard mapping
     // this.keyboardMappingService.addKeyboardMapping(GXAdditionalKey.NONE, GXKeyCodes.F3, popup, true, cancel);
+  }
+  getInputFieldsCon(m_screen: GetScreenResponse) {
+    this.inputFields = m_screen?.fields?.filter(field => field && field.protected === false);
+    this.dataService.setSharedData(this.inputFields);
+    console.log("this.inputFields  @ getInputFieldsCon : ",this.inputFields)
   }
 
   /**

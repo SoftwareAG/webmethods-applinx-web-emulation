@@ -30,10 +30,13 @@ import { LifecycleUserExits } from './user-exits/LifecycleUserExits';
 import { UserExitsEventThrowerService } from './services/user-exits-event-thrower.service';
 import { OAuth2HandlerService } from './services/oauth2-handler.service';
 import { MessagesService } from './services/messages.service';
-import { HostKeyTransformation, Cursor, SessionService, InfoService } from '@softwareag/applinx-rest-apis';
+import { HostKeyTransformation, Cursor, SessionService, InfoService, MacroService } from '@softwareag/applinx-rest-apis';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalpopupComponent } from './mini-components/transformations/modalpopup/modalpopup.component';
 import { GXUtils } from 'src/utils/GXUtils';
+import { MacroComponent } from './macro/macro.component';
+import { SharedService } from './services/shared.service';
+import { ConfigurationService } from './services/configuration.service';
 
 @Component({
   selector: 'app-root',
@@ -65,20 +68,31 @@ export class AppComponent implements OnInit, OnDestroy {
   zoomStep: number = GXUtils.zoomStep;
   isOpenThemeStyle: boolean = false;
   themeColor: string = GXUtils.defaultThemeColor;
+  macroButtonCol: string
+  recMacroTitle: any;
+  changeRecColor: boolean = false;
+  recordStop: boolean = false;
+  macroEvents = GXUtils.MACRO;
+  macroFileListSubscription: Subscription;
+  macroList: any;
+  listFlag: any;
+  popupFlag : boolean = false;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
-    if (this.screenLockerService.isLocked()) {
-      return; // windows is loading...
-    }
-    if (!this.keyboardMappingService.checkKeyboardMappings(event, true, event.keyCode)) {
-      event.preventDefault();
-    }
-    if (event.key === 'Enter' && !this.storageService.isConnected()) {
-      this.loginComponent.onConnect();
-      event.preventDefault();
-    } else if (this.storageService.isConnected() && this.tabAndArrowsService.handleArrows(event)) {
-      event.preventDefault();
+    if(!this.popupFlag){
+      if (this.screenLockerService.isLocked()) {
+        return; // windows is loading...
+      }
+      if (!this.keyboardMappingService.checkKeyboardMappings(event, true, event.keyCode)) {
+        event.preventDefault();
+      }
+      if (event.key === 'Enter' && !this.storageService.isConnected()) {
+        this.loginComponent.onConnect();
+        event.preventDefault();
+      } else if (this.storageService.isConnected() && this.tabAndArrowsService.handleArrows(event)) {
+        event.preventDefault();
+      }
     }
   }
 
@@ -114,7 +128,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private screenHolderService: ScreenHolderService, private userExitsEventThrower: UserExitsEventThrowerService,
     private logger: NGXLogger, private httpClient: HttpClient, private messages: MessagesService,
     private oAuth2handler: OAuth2HandlerService, private matDialog: MatDialog,
-    private infoService: InfoService) {
+    private sharedService: SharedService, private configurationService: ConfigurationService,
+    private infoService: InfoService,private macroService: MacroService,) {
     this.userExitsEventThrower.clearEventListeners();
     this.userExitsEventThrower.addEventListener(new LifecycleUserExits(infoService, navigationService, storageService, keyboardMappingService, logger));
     this.getLoggerConfiguration();
@@ -133,6 +148,14 @@ export class AppComponent implements OnInit, OnDestroy {
     } else if (window.innerWidth > 1800) {
       this.zoomDefault = 20;
     }
+
+    this.sharedService.data$.subscribe(data => {
+      // Handle the data received from the modal component
+      this.changeRecColor = data !== '' && data !== null ? true : false;
+    });
+
+    let macTitle = this.sharedService;
+    this.recMacroTitle = macTitle.getRecMacroTitle;
     document.documentElement.style.setProperty('--text-font-size', this.zoomDefault + 'px');
   }
 
@@ -476,6 +499,45 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.hostConnectionSubscription) {
       this.hostConnectionSubscription.unsubscribe();
     }
+  }
+
+ macro(){
+  let token = this.storageService.getAuthToken();
+    let user = "vinothzhere" //sessionStorage.getItem('userName');
+    this.macroFileListSubscription = this.macroService
+        .getMacro(user,'', token)
+        .subscribe(data =>{
+        console.log(data)
+        this.macroList = data.fileList;
+        this.listFlag = this.macroList?.length === 0 || this.macroList === undefined ? true : false;
+      })
+    this.recordStop = this.sharedService.getMacroRecordFlag();
+  }
+
+  openMacro(paramType: string) {
+    let viewFlag = this.listFlag;
+    const dialogRef = this.matDialog.open(MacroComponent,
+      {
+        data: {paramType, viewFlag},
+        height: 'auto',
+        width: '40%',
+      });
+    this.popupFlag = true;
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+      this.popupFlag = false;
+      this.changeRecColor = this.sharedService.getMacroRecordFlag(); // Changing the color of macro icon when it is in record mode
+    });
+  }
+
+  stopRecord() {
+    this.sharedService.setMacroRecordFlag();
+    this.sharedService.stopMacroRecording(this.configurationService.applicationName);
+    this.changeRecColor = this.sharedService.getMacroRecordFlag();
+  }
+
+  handleClick() {
+    alert("CLICKED")
   }
 
 

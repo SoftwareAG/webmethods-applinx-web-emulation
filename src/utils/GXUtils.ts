@@ -246,4 +246,23 @@ export class GXUtils {
     public static showHostKeyFlag = false;
     public static MENU = "Menu";
     public static UNKNOWN = "UNKNOWN";
+    public static RecordMacro = 'record';
+    public static ViewMacro = 'view';
+    public static PlayMacro = 'play';
+    public static RenameMacro = 'rename';
+    public static MacroExitsMsg = "The Macro name already exists, Please enter a new Macro Name";
+    public static DeleteMacro = 'remove';
+  
+  public static MACRO_BASE_URL = "http://localhost:2380/";
+  public static GET_MACROLIST_URL = "applinx/rest/macro/list";
+  public static MACRO_URL = "applinx/rest/macro";
+
+  public static MACRO = {
+    play : "Play Macro",
+    record : "Record Macro",
+    view: "View Macro",
+    remove: "Remove Macro",
+    stop: "Stop Record Macro"
+  }
+  public static MACRO_FILE_ALREADY_EXISTS = "File already exists";
 }
