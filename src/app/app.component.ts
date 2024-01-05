@@ -424,6 +424,10 @@ export class AppComponent implements OnInit, OnDestroy {
       }, height: '100%',
       width: '90%',
     });
+    this.popupFlag = true;
+    dialogRef.afterClosed().subscribe(result => {
+      this.popupFlag = false;
+    });
   }
 
   formatLineText(lineDetails) {
