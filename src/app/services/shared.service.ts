@@ -81,7 +81,7 @@ export class SharedService {
       this.applicationName = applicationName;
       let tempUserName = sessionStorage.getItem('userName');
       let userName = tempUserName.substr(1, tempUserName.length-2);
-      this.macroObj["simulateDelay"] = this.macroDetails.chkboxSimulateDelay;
+      // this.macroObj["simulateDelay"] = this.macroDetails.chkboxSimulateDelay;
       this.macroObj["steps"] = this.macroRecordArray;
       console.log(this.macroObj);
       let token = this.storageService.getAuthToken();

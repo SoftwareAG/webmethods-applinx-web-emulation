@@ -32,12 +32,12 @@
       <mat-label>Enter Macro Name</mat-label>
       <input matInput type="text" name="txtRecordMacro" id="txtRecordMacro" [(ngModel)]="txtRecordMacro" required>
     </mat-form-field>
-    <span class="chkSimulate"><br>
+    <!-- <span class="chkSimulate"><br>
         <br>
         <mat-checkbox name="chkboxSimulateDelay" id="chkboxSimulateDelay"
         [(ngModel)]="chkboxSimulateDelay">Simulate host Delay
       </mat-checkbox>
-    </span>
+    </span> -->
     <div class="d-flex flex-column align-items-end">
       <span>
         <button type="submit" [disabled]="!recordMacroForm.valid"
