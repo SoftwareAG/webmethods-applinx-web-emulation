@@ -163,7 +163,6 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     .getScreen(this.storageService.getAuthToken(), req)
     .subscribe(
       screen => {
-        console.log("Vinothzhereee : ", screen)
         this.postGetScreen(screen);
         this.screenHolderService.setRawScreenData(screen)   
       },    
@@ -185,7 +184,6 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   }
 
   private postGetScreen(screen: GetScreenResponse): void {
-    console.log("Vinoth-2 screen@postGetScreen : ", screen)
     this.hostKeyTransforms = [];
     this.userExitsEventThrower.firePostGetScreen(screen);
     this.screenHolderService.setRuntimeScreen(screen);
@@ -211,7 +209,6 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     }
 
   private processScreen(screen: GetScreenResponse): void {
-    console.log("Vinoth 3 : screen@processScreen : ", screen)
       this.setVisibleLines(screen);
       if (this.screenHolderService.isCurrentScreenWindow() && !this.isChildWindow && 
            !(this.screenHolderService.getPreviousScreen().name == GXUtils.MENU && screen.name == GXUtils.UNKNOWN)) {

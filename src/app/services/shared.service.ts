@@ -78,18 +78,13 @@ export class SharedService {
    }
 
    stopMacroRecording(applicationName){
-     // this.macroName = (flag)? : this.macroDetails["txtRecordMacro"];
-      //console.log("Stop recording me....."+ this.macroDetails["txtRecordMacro"])
-      // console.log("Application Name : ",this.fileService.applicationName);
       this.applicationName = applicationName;
-      let userName = "Vinoth" //sessionStorage.getItem('userName')
-     // this.macroObj["userName"] = "Vinoth" //sessionStorage.getItem('userName'); //userName.substring(1, userName.length - 1);
-      //this.macroObj["name"] = this.macroName;
+      let tempUserName = sessionStorage.getItem('userName');
+      let userName = tempUserName.substr(1, tempUserName.length-2);
       this.macroObj["simulateDelay"] = this.macroDetails.chkboxSimulateDelay;
       this.macroObj["steps"] = this.macroRecordArray;
       console.log(this.macroObj);
       let token = this.storageService.getAuthToken();
-      console.log("this.applicationName : ", applicationName)
       this.macroSaveSubscription = this.macroService
                   .saveMacro(this.macroObj,this.macroName+".json",userName,applicationName, token)
                   .subscribe(response=>{
@@ -100,7 +95,6 @@ export class SharedService {
          console.log(err);
          let errorMsg = err.error.message;
          if (errorMsg == GXUtils.MACRO_FILE_ALREADY_EXISTS){
-         //   this.openSnackBar("The Macro name already exists, Please enter a new Macro Name");
             console.log(this.macroObj,this.macroName+".json",userName,token)
             let paramType = GXUtils.RenameMacro;
             const dialogRef = this.matDialog.open(MacroComponent,

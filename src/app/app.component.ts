@@ -507,7 +507,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
  macro(){
   let token = this.storageService.getAuthToken();
-    let user = "vinothzhere" //sessionStorage.getItem('userName');
+    let user = sessionStorage.getItem('userName');
     this.macroFileListSubscription = this.macroService
         .getMacro(user,'', token)
         .subscribe(data =>{
@@ -539,11 +539,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.sharedService.stopMacroRecording(this.configurationService.applicationName);
     this.changeRecColor = this.sharedService.getMacroRecordFlag();
   }
-
-  handleClick() {
-    alert("CLICKED")
-  }
-
 
   changeBackgroundColor(color: string) {
     this.themeColor = color;
