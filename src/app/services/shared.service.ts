@@ -104,11 +104,12 @@ export class SharedService {
                  width: '40%',
                });
          }
-      })
+      });
+      this.macroRecordArray = [];
     }
 
     openSnackBar(message: string) {
-      this._snackBar.open(message,"Ok",
+      this._snackBar.open(message,"OK",
                         { 
                       //    duration: 3000,
                           horizontalPosition: "right",
