@@ -1,7 +1,7 @@
 <div *ngIf="this.playMacro">
   <form #playMacroForm="ngForm" (ngSubmit)="onPlayMacro(playMacroForm)">
     <div class="play-con">
-      <h4 class="con-header">Play Macro</h4>
+      <h6 class="con-header">Play Macro</h6>
       <div *ngIf="!macroListFlag">
         <mat-form-field>
           <mat-label>Select Macro Name</mat-label>
@@ -27,7 +27,7 @@
 
 <div *ngIf="this.recMacro">
   <form #recordMacroForm="ngForm" (ngSubmit)="onRecordMacro(recordMacroForm)">
-    <h4 class="con-header">Record Macro</h4>
+    <h6 class="con-header">Record Macro</h6>
     <mat-form-field class="input-record" appearance="outline">
       <mat-label>Enter Macro Name</mat-label>
       <input matInput type="text" name="txtRecordMacro" id="txtRecordMacro" [(ngModel)]="txtRecordMacro" required>
@@ -51,7 +51,7 @@
 <div *ngIf="this.renameMacro">
 
   <form #renameMacroForm="ngForm" (ngSubmit)="onRenameMacro(renameMacroForm)">
-    <h4 class="con-header">Record Macro</h4>
+    <h6 class="con-header">Record Macro</h6>
     <h5>{{MacroExitsMsg}}</h5>
     <mat-form-field class="input-record" appearance="outline">
       <mat-label>Enter New Macro Name</mat-label>
@@ -69,7 +69,7 @@
 <div *ngIf="this.viewMacro">
   <form #viewMacroForm="ngForm" (ngSubmit)="onViewMacro(viewMacroForm)">
     <div>
-      <h4 class="con-header">View Macro</h4>
+      <h6 class="con-header">View Macro</h6>
       <div *ngIf="!macroListFlag">
         <mat-form-field>
           <mat-label>Select Macro Name</mat-label>
@@ -109,7 +109,7 @@
 <div *ngIf="this.delMacro" class="container">
   <form #deleteMacroForm="ngForm" (ngSubmit)="onDeleteMacro(deleteMacroForm)">
     <div>
-      <h4 class="con-header">Delete Macro</h4>
+      <h6 class="con-header">Delete Macro</h6>
       <div *ngIf="!macroListFlag">
         <mat-form-field>
           <mat-label>Select Macro Name</mat-label>
