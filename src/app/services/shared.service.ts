@@ -88,7 +88,8 @@ export class SharedService {
       this.macroSaveSubscription = this.macroService
                   .saveMacro(this.macroObj,this.macroName+".json",userName,applicationName, token)
                   .subscribe(response=>{
-                     console.log(response)
+                     console.log(response);
+                     this.macroRecordArray = [];
                      this.openSnackBar("The Macro '"+this.macroName+"' is Successfully Created")
       },
       err =>{
@@ -105,7 +106,7 @@ export class SharedService {
                });
          }
       });
-      this.macroRecordArray = [];
+      
     }
 
     openSnackBar(message: string) {
