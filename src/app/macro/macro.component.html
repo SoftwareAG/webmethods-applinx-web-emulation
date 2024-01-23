@@ -1,12 +1,12 @@
-<div *ngIf="this.playMacro">
+<div *ngIf="this.playMacro" class="container">
   <form #playMacroForm="ngForm" (ngSubmit)="onPlayMacro(playMacroForm)">
-    <div class="play-con">
+    <div>
       <h6 class="con-header">Play Macro</h6>
       <div *ngIf="!macroListFlag">
         <mat-form-field>
           <mat-label>Select Macro Name</mat-label>
-          <mat-select name="selPlayMacro" id="selPlayMacro" [(ngModel)]="selPlayMacro" required>
-            <mat-option *ngFor="let macro of this.macroList" [value]="macro">{{ macro }}</mat-option>
+          <mat-select id="selPlayMacro" name="selPlayMacro" [(ngModel)]="selPlayMacro" required>
+            <mat-option *ngFor="let macro of this.macroList" [value]="macro">{{macro}}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -14,8 +14,6 @@
         <span>No Macros Available.</span>
       </div>
     </div>
-    <br>
-    <br>
     <div class="d-flex flex-column align-items-end">
       <span>
         <button *ngIf="!macroListFlag" type="submit" [disabled]="!playMacroForm.valid" class="dlt-button dlt-button-primary m-1">Play</button>
