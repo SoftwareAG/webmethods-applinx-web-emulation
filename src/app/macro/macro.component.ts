@@ -164,7 +164,11 @@ export class MacroComponent {
                       console.log(response)
                     },
                     error =>{
-                      this.snackBarRef = this._snackBar.open(error.error.message);
+                      this.snackBarRef = this._snackBar.open(error.error.message,"OK",
+                      { 
+                        horizontalPosition: "right",
+                        verticalPosition: "top"
+                      });
                       this.dataService.setSnackBarRef(this.snackBarRef);
                     })
             }
