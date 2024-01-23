@@ -211,6 +211,9 @@ export class AppComponent implements OnInit, OnDestroy {
     const targetModal = document.getElementById('readonly_modal');
     targetModal.classList.remove('dlt-modal-window__open')
     this.storageService.setNotConnected();
+    this.recordStop = this.sharedService.getMacroRecordFlag();
+    this.changeRecColor = this.recordStop?true:false;
+    this.matDialog.closeAll();
   }
 
   reload(): void {
@@ -221,6 +224,10 @@ export class AppComponent implements OnInit, OnDestroy {
     if (!this.storageService.isConnected()) {
       return;
     }
+    this.changeRecColor = false;
+    this.recordStop = false; 
+    this.sharedService.setMacroRecordFlag(false);
+    this.sharedService.clearMacroObj();
     this.userExitsEventThrower.firePreDisconnect();
     this.disconnectSubscription = this.sessionService.disconnect(this.storageService.getAuthToken())
       .subscribe(
@@ -405,29 +412,29 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
     formatCopyPage(formattedArray,printFlag){
-    let divElement = document.createElement("div");
-    let lineIdentifier = 0;
-    formattedArray.forEach(element =>{
-      let paraElement = document.createElement("span");
-      paraElement.innerText = element;
-      paraElement.id = "gx_text";
-      paraElement.tabIndex = lineIdentifier++;
-      divElement.appendChild(paraElement);
-      let lineBreakElement = document.createElement("br");
-      divElement.appendChild(lineBreakElement);  
-      divElement.tabIndex = lineIdentifier++;
-    });
-    const dialogRef = this.matDialog.open(ModalpopupComponent, {
-      data: {
-        content: divElement.innerHTML,
-        typeFlag: printFlag
-      }, height: '100%',
-      width: '90%',
-    });
-    this.popupFlag = true;
-    dialogRef.afterClosed().subscribe(result => {
-      this.popupFlag = false;
-    });
+      let divElement = document.createElement("div");
+      let lineIdentifier = 0;
+      formattedArray.forEach(element =>{
+        let paraElement = document.createElement("span");
+        paraElement.innerText = element;
+        paraElement.id = "gx_text";
+        paraElement.tabIndex = lineIdentifier++;
+        divElement.appendChild(paraElement);
+        let lineBreakElement = document.createElement("br");
+        divElement.appendChild(lineBreakElement);  
+        divElement.tabIndex = lineIdentifier++;
+      });
+      const dialogRef = this.matDialog.open(ModalpopupComponent, {
+        data: {
+          content: divElement.innerHTML,
+          typeFlag: printFlag
+        }, height: '100%',
+        width: '90%',
+      });
+      this.popupFlag = true;
+      dialogRef.afterClosed().subscribe(result => {
+        this.popupFlag = false;
+      });
   }
 
   formatLineText(lineDetails) {
@@ -535,7 +542,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   stopRecord() {
-    this.sharedService.setMacroRecordFlag();
+    this.sharedService.setMacroRecordFlag(false);
     this.sharedService.stopMacroRecording(this.configurationService.applicationName);
     this.changeRecColor = this.sharedService.getMacroRecordFlag();
   }

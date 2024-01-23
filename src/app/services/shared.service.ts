@@ -17,19 +17,21 @@ export class SharedService {
 
    private dataSubject = new BehaviorSubject<any>(null);
    public data$ = this.dataSubject.asObservable();
-   public stopRecord = false;
    public macroRecordFlag = false;
    public macroRecordArray: any = [];
    public macroName: string;
-   public simulateDelayFlag : boolean;
+   public simulateDelayFlag: boolean;
    public macroDetails: any;
-   public macroObj : any = {};
-   public macroSaveSubscription : Subscription;
-   public applicationName : string = "";
+   public macroObj: any = {};
+   public macroSaveSubscription: Subscription;
+   public applicationName: string = "";
+   public snackBarReference : any;
+   public snackBarFlag : boolean = false;
+   public snackBarRef: any;
 
-   constructor(private httpClient: HttpClient, private storageService: StorageService,private _snackBar: MatSnackBar,
-      private macroService: MacroService,private matDialog: MatDialog,// private fileService: ConfigurationService
-      ){}
+   constructor(private httpClient: HttpClient, private storageService: StorageService, private _snackBar: MatSnackBar,
+      private macroService: MacroService, private matDialog: MatDialog,// private fileService: ConfigurationService
+   ) { }
    setSharedData(data: any) {
       this.sharedData = data;
    }
@@ -58,65 +60,64 @@ export class SharedService {
       this.dataSubject.next(data);
    }
 
-   //  stopMacroEnable(data: any) {
-   //    this.stopRecord = data !== '' && data !== null ? true : false
-   //  }
-
-   setMacroRecordFlag() {
-      this.macroRecordFlag = !this.macroRecordFlag
+   setMacroRecordFlag(flag) {
+      this.macroRecordFlag = flag;
       console.log("Macro Record Flag : ", this.macroRecordFlag)
    }
 
-   setMacroDetails(name){
+   setMacroDetails(name) {
       this.macroDetails = name;
-      this.macroName = this.macroDetails["txtRecordMacro"]; 
+      this.macroName = this.macroDetails["txtRecordMacro"];
    }
 
-   renameMacroRecording(name){
+   renameMacroRecording(name) {
       this.macroName = name.txtRenameMacro;
       this.stopMacroRecording(this.applicationName);
    }
 
-   stopMacroRecording(applicationName){
+   stopMacroRecording(applicationName) {
       this.applicationName = applicationName;
       let tempUserName = sessionStorage.getItem('userName');
-      let userName = tempUserName.substr(1, tempUserName.length-2);
+      let userName = tempUserName.substr(1, tempUserName.length - 2);
       // this.macroObj["simulateDelay"] = this.macroDetails.chkboxSimulateDelay;
       this.macroObj["steps"] = this.macroRecordArray;
       console.log(this.macroObj);
       let token = this.storageService.getAuthToken();
-      this.macroSaveSubscription = this.macroService
-                  .saveMacro(this.macroObj,this.macroName+".json",userName,applicationName, token)
-                  .subscribe(response=>{
-                     console.log(response);
-                     this.macroRecordArray = [];
-                     this.openSnackBar("The Macro '"+this.macroName+"' is Successfully Created")
-      },
-      err =>{
-         console.log(err);
-         let errorMsg = err.error.message;
-         if (errorMsg == GXUtils.MACRO_FILE_ALREADY_EXISTS){
-            console.log(this.macroObj,this.macroName+".json",userName,token)
-            let paramType = GXUtils.RenameMacro;
-            const dialogRef = this.matDialog.open(MacroComponent,
+      // if (this.macroName) {
+         this.macroSaveSubscription = this.macroService
+            .saveMacro(this.macroObj, this.macroName + ".json", userName, applicationName, token)
+            .subscribe(response => {
+               console.log(response);
+               this.macroRecordArray = [];
+               //this.openSnackBar("The Macro '" + this.macroName + "' is Successfully Created")
+               this.snackBarRef = this._snackBar.open("The Macro '" + this.macroName + "' is Successfully Created", "OK",
                {
-                 data: {paramType},
-                 height: 'auto',
-                 width: '40%',
+                  //    duration: 3000,
+                  horizontalPosition: "right",
+                  verticalPosition: "top"
                });
-         }
-      });
-      
-    }
-
-    openSnackBar(message: string) {
-      this._snackBar.open(message,"OK",
-                        { 
-                      //    duration: 3000,
-                          horizontalPosition: "right",
-                          verticalPosition: "top"
+               this.setSnackBarRef(this.snackBarRef);
+            },
+               err => {
+                  console.log(err);
+                  let errorMsg = err.error.message;
+                  if (errorMsg == GXUtils.MACRO_FILE_ALREADY_EXISTS) {
+                     console.log(this.macroObj, this.macroName + ".json", userName, token)
+                     let paramType = GXUtils.RenameMacro;
+                     this.snackBarRef  = this.matDialog.open(MacroComponent,
+                        {
+                           data: { paramType },
+                           height: 'auto',
+                           width: '40%',
                         });
-    }
+                     this.setSnackBarRef(this.snackBarRef);
+                  }
+               });
+      // }else{
+      //    console.log("Macro Name @ Else : ", this.macroName);
+      //    console.log("Macro Obj @ Else : ", this.macroObj);
+      // }
+   }
 
    getMacroRecordFlag() {
       return this.macroRecordFlag;
@@ -135,4 +136,24 @@ export class SharedService {
       console.log("Object while Save : ", obj);
       this.macroRecordArray.push(obj);
    }
+
+   clearMacroObj(){
+      this.macroRecordArray = [];
+      this.macroObj = {}
+   }
+   
+  setSnackBarRef(snackBarRef){
+   console.log("@ Storage Service - setSnackBarRef : ", snackBarRef)
+   this.snackBarReference = snackBarRef;
+   this.snackBarFlag = true;
+ }
+
+ closeSnackBar(){
+   console.log("@ Storage Service : ", this.snackBarReference)
+   this.snackBarReference.dismiss();
+ }
+
+ isSnackBarPresent(){
+   return this.snackBarFlag;
+ }
 }

@@ -107,6 +107,7 @@ export class NavigationService {
           this.errorMessage = 'The session has timed out due to inactivity.';
           this.isConnectedtoHost.next(false);
           this.isThereError = true;
+          this.sharedService.isSnackBarPresent()?this.sharedService.closeSnackBar():"";
         }
         else if ((this.isAuthDisabled() && this.isAutoLogin) ) { // show disconnect message                
           this.errorMessage = 'The session has been disconnected from the host.';          

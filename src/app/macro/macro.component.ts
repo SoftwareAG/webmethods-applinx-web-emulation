@@ -41,6 +41,7 @@ export class MacroComponent {
   macroPlaySubscription: Subscription;
   macroDeleteSubscription: Subscription;
   applicationName: string;
+  snackBarRef: any;
   
   @Output() dataEmitter = new EventEmitter<any>();
 
@@ -107,9 +108,17 @@ export class MacroComponent {
               .deleteMacro(selDeleteMacro +".json",userName,this.applicationName, token)
               .subscribe(response=>{
                 console.log(response);
-                this.openSnackBar("Macro "+selDeleteMacro+" " + response["message"]);
-              })
+                this.snackBarRef = this._snackBar.open("Macro "+selDeleteMacro+" " + response["message"],"OK",
+                      { 
+                        horizontalPosition: "right",
+                        verticalPosition: "top"
+                      });
+                this.dataService.setSnackBarRef(this.snackBarRef);
+              });
+              
     this.matDialog.closeAll();
+    
+    // event.preventDefault();  
   } 
   
 
@@ -124,7 +133,7 @@ export class MacroComponent {
               this.selViewMacroContent = response;
               this.selectedMacroObj["name"] = this.selViewMacroContent.name;
               this.selectedMacroObj["steps"] = this.selViewMacroContent.steps;
-              this.selectedMacroObj["fields"] = this.selViewMacroContent.fields;
+             // this.selectedMacroObj["fields"] = this.selViewMacroContent.fields;
               this.viewMacroFlag = true;
     })
   }
@@ -155,7 +164,8 @@ export class MacroComponent {
                       console.log(response)
                     },
                     error =>{
-                      this.openSnackBar(error.error.message);
+                      this.snackBarRef = this._snackBar.open(error.error.message);
+                      this.dataService.setSnackBarRef(this.snackBarRef);
                     })
             }
             )
@@ -163,7 +173,7 @@ export class MacroComponent {
   }
 
   onRecordMacro(form){  // Save Macro
-        this.dataService.setMacroRecordFlag();
+        this.dataService.setMacroRecordFlag(true);
         this.dataService.setMacroDetails(form.value);
         console.log(form.value);
         this.matDialog.closeAll();
@@ -172,15 +182,6 @@ export class MacroComponent {
   onRenameMacro(form){
     this.dataService.renameMacroRecording(form.value);
     this.matDialog.closeAll();
-  }
-
-  openSnackBar(message: string) {
-    this._snackBar.open(message,"OK",
-                      { 
-                    //    duration: 3000,
-                        horizontalPosition: "right",
-                        verticalPosition: "top"
-                      });
   }
 }
 
