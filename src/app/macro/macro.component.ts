@@ -77,6 +77,7 @@ export class MacroComponent {
       case GXUtils.RenameMacro:
         this.MacroExitsMsg = GXUtils.MacroExitsMsg
         this.renameMacro = true;
+        this.dataService.setPopUpFlag(true);
         break;
     }
    // this.recordStop = this.dataService.stopRecord;
@@ -184,6 +185,7 @@ export class MacroComponent {
   }
 
   onRenameMacro(form){
+    this.dataService.setPopUpFlag(false);
     this.dataService.renameMacroRecording(form.value);
     this.matDialog.closeAll();
   }

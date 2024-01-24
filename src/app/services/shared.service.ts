@@ -28,6 +28,7 @@ export class SharedService {
    public snackBarReference : any;
    public snackBarFlag : boolean = false;
    public snackBarRef: any;
+   public popUpFlag: boolean = false;
 
    constructor(private httpClient: HttpClient, private storageService: StorageService, private _snackBar: MatSnackBar,
       private macroService: MacroService, private matDialog: MatDialog,// private fileService: ConfigurationService
@@ -155,5 +156,13 @@ export class SharedService {
 
  isSnackBarPresent(){
    return this.snackBarFlag;
+ }
+
+ setPopUpFlag(flag){
+   this.popUpFlag = flag;
+ }
+
+ getPopUpFlag(){
+   return this.popUpFlag;
  }
 }

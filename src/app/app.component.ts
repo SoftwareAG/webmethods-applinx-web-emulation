@@ -76,11 +76,11 @@ export class AppComponent implements OnInit, OnDestroy {
   macroFileListSubscription: Subscription;
   macroList: any;
   listFlag: any;
-  popupFlag : boolean = false;
+  // popupFlag : boolean = false;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
-    if(!this.popupFlag){
+    if(!this.sharedService.getPopUpFlag()){
       if (this.screenLockerService.isLocked()) {
         return; // windows is loading...
       }
@@ -431,9 +431,9 @@ export class AppComponent implements OnInit, OnDestroy {
         }, height: '100%',
         width: '90%',
       });
-      this.popupFlag = true;
+      this.sharedService.setPopUpFlag(true);
       dialogRef.afterClosed().subscribe(result => {
-        this.popupFlag = false;
+        this.sharedService.setPopUpFlag(false);
       });
   }
 
@@ -533,10 +533,10 @@ export class AppComponent implements OnInit, OnDestroy {
         height: 'auto',
         width: '40%',
       });
-    this.popupFlag = true;
+      this.sharedService.setPopUpFlag(true);
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
-      this.popupFlag = false;
+      this.sharedService.setPopUpFlag(false);
       this.changeRecColor = this.sharedService.getMacroRecordFlag(); // Changing the color of macro icon when it is in record mode
     });
   }
