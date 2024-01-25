@@ -211,8 +211,7 @@ export class AppComponent implements OnInit, OnDestroy {
     const targetModal = document.getElementById('readonly_modal');
     targetModal.classList.remove('dlt-modal-window__open')
     this.storageService.setNotConnected();
-    this.recordStop = this.sharedService.getMacroRecordFlag();
-    this.changeRecColor = this.recordStop?true:false;
+    this.clearMacroDetails();
     this.matDialog.closeAll();
   }
 
@@ -224,10 +223,7 @@ export class AppComponent implements OnInit, OnDestroy {
     if (!this.storageService.isConnected()) {
       return;
     }
-    this.changeRecColor = false;
-    this.recordStop = false; 
-    this.sharedService.setMacroRecordFlag(false);
-    this.sharedService.clearMacroObj();
+    this.clearMacroDetails();
     this.userExitsEventThrower.firePreDisconnect();
     this.disconnectSubscription = this.sessionService.disconnect(this.storageService.getAuthToken())
       .subscribe(
@@ -235,6 +231,13 @@ export class AppComponent implements OnInit, OnDestroy {
         error => this.userExitsEventThrower.fireOnDisconnectError(error)
       );
     this.disconnectSubscription.add(() => this.storageService.setNotConnected())
+  }
+
+  clearMacroDetails(){
+    this.changeRecColor = false;
+    this.recordStop = false; 
+    this.sharedService.setMacroRecordFlag(false);
+    this.sharedService.clearMacroObj();
   }
 
   print() {
