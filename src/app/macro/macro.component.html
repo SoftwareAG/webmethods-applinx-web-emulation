@@ -28,15 +28,23 @@
     <h6 class="con-header">Record Macro</h6>
     <mat-form-field class="input-record" appearance="outline">
       <mat-label>Enter Macro Name</mat-label>
-      <input matInput type="text" name="txtRecordMacro" id="txtRecordMacro" [(ngModel)]="txtRecordMacro" required>
+      <input matInput type="text" 
+          name="txtRecordMacro" 
+          id="txtRecordMacro" 
+          class="form-control" 
+          maxlength="15"
+          ngModel 
+          pattern="^[a-zA-Z0-9-]*$"
+          #txtRecordMacro="ngModel" 
+          required >
+      <mat-hint style="color:rgb(0, 0, 255)" *ngIf="!txtRecordMacro.valid && txtRecordMacro.touched && !txtRecordMacro.errors?.pattern">
+        Macro Name is Mandatory. 
+      </mat-hint>
+      <mat-hint style="color:rgb(0, 0, 255)" *ngIf="txtRecordMacro.errors?.pattern && txtRecordMacro.touched">
+        Macro Name cannot have special characters. 
+      </mat-hint>
     </mat-form-field>
-    <!-- <span class="chkSimulate"><br>
-        <br>
-        <mat-checkbox name="chkboxSimulateDelay" id="chkboxSimulateDelay"
-        [(ngModel)]="chkboxSimulateDelay">Simulate host Delay
-      </mat-checkbox>
-    </span> -->
-    <div class="d-flex flex-column align-items-end">
+    <div class="d-flex flex-column align-items-end pt-3">
       <span>
         <button type="submit" [disabled]="!recordMacroForm.valid"
           class="dlt-button dlt-button-primary m-1">Record</button>
@@ -51,11 +59,26 @@
   <form #renameMacroForm="ngForm" (ngSubmit)="onRenameMacro(renameMacroForm)">
     <h6 class="con-header">Record Macro</h6>
     <h5>{{MacroExitsMsg}}</h5>
-    <mat-form-field class="input-record" appearance="outline">
+    <mat-form-field class="input-record" appearance="outline" size="large">
       <mat-label>Enter New Macro Name</mat-label>
-      <input matInput type="text" name="txtRenameMacro" id="txtRenameMacro" [(ngModel)]="txtRenameMacro" required>
+      <input matInput 
+          type="text" 
+          name="txtRenameMacro" 
+          id="txtRenameMacro" 
+          class="form-control" 
+          maxlength="15"
+          ngModel 
+          pattern="^[a-zA-Z0-9-]*$"
+          #txtRenameMacro="ngModel" 
+          required>
+          <mat-hint style="color:rgb(0, 0, 255)" *ngIf="!txtRenameMacro.valid && txtRenameMacro.touched && !txtRenameMacro.errors?.pattern">
+            Macro Name is Mandatory. 
+          </mat-hint>
+          <mat-hint style="color:rgb(0, 0, 255)" *ngIf="txtRenameMacro.errors?.pattern && txtRenameMacro.touched">
+            Macro Name cannot have special characters. 
+          </mat-hint>
     </mat-form-field>
-    <div class="d-flex flex-column align-items-end">
+    <div class="d-flex flex-column align-items-end pt-3">
       <span>
         <button type="submit" [disabled]="!renameMacroForm.valid"
           class="dlt-button dlt-button-primary m-1">Save</button>
