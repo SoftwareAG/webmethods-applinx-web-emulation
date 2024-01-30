@@ -35,6 +35,7 @@ export class MacroComponent {
   recMacro: boolean;
   playMacro: boolean;
   renameMacro: boolean;
+  dupMacroFlag : boolean;
   MacroExitsMsg: string;
   macroFileListSubscription: Subscription;
   macroFileViewSubscription: Subscription;
@@ -54,29 +55,33 @@ export class MacroComponent {
   }
 
   ngOnInit() {
-    console.log(sessionStorage.getItem('userName'));
     this.applicationName = this.fileService.applicationName;
     this.macroListFlag = this.data.viewFlag;
     let tempUserName = sessionStorage.getItem('userName');
-    this.getMacroList(tempUserName.substr(1, tempUserName.length-2));
+    // this.getMacroList(tempUserName.substr(1, tempUserName.length-2));
     this.viewMacroFlag = false;
     this.parameter = this.data.paramType;
+    
     switch(this.parameter) {
       case GXUtils.ViewMacro:
+        this.getMacroList(tempUserName.substr(1, tempUserName.length-2));
         this.viewMacro = true;
         break;
       case GXUtils.DeleteMacro:
+        this.getMacroList(tempUserName.substr(1, tempUserName.length-2));
         this.delMacro = true;
         break;
       case GXUtils.RecordMacro:
         this.recMacro = true;
         break
       case GXUtils.PlayMacro:
+        this.getMacroList(tempUserName.substr(1, tempUserName.length-2));
         this.playMacro = true;
         break;
       case GXUtils.RenameMacro:
         this.MacroExitsMsg = GXUtils.MacroExitsMsg
         this.renameMacro = true;
+        this.dupMacroFlag = true;
         this.dataService.setPopUpFlag(true);
         break;
     }
@@ -88,7 +93,6 @@ export class MacroComponent {
     this.macroFileListSubscription = this.macroService
         .getMacro(user, this.applicationName,token)
         .subscribe(data =>{
-        console.log(data)
         data.fileList.forEach(file =>{
           this.macroList.push(file.substring(0, file.length-5))
         })
@@ -122,7 +126,6 @@ export class MacroComponent {
     // event.preventDefault();  
   } 
   
-
   onViewMacro(form) {
     let selViewMacro = form.value.selViewMacro+".json";
     let tempUserName = sessionStorage.getItem('userName');
@@ -133,14 +136,33 @@ export class MacroComponent {
             .subscribe(response =>{
               this.selViewMacroContent = response;
               this.selectedMacroObj["name"] = this.selViewMacroContent.name;
+              this.setPasswordMask(this.selViewMacroContent.steps)
               this.selectedMacroObj["steps"] = this.selViewMacroContent.steps;
              // this.selectedMacroObj["fields"] = this.selViewMacroContent.fields;
               this.viewMacroFlag = true;
     })
   }
+
+  setPasswordMask(stepsArray){
+    stepsArray.forEach(element => {
+      if(element.fields && element.fields.length>1){
+        let fieldsList = element.fields;
+        fieldsList.forEach(field => {
+          if(field.type){
+            let typeLength = field.value.length;
+            field.value = GXUtils.pwdMask.repeat(typeLength)
+          }
+        });
+      }
+    });
+  }
+
+  hideDuplicateMsg(){
+    this.dupMacroFlag = false;
+  }
  
   onPlayMacro(form){
-    console.log("^^^^^^^^^^^^^^^^^^ Start Play Macro : ", new Date().toLocaleString());
+    //console.log("^^^^^^^^^^^^^^^^^^ Start Play Macro : ", new Date().toLocaleString());
     console.log(form)
     let selectedMacro = form.value.selPlayMacro+".json";
     let tempUserName = sessionStorage.getItem('userName');
@@ -150,19 +172,15 @@ export class MacroComponent {
     this.macroFileViewSubscription = this.macroService
             .viewMacro(selectedMacro,userName, this.applicationName, token)
             .subscribe(response =>{
-    console.log("^^^^^^^^^^^^^^^^^^ Macro Details of selected Macro : ", new Date().toLocaleString());
+    //console.log("^^^^^^^^^^^^^^^^^^ Macro Details of selected Macro : ", new Date().toLocaleString());
 
               this.selViewMacroContent = response;
               playObj["steps"] = response["steps"];
-    console.log("^^^^^^^^^^^^^^^^^^ Macro playing starts : ", new Date().toLocaleString());
+    //console.log("^^^^^^^^^^^^^^^^^^ Macro playing starts : ", new Date().toLocaleString());
 
               this.macroPlaySubscription = this.macroService
                     .playMacro(playObj,token).subscribe(response =>{
-    console.log("^^^^^^^^^^^^^^^^^^ Macro playing ends : ", new Date().toLocaleString());
-                      
-
-                      console.log("2")
-                      console.log(response)
+    //console.log("^^^^^^^^^^^^^^^^^^ Macro playing ends : ", new Date().toLocaleString());
                     },
                     error =>{
                       this.snackBarRef = this._snackBar.open(error.error.message,"OK",
@@ -190,5 +208,3 @@ export class MacroComponent {
     this.matDialog.closeAll();
   }
 }
-
-

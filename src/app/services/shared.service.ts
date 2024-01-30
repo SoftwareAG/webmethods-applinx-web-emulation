@@ -63,7 +63,6 @@ export class SharedService {
 
    setMacroRecordFlag(flag) {
       this.macroRecordFlag = flag;
-      console.log("Macro Record Flag : ", this.macroRecordFlag)
    }
 
    setMacroDetails(name) {
@@ -82,13 +81,11 @@ export class SharedService {
       let userName = tempUserName.substr(1, tempUserName.length - 2);
       // this.macroObj["simulateDelay"] = this.macroDetails.chkboxSimulateDelay;
       this.macroObj["steps"] = this.macroRecordArray;
-      console.log(this.macroObj);
       let token = this.storageService.getAuthToken();
       // if (this.macroName) {
          this.macroSaveSubscription = this.macroService
             .saveMacro(this.macroObj, this.macroName + ".json", userName, applicationName, token)
             .subscribe(response => {
-               console.log(response);
                this.macroRecordArray = [];
                //this.openSnackBar("The Macro '" + this.macroName + "' is Successfully Created")
                this.snackBarRef = this._snackBar.open("The Macro '" + this.macroName + "' is Successfully Created", "OK",
@@ -114,10 +111,6 @@ export class SharedService {
                      this.setSnackBarRef(this.snackBarRef);
                   }
                });
-      // }else{
-      //    console.log("Macro Name @ Else : ", this.macroName);
-      //    console.log("Macro Obj @ Else : ", this.macroObj);
-      // }
    }
 
    getMacroRecordFlag() {
@@ -125,16 +118,21 @@ export class SharedService {
    }
 
    recordMacro(sendKeysRequest) {
-      console.log(sendKeysRequest);
-      console.log(sendKeysRequest.sendKey)
-      console.log(sendKeysRequest.fields)
+      let fieldsList = sendKeysRequest.fields;
+      let passwordFieldList = document.querySelectorAll('input[type="password"]');
+
+      passwordFieldList.forEach(fieldEntry => {
+         let pwdField = fieldsList.filter(item => item.name == fieldEntry["name"])[0];
+         pwdField["type"] = "password";
+      })
 
       let obj = {};
+   //   obj["fields"] = fieldsList; // sendKeysRequest.fields;
       obj["fields"] = sendKeysRequest.fields;
       obj["sendKey"] = sendKeysRequest.sendKey;
       obj["cursor"] = sendKeysRequest.cursor;
       obj["screenSize"] = sendKeysRequest.screenSize;
-      console.log("Object while Save : ", obj);
+//      console.log("Object while Save : ", obj);
       this.macroRecordArray.push(obj);
    }
 
@@ -144,13 +142,11 @@ export class SharedService {
    }
    
   setSnackBarRef(snackBarRef){
-   console.log("@ Storage Service - setSnackBarRef : ", snackBarRef)
    this.snackBarReference = snackBarRef;
    this.snackBarFlag = true;
  }
 
  closeSnackBar(){
-   console.log("@ Storage Service : ", this.snackBarReference)
    this.snackBarReference.dismiss();
  }
 

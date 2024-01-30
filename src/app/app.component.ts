@@ -516,15 +516,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
  macro(){
-  let token = this.storageService.getAuthToken();
-    let user = sessionStorage.getItem('userName');
-    this.macroFileListSubscription = this.macroService
-        .getMacro(user,'', token)
-        .subscribe(data =>{
-        console.log(data)
-        this.macroList = data.fileList;
-        this.listFlag = this.macroList?.length === 0 || this.macroList === undefined ? true : false;
-      })
     this.recordStop = this.sharedService.getMacroRecordFlag();
   }
 
@@ -538,7 +529,7 @@ export class AppComponent implements OnInit, OnDestroy {
       });
       this.sharedService.setPopUpFlag(true);
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      // console.log(`Dialog result: ${result}`);
       this.sharedService.setPopUpFlag(false);
       this.changeRecColor = this.sharedService.getMacroRecordFlag(); // Changing the color of macro icon when it is in record mode
     });

@@ -37,11 +37,11 @@
           pattern="^[a-zA-Z0-9-]*$"
           #txtRecordMacro="ngModel" 
           required >
-      <mat-hint style="color:rgb(0, 0, 255)" *ngIf="!txtRecordMacro.valid && txtRecordMacro.touched && !txtRecordMacro.errors?.pattern">
-        Macro Name is Mandatory. 
+      <mat-hint style="color:rgb(255, 0, 0)" *ngIf="!txtRecordMacro.valid && txtRecordMacro.touched && !txtRecordMacro.errors?.pattern">
+        Macro Name is mandatory. 
       </mat-hint>
-      <mat-hint style="color:rgb(0, 0, 255)" *ngIf="txtRecordMacro.errors?.pattern && txtRecordMacro.touched">
-        Macro Name cannot have special characters. 
+      <mat-hint style="color:rgb(255, 0, 0)" *ngIf="txtRecordMacro.errors?.pattern && txtRecordMacro.touched">
+        Macro name can have alpha-numeric characters and hypen "-" only. 
       </mat-hint>
     </mat-form-field>
     <div class="d-flex flex-column align-items-end pt-3">
@@ -58,8 +58,8 @@
 
   <form #renameMacroForm="ngForm" (ngSubmit)="onRenameMacro(renameMacroForm)">
     <h6 class="con-header">Record Macro</h6>
-    <h5>{{MacroExitsMsg}}</h5>
-    <mat-form-field class="input-record" appearance="outline" size="large">
+    <!-- <h5>{{MacroExitsMsg}}</h5> -->
+    <mat-form-field class="input-record" appearance="outline">
       <mat-label>Enter New Macro Name</mat-label>
       <input matInput 
           type="text" 
@@ -70,12 +70,15 @@
           ngModel 
           pattern="^[a-zA-Z0-9-]*$"
           #txtRenameMacro="ngModel" 
-          required>
-          <mat-hint style="color:rgb(0, 0, 255)" *ngIf="!txtRenameMacro.valid && txtRenameMacro.touched && !txtRenameMacro.errors?.pattern">
-            Macro Name is Mandatory. 
+          required (input)="hideDuplicateMsg()">
+          <mat-hint style="color:rgb(255, 0, 0)" *ngIf="!txtRenameMacro.valid && txtRenameMacro.touched && !txtRenameMacro.errors?.pattern">
+            Macro name is mandatory. 
           </mat-hint>
-          <mat-hint style="color:rgb(0, 0, 255)" *ngIf="txtRenameMacro.errors?.pattern && txtRenameMacro.touched">
-            Macro Name cannot have special characters. 
+          <mat-hint style="color:rgb(255, 0, 0)" *ngIf="txtRenameMacro.errors?.pattern && txtRenameMacro.touched">
+            Macro name can have alpha-numeric characters and hypen "-" only. 
+          </mat-hint>
+          <mat-hint style="color:rgb(255, 0, 0);font-size: 75%;" *ngIf="this.dupMacroFlag">
+            The Macro name already exists, Please enter a new Macro name.
           </mat-hint>
     </mat-form-field>
     <div class="d-flex flex-column align-items-end pt-3">

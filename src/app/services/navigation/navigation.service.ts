@@ -165,10 +165,10 @@ export class NavigationService {
       this.screenObjectUpdated.next (newScreen);      
       this.checkForIntermidateScreen();
       if(this.sharedService.getMacroRecordFlag()){
-        console.log("Macro Enabled..........")
+      //  console.log("Macro Enabled..........")
         this.sharedService.recordMacro(sendKeysRequest);
       }else{
-        console.log("Macro disabled..........")
+        // console.log("Macro disabled..........")
       }
           
     }, errorResponse => {
