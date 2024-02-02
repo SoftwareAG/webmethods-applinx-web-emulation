@@ -11,7 +11,7 @@
         </mat-form-field>
       </div>
       <div *ngIf="macroListFlag">
-        <span>No Macros Available.</span>
+        <span>{{macroErrorMsg.notAvailable}}</span>
       </div>
     </div>
     <div class="d-flex flex-column align-items-end">
@@ -38,13 +38,13 @@
           #txtRecordMacro="ngModel" 
           required >
       <mat-hint style="color:rgb(255, 0, 0)" *ngIf="!txtRecordMacro.valid && txtRecordMacro.touched && !txtRecordMacro.errors?.pattern">
-        Macro Name is mandatory. 
+        {{macroErrorMsg.mandatory}} 
       </mat-hint>
       <mat-hint style="color:rgb(255, 0, 0)" *ngIf="txtRecordMacro.errors?.pattern && txtRecordMacro.touched">
-        Macro name can have alpha-numeric characters and hypen "-" only. 
+        {{macroErrorMsg.pattern}}
       </mat-hint>
     </mat-form-field>
-    <div class="d-flex flex-column align-items-end pt-3">
+    <div class="d-flex flex-column align-items-end pt-4">
       <span>
         <button type="submit" [disabled]="!recordMacroForm.valid"
           class="dlt-button dlt-button-primary m-1">Record</button>
@@ -72,13 +72,13 @@
           #txtRenameMacro="ngModel" 
           required (input)="hideDuplicateMsg()">
           <mat-hint style="color:rgb(255, 0, 0)" *ngIf="!txtRenameMacro.valid && txtRenameMacro.touched && !txtRenameMacro.errors?.pattern">
-            Macro name is mandatory. 
+            {{macroErrorMsg.mandatory}}
           </mat-hint>
           <mat-hint style="color:rgb(255, 0, 0)" *ngIf="txtRenameMacro.errors?.pattern && txtRenameMacro.touched">
-            Macro name can have alpha-numeric characters and hypen "-" only. 
+            {{macroErrorMsg.pattern}}
           </mat-hint>
-          <mat-hint style="color:rgb(255, 0, 0);font-size: 75%;" *ngIf="this.dupMacroFlag">
-            The Macro name already exists, Please enter a new Macro name.
+          <mat-hint style="color:rgb(255, 0, 0);font-size: 85%;" *ngIf="this.dupMacroFlag && !txtRenameMacro.touched">
+            {{macroErrorMsg.duplicate}}
           </mat-hint>
     </mat-form-field>
     <div class="d-flex flex-column align-items-end pt-3">
@@ -103,7 +103,7 @@
         </mat-form-field>
       </div>
       <div *ngIf="macroListFlag">
-        <span>No Macros Available.</span>
+        <span>{{macroErrorMsg.notAvailable}}</span>
       </div>
     </div>
     <div class="d-flex flex-column align-items-end">
@@ -145,7 +145,7 @@
         </mat-form-field>
       </div>
       <div *ngIf="macroListFlag">
-        <span>No Macros Available.</span>
+        <span>{{macroErrorMsg.notAvailable}}</span>
       </div>
     </div>
     <div class="d-flex flex-column align-items-end">

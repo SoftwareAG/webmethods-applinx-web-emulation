@@ -266,4 +266,8 @@ export class GXUtils {
     stop: "Stop Record Macro"
   }
   public static MACRO_FILE_ALREADY_EXISTS = "File already exists";
+  public static MACRO_NAME_IS_MANDATORY_MSG = "Macro name is mandatory."
+  public static MACRO_NAME_PATTERN_MSG = "Macro name can have alpha-numeric characters \"A-Z, a-z, 0-9\" and hypen \"-\" only."
+  public static MACRO_NAME_DUPLICATE_MSG = "The Macro name already exists, Please enter a new Macro name."
+  public static MACRO_NOT_AVAILABLE = "No Macros Available."
 }

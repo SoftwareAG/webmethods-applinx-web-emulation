@@ -43,6 +43,12 @@ export class MacroComponent {
   macroDeleteSubscription: Subscription;
   applicationName: string;
   snackBarRef: any;
+  macroErrorMsg = {
+    "mandatory" : GXUtils.MACRO_NAME_IS_MANDATORY_MSG,
+    "pattern" : GXUtils.MACRO_NAME_PATTERN_MSG,
+    "duplicate" : GXUtils.MACRO_NAME_DUPLICATE_MSG,
+    "notAvailable": GXUtils.MACRO_NOT_AVAILABLE
+  }
   
   @Output() dataEmitter = new EventEmitter<any>();
 
