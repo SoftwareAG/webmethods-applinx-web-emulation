@@ -168,8 +168,6 @@ export class MacroComponent {
   }
  
   onPlayMacro(form){
-    //console.log("^^^^^^^^^^^^^^^^^^ Start Play Macro : ", new Date().toLocaleString());
-    console.log(form)
     let selectedMacro = form.value.selPlayMacro+".json";
     let tempUserName = sessionStorage.getItem('userName');
     let userName = tempUserName.substr(1, tempUserName.length-2);
@@ -178,16 +176,10 @@ export class MacroComponent {
     this.macroFileViewSubscription = this.macroService
             .viewMacro(selectedMacro,userName, this.applicationName, token)
             .subscribe(response =>{
-    //console.log("^^^^^^^^^^^^^^^^^^ Macro Details of selected Macro : ", new Date().toLocaleString());
-
               this.selViewMacroContent = response;
               playObj["steps"] = response["steps"];
-    //console.log("^^^^^^^^^^^^^^^^^^ Macro playing starts : ", new Date().toLocaleString());
-
               this.macroPlaySubscription = this.macroService
-                    .playMacro(playObj,token).subscribe(response =>{
-    //console.log("^^^^^^^^^^^^^^^^^^ Macro playing ends : ", new Date().toLocaleString());
-                    },
+                    .playMacro(playObj,token).subscribe(response =>{},
                     error =>{
                       this.snackBarRef = this._snackBar.open(error.error.message,"OK",
                       { 
