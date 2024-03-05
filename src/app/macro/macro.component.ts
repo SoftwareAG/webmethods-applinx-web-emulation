@@ -151,7 +151,7 @@ export class MacroComponent {
 
   setPasswordMask(stepsArray){
     stepsArray.forEach(element => {
-      if(element.fields && element.fields.length>1){
+      if(element.fields && element.fields.length>0){
         let fieldsList = element.fields;
         fieldsList.forEach(field => {
           if(field.type){

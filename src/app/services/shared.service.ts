@@ -119,11 +119,12 @@ export class SharedService {
 
    recordMacro(sendKeysRequest) {
       let fieldsList = sendKeysRequest.fields;
-      let passwordFieldList = document.querySelectorAll('input[type="password"]');
+      let passwordFieldList = document.querySelectorAll("input[type='password']") 
 
       passwordFieldList.forEach(fieldEntry => {
          let pwdField = fieldsList.filter(item => item.name == fieldEntry["name"])[0];
-         pwdField["type"] = "password";
+         if(pwdField)
+            pwdField["type"] = "password";
       })
 
       let obj = {};
