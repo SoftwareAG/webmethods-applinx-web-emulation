@@ -15,7 +15,7 @@
  */ 
  
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
+import {AbstractControl, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {StorageService} from '../services/storage.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { KeyboardMappingService } from '../services/keyboard-mapping.service';
@@ -39,7 +39,7 @@ declare var $: any;
 })
 export class WebLoginComponent implements OnInit {
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   authMethod: string;
   webLoginVisible: boolean = false;
   errorMessage: string;
@@ -57,10 +57,10 @@ export class WebLoginComponent implements OnInit {
     if (!this.screenLockerService.isLocked()) {
     		  this.screenLockerService.setLocked(true); // Lock login screen until finish initilizing.
     }
-    this.form = new FormGroup({
-      username: new FormControl(''),
-      password: new FormControl(''),
-      newPassword: new FormControl(''),
+    this.form = new UntypedFormGroup({
+      username: new UntypedFormControl(''),
+      password: new UntypedFormControl(''),
+      newPassword: new UntypedFormControl(''),
     });
     this.infoService.getInfo().subscribe((response: GetInfoResponse) => {
       const authProviders: string[] = [GXConst.APPLINX, GXConst.LDAP, GXConst.OPEN_ID_CONNECT, GXConst.NATURAL, GXConst.DISABLED];
