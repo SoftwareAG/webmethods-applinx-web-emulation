@@ -64,7 +64,8 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     const tag = event.target.tagName;
     const id = event.target.id;
     const val = event.target.value;
-    if (tag?.toLowerCase() === 'input' && id?.length > 0) {
+    const type = event.target.type
+    if (tag?.toLowerCase() === 'input' && id?.length > 0 && type !== 'radio') {
       const input = new InputField();
       input.setName(id);
       input.setValue(val);
@@ -89,7 +90,6 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   isScreenUpdatedSubscription: Subscription;
   screenObjectUpdatedSubscription: Subscription;
   gridChangedSubscription: Subscription;
-  inputFields: any = [];
   intensifiedScr: boolean = false;
 
   constructor(private screenService: ScreenService, private navigationService: NavigationService,
@@ -268,17 +268,10 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     this.navigationService.setCursorPosition(screen.cursor);
     screen.fields = this.screenProcessorService.processRegionsToHide(screen.fields, screen.transformations);
     this.m_screen = screen;
-    console.log("this.m_screen : ", this.m_screen)
-    this.getInputFieldsCon(this.m_screen)
     this.addOrRemoveBorder(this.m_screen);
     this.screenLockerService.setLocked(false);
     //Example of injecting keyboard mapping
     // this.keyboardMappingService.addKeyboardMapping(GXAdditionalKey.NONE, GXKeyCodes.F3, popup, true, cancel);
-  }
-  getInputFieldsCon(m_screen: GetScreenResponse) {
-    this.inputFields = m_screen?.fields?.filter(field => field && field.protected === false);
-    this.dataService.setSharedData(this.inputFields);
-    console.log("this.inputFields  @ getInputFieldsCon : ",this.inputFields)
   }
 
   /**
