@@ -24,7 +24,7 @@ import { range, Subscription } from 'rxjs';
 import { ScreenHolderService } from './services/screen-holder.service';
 import { ScreenComponent } from './screen/screen.component';
 import { GXGeneratedPage } from './generated-pages/GXGeneratedPage';
-import { LoggerConfig, NGXLogger } from 'ngx-logger';
+import { INGXLoggerConfig, NGXLogger } from 'ngx-logger';
 import { HttpClient } from '@angular/common/http';
 import { LifecycleUserExits } from './user-exits/LifecycleUserExits';
 import { UserExitsEventThrowerService } from './services/user-exits-event-thrower.service';
@@ -137,8 +137,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   getLoggerConfiguration() {
-    const jsonDefault: LoggerConfig = this.logger.getConfigSnapshot();
-    this.httpClient.get<LoggerConfig>('./assets/config/sessionConfig.json').subscribe(data => {
+    const jsonDefault: INGXLoggerConfig = this.logger.getConfigSnapshot();
+    this.httpClient.get<INGXLoggerConfig>('./assets/config/sessionConfig.json').subscribe(data => {
       let json = data[AppComponent.LOGGER_ELEMENT];
       let jsonKeys: any[] = Object.keys(jsonDefault);
       jsonKeys.forEach(element => {
