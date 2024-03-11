@@ -24,7 +24,7 @@
     margin-left: 1rem;
     padding-right: 1rem;
 }
-::ng-deep .mat-menu-content {
+::ng-deep .mat-mdc-menu-content {
     display: flex;
     flex-direction: column;
     padding-right: 8px;
@@ -51,8 +51,8 @@
     transform: translate(-50%, -50%);
 }
 
-:host ::ng-deep .mat-progress-spinner circle,
-.mat-spinner circle {
+:host ::ng-deep .mat-mdc-progress-spinner circle,
+.mat-mdc-progress-spinner circle {
     stroke: #1776bf;
 }
 
@@ -118,38 +118,45 @@ select {
     margin-left: 5px;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */
 ::ng-deep.mat-accent .mat-slider-track-fill {
     background-color: white!important;                                          ;
 }
 
-.mat-slider.mat-slider-vertical{
+/* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */
+.mat-mdc-slider.mat-slider-vertical{
     height: 12px;
     border-radius: 10px
   }
   
-  ::ng-deep.mat-slider.mat-slider-min-value.mat-slider-thumb-label-showing .mat-slider-thumb {
+  /* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */
+  ::ng-deep.mat-mdc-slider.mat-slider-min-value.mat-slider-thumb-label-showing .mat-slider-thumb {
     background-color: white;
   }
 
-::ng-deep.mat-slider.mat-accent .mat-slider-thumb-label {
+/* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */
+::ng-deep.mat-mdc-slider.mat-accent .mat-slider-thumb-label {
     background-color: white;
 }
 
-::ng-deep.mat-slider.mat-accent .mat-slider-thumb {
+/* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */
+::ng-deep.mat-mdc-slider.mat-accent .mat-slider-thumb {
     background: white;
 }
 
-::ng-deep.mat-slider.mat-accent .mat-slider-thumb-label-text {
+/* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */
+::ng-deep.mat-mdc-slider.mat-accent .mat-slider-thumb-label-text {
     color: #1776bf;
 }
 
 /* vertical */
 
+ /* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */
  ::ng-deep.mat-slider-thumb {
     background-color: white;
 }
 
-::ng-deep .cdk-overlay-pane .mat-menu-panel {
+::ng-deep .cdk-overlay-pane .mat-mdc-menu-panel {
     min-width: unset;
 }
 
@@ -166,7 +173,8 @@ select {
 }
 
 
-::ng-deep .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle,::ng-deep .mat-radio-container .mat-radio-outer-circle  {
+/* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
+::ng-deep .mat-mdc-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle,::ng-deep .mat-radio-container .mat-radio-outer-circle  {
     border-color: var(--border-color);
     border-radius: unset !important;
     height: 14px;
@@ -174,12 +182,14 @@ select {
     margin-left: 6.5px;
 }
 
-::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle {
+/* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
+::ng-deep .mat-mdc-radio-button.mat-accent .mat-radio-inner-circle {
     color: var(--color-theme);
     background-color: var(--color-theme);
     border-radius: unset !important;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
 ::ng-deep .mat-radio-checked .mat-radio-inner-circle {
     transform: scale(0.7) !important;
     width: 13px;
@@ -190,11 +200,12 @@ select {
     bottom: 146px;
 }
 
-::ng-deep .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+/* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
+::ng-deep .mat-mdc-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
     background-color: var(--color-theme);
 }
 
-::ng-deep .mat-menu-panel {
+::ng-deep .mat-mdc-menu-panel {
     overflow: unset !important;
     background-color: #1776bf;
 }

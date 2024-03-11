@@ -32,9 +32,10 @@
       <mat-menu #menu="matMenu">
         
         <div id="slider">
-          <mat-slider thumbLabel class="panelCustom" vertical [displayWith]="formatLabel" [value]="zoomDefault"
+          <!-- TODO: The 'vertical' property no longer exists -->
+          <mat-slider thumbLabel class="panelCustom" [displayWith]="formatLabel"
           [step]="zoomStep" [min]="zoomMinValue" [max]="zoomMaxValue" (valueChange)=onZoomChange($event)
-            aria-label="units"></mat-slider>
+            aria-label="units"><input matSliderThumb [value]="zoomDefault" /></mat-slider>
             <div id="silder-default-btn">
               <i class="dlt-icon-restore" title="Default" itemIcon="dlt-icon-zoom-in" (click)="setDefaultZoom()"
                 aria-hidden="true"></i>

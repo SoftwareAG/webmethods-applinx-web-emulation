@@ -31,7 +31,7 @@ import { UserExitsEventThrowerService } from './services/user-exits-event-throwe
 import { OAuth2HandlerService } from './services/oauth2-handler.service';
 import { MessagesService } from './services/messages.service';
 import { HostKeyTransformation, Cursor, SessionService, InfoService } from '@softwareag/applinx-rest-apis';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ModalpopupComponent } from './mini-components/transformations/modalpopup/modalpopup.component';
 import { GXUtils } from 'src/utils/GXUtils';
 
