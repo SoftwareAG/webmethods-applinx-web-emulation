@@ -831,3 +831,17 @@ div[name="Menu"]#gx_screenArea input.gx_intf {
 	-moz-user-select: none;
 	-webkit-user-select: none;
 }
+
+/* .mat-mdc-slider .mdc-slider__track--active_fill {
+    border-color: white !important;
+    background-color: white !important;
+}
+
+.mat-mdc-slider .mdc-slider__thumb-knob {
+	border-color: white !important;
+    background-color: white !important;
+}
+
+.mat-mdc-menu-content{
+	padding: 0px !important;
+} */

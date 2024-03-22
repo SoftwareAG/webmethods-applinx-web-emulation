@@ -65,6 +65,8 @@ export class AppComponent implements OnInit, OnDestroy {
   zoomStep: number = GXUtils.zoomStep;
   isOpenThemeStyle: boolean = false;
   themeColor: string = GXUtils.defaultThemeColor;
+  thumbLabel:boolean=true;
+  value:number=0;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
@@ -134,6 +136,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.zoomDefault = 20;
     }
     document.documentElement.style.setProperty('--text-font-size', this.zoomDefault + 'px');
+    this.value = this.zoomDefault;
   }
 
   getLoggerConfiguration() {
@@ -456,8 +459,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onZoomChange(value: number) {
-    if (this.zoomDefault !== value) {
-      this.zoomDefault = value;
+    if (this.zoomDefault !== this.value) {
+      this.zoomDefault = this.value;
       document.documentElement.style.setProperty('--text-font-size', this.zoomDefault + 'px');
     }
   }
@@ -558,6 +561,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.zoomDefault = 20;
     }
     document.documentElement.style.setProperty('--text-font-size', this.zoomDefault + 'px');
+    this.value = this.zoomDefault;
   }
 
   getColor(color: string): string {
