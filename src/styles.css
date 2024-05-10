@@ -832,6 +832,10 @@ div[name="Menu"]#gx_screenArea input.gx_intf {
 	-webkit-user-select: none;
 }
 
+#gx_screenArea span{
+	padding-right: .65px;
+}
+
 /* .mat-mdc-slider .mdc-slider__track--active_fill {
     border-color: white !important;
     background-color: white !important;

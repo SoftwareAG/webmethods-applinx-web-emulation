@@ -2,6 +2,8 @@
     "/api/*": {
         "target": "http://localhost:2380/applinx/rest/",
         "secure": false,
-        "logLevel": "debug"
+        "logLevel": "debug",
+        "pathRewrite": {"^/api": ""},
+        "changeOrigin": true
     }
 }

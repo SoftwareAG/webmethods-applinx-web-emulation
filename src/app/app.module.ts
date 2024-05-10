@@ -27,10 +27,12 @@ import {MatDialogModule, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatRadioModule} from '@angular/material/radio';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import{MatSelectModule}from'@angular/material/select';
+//import { MatDialog } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
-import{ScrollingModule}from'@angular/cdk/scrolling';
-import{MatSnackBarModule}from'@angular/material/snack-bar';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 import { AppComponent } from './app.component';
 import { ApiModule, Configuration, ConfigurationParameters} from '@softwareag/applinx-rest-apis'
 import { ScreenComponent } from './screen/screen.component';
@@ -60,15 +62,17 @@ import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { LineComponent } from './mini-components/transformations/line/line.component';
 import { CheckboxComponent } from './mini-components/transformations/checkbox/checkbox.component';
 import { JSMethodsService } from '../common/js-functions/js-methods.service';
-import { LoggerModule, NGXLogger, NgxLoggerLevel } from 'ngx-logger';
+import { LoggerModule, NGXLogger, NgxLoggerLevel, TOKEN_LOGGER_SERVER_SERVICE } from 'ngx-logger';
 import { RouterModule, Routes } from '@angular/router';
 import { ScreenHolderService } from './services/screen-holder.service';
 import { OAuth2HandlerService } from './services/oauth2-handler.service';
 import { RouteGuardService } from './services/route-guard.service';
-import { ScreenProcessorService } from './services/screen-processor.service'
+import { ScreenProcessorService } from './services/screen-processor.service';
 import { MacroComponent } from './macro/macro.component';
 import { SharedService } from './services/shared.service';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { HttpHeaders } from '@angular/common/http';
+import { AuthTokenServerService } from './services/logger.service'
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -131,11 +135,21 @@ const routes: Routes = [
     OverlayModule,
     MatMenuModule,
     MatRadioModule,
-    MatTooltipModule, 
-    MatCheckboxModule, 
+    MatTooltipModule,
+    MatCheckboxModule,  
     // MatDialog,
-    LoggerModule.forRoot({serverLoggingUrl: environment.basePath+'/logger', level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.TRACE})
-  ],
+    LoggerModule.forRoot(
+      {serverLoggingUrl: environment.basePath+'/logger', 
+      level: NgxLoggerLevel.ERROR, 
+      serverLogLevel: NgxLoggerLevel.ERROR,
+    },
+    {
+      serverProvider: {
+        provide: TOKEN_LOGGER_SERVER_SERVICE, useClass: AuthTokenServerService
+      }
+    }
+    )
+  ],  
   providers: [NavigationService, 
     StorageService, 
     TabAndArrowsService, 

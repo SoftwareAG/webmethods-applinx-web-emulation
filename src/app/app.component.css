@@ -24,6 +24,11 @@
     padding-right: 1rem;
 }
 
+::ng-deep .mat-menu-content {
+    display: flex;
+    flex-direction: column;
+    padding-right: 8px;
+}
 .maindiv {
     transform-origin: 0% 0%;
 }
@@ -239,3 +244,46 @@ select {
     border-radius: 0% !important;
     padding: 0px;
 }
+
+.macro-icon {
+    display: flex;
+    align-items: center;
+    width: 30px;
+    height: 38px;
+    margin-left: 20px;
+    color: white;
+    cursor: pointer;
+  }
+
+  .macro-icon1 {
+    display: flex;
+    align-items: center;
+    width: 25px;
+    height: 35px;
+    margin-left: 20px;
+    color: white;
+    padding-left: 5px;
+    cursor: pointer;
+  }
+
+  .macro-main {
+    height: 20px;
+    width: 25px;
+    font-size: larger;
+    margin-right: 10px;
+    margin-top: 22px;
+  }
+
+  .macro-topNav {
+    width: 65px;
+    height: 63px !important;
+    width: 55px; 
+    margin-right: -45px; 
+    padding-bottom: 43px;
+  } 
+
+  #sagtopnavitem-li {
+    height: 63px !important;
+  }
+
+

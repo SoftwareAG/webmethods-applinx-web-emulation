@@ -1,9 +1,9 @@
-<div *ngIf="this.playMacro" class="container">
+<div *ngIf="this.playMacro" class="container" style="padding:30px">
   <form #playMacroForm="ngForm" (ngSubmit)="onPlayMacro(playMacroForm)">
     <div>
       <h6 class="con-header">Play Macro</h6>
       <div *ngIf="!macroListFlag">
-        <mat-form-field>
+        <mat-form-field style="min-width: 100%;">
           <mat-label>Select Macro Name</mat-label>
           <mat-select id="selPlayMacro" name="selPlayMacro" [(ngModel)]="selPlayMacro" required>
             <mat-option *ngFor="let macro of this.macroList" [value]="macro">{{macro}}</mat-option>
@@ -23,10 +23,10 @@
   </form>
 </div>
 
-<div *ngIf="this.recMacro">
+<div *ngIf="this.recMacro" style="padding:30px">
   <form #recordMacroForm="ngForm" (ngSubmit)="onRecordMacro(recordMacroForm)">
     <h6 class="con-header">Record Macro</h6>
-    <mat-form-field class="input-record" appearance="outline">
+    <mat-form-field class="input-record" appearance="outline" style="min-width: 100%;">
       <mat-label>Enter Macro Name</mat-label>
       <input matInput type="text" 
           name="txtRecordMacro" 
@@ -90,12 +90,12 @@
   </form>
 </div>
 
-<div *ngIf="this.viewMacro">
+<div *ngIf="this.viewMacro" style="padding:30px">
   <form #viewMacroForm="ngForm" (ngSubmit)="onViewMacro(viewMacroForm)">
     <div>
       <h6 class="con-header">View Macro</h6>
       <div *ngIf="!macroListFlag">
-        <mat-form-field>
+        <mat-form-field style="min-width: 100%;">
           <mat-label>Select Macro Name</mat-label>
           <mat-select id="selViewMacro" name="selViewMacro" [(ngModel)]="selViewMacro" required>
             <mat-option *ngFor="let macro of this.macroList" [value]="macro">{{ macro }}</mat-option>
@@ -130,12 +130,12 @@
   </form>
 </div>
 
-<div *ngIf="this.delMacro" class="container">
+<div *ngIf="this.delMacro" class="container" style="padding:30px">
   <form #deleteMacroForm="ngForm" (ngSubmit)="onDeleteMacro(deleteMacroForm)">
     <div>
       <h6 class="con-header">Delete Macro</h6>
       <div *ngIf="!macroListFlag">
-        <mat-form-field>
+        <mat-form-field style="min-width: 100%;">
           <mat-label>Select Macro Name</mat-label>
           <mat-select id="selDeleteMacro" name="selDeleteMacro" [(ngModel)]="selDeleteMacro" required>
             <mat-option *ngFor="let macro of this.macroList" [value]="macro">

@@ -53,7 +53,7 @@ export class WebLoginComponent implements OnInit {
     private configurationService: ConfigurationService, private oAuth2handler: OAuth2HandlerService, private logger: NGXLogger, private messages: MessagesService) {}
 
   ngOnInit(): void {
-    this.logger.debug(this.messages.get("INITIALZING_LOGIN_PAGE"));
+    // this.logger.debug(this.messages.get("INITIALZING_LOGIN_PAGE"));
     if (!this.screenLockerService.isLocked()) {
     		  this.screenLockerService.setLocked(true); // Lock login screen until finish initilizing.
     }
