@@ -30,10 +30,13 @@ import { LifecycleUserExits } from './user-exits/LifecycleUserExits';
 import { UserExitsEventThrowerService } from './services/user-exits-event-thrower.service';
 import { OAuth2HandlerService } from './services/oauth2-handler.service';
 import { MessagesService } from './services/messages.service';
-import { HostKeyTransformation, Cursor, SessionService, InfoService } from '@softwareag/applinx-rest-apis';
+import { HostKeyTransformation, Cursor, SessionService, InfoService, MacroService } from '@softwareag/applinx-rest-apis';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalpopupComponent } from './mini-components/transformations/modalpopup/modalpopup.component';
 import { GXUtils } from 'src/utils/GXUtils';
+import { MacroComponent } from './macro/macro.component';
+import { SharedService } from './services/shared.service';
+import { ConfigurationService } from './services/configuration.service';
 
 @Component({
   selector: 'app-root',
@@ -50,7 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
   loginComponent: WebLoginComponent;
   displayScreen = false;
   hostKeysBool: boolean = false;
-  showHostKeyFlag : boolean = GXUtils.showHostKeyFlag;
+  showHostKeyFlag: boolean = GXUtils.showHostKeyFlag;
   errorMessage: string;
 
   disconnectSubscription: Subscription;
@@ -65,22 +68,56 @@ export class AppComponent implements OnInit, OnDestroy {
   zoomStep: number = GXUtils.zoomStep;
   isOpenThemeStyle: boolean = false;
   themeColor: string = GXUtils.defaultThemeColor;
-  thumbLabel:boolean=true;
-  value:number=0;
+  thumbLabel: boolean = true;
+  value: number = 0;
+  macroButtonCol: string
+  recMacroTitle: any;
+  changeRecColor: boolean = false;
+  recordStop: boolean = false;
+  macroEvents = GXUtils.MACRO;
+  macroFileListSubscription: Subscription;
+  macroList: any;
+  listFlag: any;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
-    if (this.screenLockerService.isLocked()) {
-      return; // windows is loading...
+    if (!this.sharedService.getPopUpFlag()) {
+      if (this.screenLockerService.isLocked()) {
+        if (GXUtils.ENABLETYPEAHEADFLAG && !event.shiftKey) {
+          this.fnFormTypeaheadDetails(event);
+        }
+        return; // windows is loading...
+      }
+      if (!this.keyboardMappingService.checkKeyboardMappings(event, true, event.keyCode)) {
+        event.preventDefault();
+      }
+      if (event.key === 'Enter' && !this.storageService.isConnected()) {
+        this.loginComponent.onConnect();
+        event.preventDefault();
+      } else if (this.storageService.isConnected() && this.tabAndArrowsService.handleArrows(event)) {
+        event.preventDefault();
+      }
     }
-    if (!this.keyboardMappingService.checkKeyboardMappings(event, true, event.keyCode)) {
-      event.preventDefault();
-    }
-    if (event.key === 'Enter' && !this.storageService.isConnected()) {
-      this.loginComponent.onConnect();
-      event.preventDefault();
-    } else if (this.storageService.isConnected() && this.tabAndArrowsService.handleArrows(event)) {
-      event.preventDefault();
+  }
+
+  fnFormTypeaheadDetails(event: KeyboardEvent) {
+    if (event.code) {
+      if (GXUtils.IGNOREKEYARRAY.indexOf(event.code) != -1) {
+        event.preventDefault();
+      } else if (GXUtils.FUNCTIONARRAY.indexOf(event.code) != -1) {
+        event.preventDefault();
+        GXUtils.appendTypeAheadStringArray(event);
+      }
+      else if (event.key == GXUtils.TAB) {
+        GXUtils.appendTypeAheadStringArray(event); // adding textbox entries in a page
+        event.preventDefault();
+      }
+      else if (event.key == GXUtils.ENTER || event.key == GXUtils.NUMPADENTER) {
+        GXUtils.appendTypeAheadStringArray(event); // adding pages to an array
+      }
+      else {
+        GXUtils.appendTypeAheadChar(event.key); // Adding charecters typed by the user
+      }
     }
   }
 
@@ -116,7 +153,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private screenHolderService: ScreenHolderService, private userExitsEventThrower: UserExitsEventThrowerService,
     private logger: NGXLogger, private httpClient: HttpClient, private messages: MessagesService,
     private oAuth2handler: OAuth2HandlerService, private matDialog: MatDialog,
-    private infoService: InfoService) {
+    private sharedService: SharedService, private configurationService: ConfigurationService,
+    private infoService: InfoService, private macroService: MacroService,) {
     this.userExitsEventThrower.clearEventListeners();
     this.userExitsEventThrower.addEventListener(new LifecycleUserExits(infoService, navigationService, storageService, keyboardMappingService, logger));
     this.getLoggerConfiguration();
@@ -135,6 +173,14 @@ export class AppComponent implements OnInit, OnDestroy {
     } else if (window.innerWidth > 1800) {
       this.zoomDefault = 20;
     }
+
+    this.sharedService.data$.subscribe(data => {
+      // Handle the data received from the modal component
+      this.changeRecColor = data !== '' && data !== null ? true : false;
+    });
+
+    let macTitle = this.sharedService;
+    this.recMacroTitle = macTitle.getRecMacroTitle;
     document.documentElement.style.setProperty('--text-font-size', this.zoomDefault + 'px');
     this.value = this.zoomDefault;
   }
@@ -191,6 +237,8 @@ export class AppComponent implements OnInit, OnDestroy {
     const targetModal = document.getElementById('readonly_modal');
     targetModal.classList.remove('dlt-modal-window__open')
     this.storageService.setNotConnected();
+    this.clearMacroDetails();
+    this.matDialog.closeAll();
   }
 
   reload(): void {
@@ -201,6 +249,10 @@ export class AppComponent implements OnInit, OnDestroy {
     if (!this.storageService.isConnected()) {
       return;
     }
+    this.clearMacroDetails();
+    if (GXUtils.ENABLETYPEAHEADFLAG) {
+      GXUtils.resetPageArray();
+    }
     this.userExitsEventThrower.firePreDisconnect();
     this.disconnectSubscription = this.sessionService.disconnect(this.storageService.getAuthToken())
       .subscribe(
@@ -208,6 +260,13 @@ export class AppComponent implements OnInit, OnDestroy {
         error => this.userExitsEventThrower.fireOnDisconnectError(error)
       );
     this.disconnectSubscription.add(() => this.storageService.setNotConnected())
+  }
+
+  clearMacroDetails() {
+    this.changeRecColor = false;
+    this.recordStop = false;
+    this.sharedService.setMacroRecordFlag(false);
+    this.sharedService.clearMacroObj();
   }
 
   print() {
@@ -219,134 +278,134 @@ export class AppComponent implements OnInit, OnDestroy {
     GXUtils.setCopyFlag(true);
     this.getScreenData(false);
   }
-  
-    generateObjectArray(values, objArray) {
-    values.forEach(element => {
-        let obj = {};
-        obj["row"] = element?element.position.row:"";
-        obj["col"] = element?element.position.column:"";
-        obj["size"] = element?element.length:"";
-        obj["data"]= element?element.content:"";
-        obj["protected"] = element?element.protected:"";
-        if (!element.visible){
-          let strLen = element.content.length;
-          obj["data"]= new Array(strLen).join(' ') 
-        }else{
-          obj["data"]= element?element.content:"";
-        }
-        obj["visible"] = element ? element.visible : "";
-        objArray.push(obj);
-    });
-      }
-	  
-      formatTranformationOfPopupLines(windowDetails, objArray){
-        let windowCount = windowDetails.length;
-        let winStartRow = windowDetails[windowCount-1].bounds.startRow;
-        let winEndRow = windowDetails[windowCount-1].bounds.endRow;
-        let winStartCol = windowDetails[windowCount-1].bounds.startCol;
-        let nonPopupLines = objArray.filter(element => element.row < winStartRow || element.row > winEndRow);
-        let maxColEntry : any;
-        // get lines Matching Header lines
-        for (let i=0;i<windowDetails.length-1;i++){
-          let temp = nonPopupLines.filter(element => windowDetails[i].bounds.startRow == element.row 
-              && windowDetails[i].bounds.startCol >= element.col 
-              && windowDetails[i].bounds.startCol <= element.col + element.size);
-          if(temp.length > 0){
-            let position = Math.floor(temp[0].data.length/2)
-            temp[0].data = new Array(position).join(' ')+windowDetails[i].title;
-          }
-        }
-        let windowLines = objArray.filter(element => element.row >= winStartRow  && element.row <= winEndRow
-                && element.col < winStartCol )
-        while (winStartRow <= winEndRow){
-          let rowLines = windowLines.filter(entry => entry.row == winStartRow);
-          if(rowLines.length>0){
-            maxColEntry = rowLines.reduce((maxCol, selectedCol ) =>{
-              return selectedCol.col > maxCol.col? selectedCol: maxCol;
-            })
-            let headerStrlength = winStartCol - maxColEntry.col;
-            maxColEntry.data = maxColEntry.data.slice(0,headerStrlength);
-          }
-          winStartRow++;
-        }
-      }
-      
-      formatTransformationOfWindows(windowDetails, objArray){
-        this.formatTranformationOfPopupLines(windowDetails, objArray);
-        let windowCount = windowDetails.length;
-        let endcol = windowDetails[windowCount-1].bounds.startCol;
-        windowDetails.forEach(windowData => {
-          let obj = objArray.filter(entry => entry.row == windowData.bounds.startRow && 
-              (entry.col > windowData.bounds.startCol));
-              if (obj.length>0){
-                if(windowData.index == windowCount - 1){
-                  obj[0].data =  windowData.title;
-                }else{
-                  let headerStrlength = endcol - obj[0].col;
-                  obj[0].data =  windowData.title.slice(0,headerStrlength);
-                }
-                let paddingLength = Math.ceil(((windowData.bounds.endCol-windowData.bounds.startCol) 
-                                                  - (windowData.title?windowData.title.length:0))/2)
-                obj[0].col =  windowData.bounds.startCol+paddingLength;
-            }
-        });
-      }
-	 
-      formatTransformation(values, objArray) {
-        values.forEach(element => {
-          if (element.type == 'HostKeyTransformation' && this.showHostKeyFlag) {
-            let hostKeyList = element.hostKeys
-            hostKeyList.forEach(hostKeyElement => {
-              let actionObj = {};
-              let displayObj = {};
-              actionObj["row"] = hostKeyElement.actionPosition.row;
-              actionObj["col"] = hostKeyElement.actionPosition.column;
-              actionObj["data"] = hostKeyElement.action;
-              objArray.push(actionObj);
-              displayObj["row"] = hostKeyElement.displayPosition.row;
-              displayObj["col"] = hostKeyElement.displayPosition.column;
-              displayObj["data"] = hostKeyElement.displayText;
-              objArray.push(displayObj);
-            });
-          } else if (element.type == "TextTransformation") {
-            let displayObj = {};
-            displayObj["row"] = element.position.row;
-            displayObj["col"] = element.position.column;
-            displayObj["data"] = element.text;
-            objArray.push(displayObj);
-          } else if (element.type == "LineTransformation") {
-            let displayObj = {};
-            displayObj["row"] = element.caption.position.row;
-            displayObj["col"] = element.caption.position.column;
-            displayObj["data"] = element.caption.text;
-            objArray.push(displayObj);
-          } else if (element.type == "MultipleOptionsTransformation") {
-            let displayObj = {};
-            displayObj["row"] = element.field.position.row;
-            displayObj["col"] = element.field.position.column;
-            displayObj["data"] = element.field.content;
-            objArray.push(displayObj);
-          }else if (element.type == "MenuTransformation"){
-            let menuList = element.items;
-            menuList.forEach(menuItem => {
-              let displayObj = {}; 
-              displayObj["row"] = menuItem.textPosition.row;
-              displayObj["col"] = menuItem.textPosition.column;
-              displayObj["data"] = menuItem.text;
-              objArray.push(displayObj);
-            });
-          }
-        });
-      }
 
-    getScreenData(printFlag) {
+  generateObjectArray(values, objArray) {
+    values.forEach(element => {
+      let obj = {};
+      obj["row"] = element ? element.position.row : "";
+      obj["col"] = element ? element.position.column : "";
+      obj["size"] = element ? element.length : "";
+      obj["data"] = element ? element.content : "";
+      obj["protected"] = element ? element.protected : "";
+      if (!element.visible) {
+        let strLen = element.content.length;
+        obj["data"] = new Array(strLen).join(' ')
+      } else {
+        obj["data"] = element ? element.content : "";
+      }
+      obj["visible"] = element ? element.visible : "";
+      objArray.push(obj);
+    });
+  }
+
+  formatTranformationOfPopupLines(windowDetails, objArray) {
+    let windowCount = windowDetails.length;
+    let winStartRow = windowDetails[windowCount - 1].bounds.startRow;
+    let winEndRow = windowDetails[windowCount - 1].bounds.endRow;
+    let winStartCol = windowDetails[windowCount - 1].bounds.startCol;
+    let nonPopupLines = objArray.filter(element => element.row < winStartRow || element.row > winEndRow);
+    let maxColEntry: any;
+    // get lines Matching Header lines
+    for (let i = 0; i < windowDetails.length - 1; i++) {
+      let temp = nonPopupLines.filter(element => windowDetails[i].bounds.startRow == element.row
+        && windowDetails[i].bounds.startCol >= element.col
+        && windowDetails[i].bounds.startCol <= element.col + element.size);
+      if (temp.length > 0) {
+        let position = Math.floor(temp[0].data.length / 2)
+        temp[0].data = new Array(position).join(' ') + windowDetails[i].title;
+      }
+    }
+    let windowLines = objArray.filter(element => element.row >= winStartRow && element.row <= winEndRow
+      && element.col < winStartCol)
+    while (winStartRow <= winEndRow) {
+      let rowLines = windowLines.filter(entry => entry.row == winStartRow);
+      if (rowLines.length > 0) {
+        maxColEntry = rowLines.reduce((maxCol, selectedCol) => {
+          return selectedCol.col > maxCol.col ? selectedCol : maxCol;
+        })
+        let headerStrlength = winStartCol - maxColEntry.col;
+        maxColEntry.data = maxColEntry.data.slice(0, headerStrlength);
+      }
+      winStartRow++;
+    }
+  }
+
+  formatTransformationOfWindows(windowDetails, objArray) {
+    this.formatTranformationOfPopupLines(windowDetails, objArray);
+    let windowCount = windowDetails.length;
+    let endcol = windowDetails[windowCount - 1].bounds.startCol;
+    windowDetails.forEach(windowData => {
+      let obj = objArray.filter(entry => entry.row == windowData.bounds.startRow &&
+        (entry.col > windowData.bounds.startCol));
+      if (obj.length > 0) {
+        if (windowData.index == windowCount - 1) {
+          obj[0].data = windowData.title;
+        } else {
+          let headerStrlength = endcol - obj[0].col;
+          obj[0].data = windowData.title.slice(0, headerStrlength);
+        }
+        let paddingLength = Math.ceil(((windowData.bounds.endCol - windowData.bounds.startCol)
+          - (windowData.title ? windowData.title.length : 0)) / 2)
+        obj[0].col = windowData.bounds.startCol + paddingLength;
+      }
+    });
+  }
+
+  formatTransformation(values, objArray) {
+    values.forEach(element => {
+      if (element.type == 'HostKeyTransformation' && this.showHostKeyFlag) {
+        let hostKeyList = element.hostKeys
+        hostKeyList.forEach(hostKeyElement => {
+          let actionObj = {};
+          let displayObj = {};
+          actionObj["row"] = hostKeyElement.actionPosition.row;
+          actionObj["col"] = hostKeyElement.actionPosition.column;
+          actionObj["data"] = hostKeyElement.action;
+          objArray.push(actionObj);
+          displayObj["row"] = hostKeyElement.displayPosition.row;
+          displayObj["col"] = hostKeyElement.displayPosition.column;
+          displayObj["data"] = hostKeyElement.displayText;
+          objArray.push(displayObj);
+        });
+      } else if (element.type == "TextTransformation") {
+        let displayObj = {};
+        displayObj["row"] = element.position.row;
+        displayObj["col"] = element.position.column;
+        displayObj["data"] = element.text;
+        objArray.push(displayObj);
+      } else if (element.type == "LineTransformation") {
+        let displayObj = {};
+        displayObj["row"] = element.caption.position.row;
+        displayObj["col"] = element.caption.position.column;
+        displayObj["data"] = element.caption.text;
+        objArray.push(displayObj);
+      } else if (element.type == "MultipleOptionsTransformation") {
+        let displayObj = {};
+        displayObj["row"] = element.field.position.row;
+        displayObj["col"] = element.field.position.column;
+        displayObj["data"] = element.field.content;
+        objArray.push(displayObj);
+      } else if (element.type == "MenuTransformation") {
+        let menuList = element.items;
+        menuList.forEach(menuItem => {
+          let displayObj = {};
+          displayObj["row"] = menuItem.textPosition.row;
+          displayObj["col"] = menuItem.textPosition.column;
+          displayObj["data"] = menuItem.text;
+          objArray.push(displayObj);
+        });
+      }
+    });
+  }
+
+  getScreenData(printFlag) {
     let rawData = this.screenHolderService.getRawScreenData();
     let objArray = [];
     let formattedArray = [];
     let maxLine = 0;
     this.generateObjectArray(rawData.fields, objArray);
     this.formatTransformation(rawData.transformations, objArray);
-    if (rawData && rawData.windows){
+    if (rawData && rawData.windows) {
       this.formatTransformationOfWindows(rawData.windows, objArray);
       // this.drawBorderForPopUp(rawData.windows, objArray)
     }
@@ -354,47 +413,47 @@ export class AppComponent implements OnInit, OnDestroy {
     let lineNo = 0;
     objArray.sort((a, b) => {
       return a.row - b.row;
-        });
-    maxLine = objArray[objArray.length-1].row+1;
-    do{
+    });
+    maxLine = objArray[objArray.length - 1].row + 1;
+    do {
       let lineDetails = objArray.filter(item => item.row == lineNo);
       let temp = this.formatLineText(lineDetails);
       formattedArray.push(temp);
       lineNo++
     } while (lineNo < maxLine);
-    if(!printFlag){
-      this.formatCopyPage(formattedArray,printFlag);
-    }else{
+    if (!printFlag) {
+      this.formatCopyPage(formattedArray, printFlag);
+    } else {
       this.formatPrintPage(formattedArray);
     }
   }
-  
-  formatPrintPage(formattedArray){
-      let printDetails = formattedArray;
-      let height = window.screen.availHeight-400;
-      let width = window.screen.availWidth-750;
-      const popupWindow = window.open('','',`height=${height},width=${width},top=${height/2},left=${width/2}`);
-      popupWindow.document.open();
-      popupWindow.document.write('<div class="copyWrapper crosshair" style="white-space: pre !important;"><pre>');
-      printDetails.forEach(element => {
-        popupWindow.document.write("<div>"+element +"</div>");
-      })
-      popupWindow.document.write('</pre></div>')
-      popupWindow.print();
-      popupWindow.close();
+
+  formatPrintPage(formattedArray) {
+    let printDetails = formattedArray;
+    let height = window.screen.availHeight - 400;
+    let width = window.screen.availWidth - 750;
+    const popupWindow = window.open('', '', `height=${height},width=${width},top=${height / 2},left=${width / 2}`);
+    popupWindow.document.open();
+    popupWindow.document.write('<div class="copyWrapper crosshair" style="white-space: pre !important;"><pre>');
+    printDetails.forEach(element => {
+      popupWindow.document.write("<div>" + element + "</div>");
+    })
+    popupWindow.document.write('</pre></div>')
+    popupWindow.print();
+    popupWindow.close();
   }
 
-    formatCopyPage(formattedArray,printFlag){
+  formatCopyPage(formattedArray, printFlag) {
     let divElement = document.createElement("div");
     let lineIdentifier = 0;
-    formattedArray.forEach(element =>{
+    formattedArray.forEach(element => {
       let paraElement = document.createElement("span");
       paraElement.innerText = element;
       paraElement.id = "gx_text";
       paraElement.tabIndex = lineIdentifier++;
       divElement.appendChild(paraElement);
       let lineBreakElement = document.createElement("br");
-      divElement.appendChild(lineBreakElement);  
+      divElement.appendChild(lineBreakElement);
       divElement.tabIndex = lineIdentifier++;
     });
     const dialogRef = this.matDialog.open(ModalpopupComponent, {
@@ -403,6 +462,10 @@ export class AppComponent implements OnInit, OnDestroy {
         typeFlag: printFlag
       }, height: '100%',
       width: '90%',
+    });
+    this.sharedService.setPopUpFlag(true);
+    dialogRef.afterClosed().subscribe(result => {
+      this.sharedService.setPopUpFlag(false);
     });
   }
 
@@ -419,8 +482,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   setHostKeys(hostkeys: HostKeyTransformation[]): void {
     this.hostKeyTransforms = hostkeys;
-    if(hostkeys !== null) {
-      if(hostkeys[0]?.hostKeys?.length>12) {
+    if (hostkeys !== null) {
+      if (hostkeys[0]?.hostKeys?.length > 12) {
         this.hostKeysBool = true;
       }
     }
@@ -481,6 +544,30 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
+  macro() {
+    this.recordStop = this.sharedService.getMacroRecordFlag();
+  }
+
+  openMacro(paramType: string) {
+    let viewFlag = this.listFlag;
+    const dialogRef = this.matDialog.open(MacroComponent,
+      {
+        data: { paramType, viewFlag },
+        height: 'auto',
+        width: '40%',
+      });
+    this.sharedService.setPopUpFlag(true);
+    dialogRef.afterClosed().subscribe(result => {
+      this.sharedService.setPopUpFlag(false);
+      this.changeRecColor = this.sharedService.getMacroRecordFlag(); // Changing the color of macro icon when it is in record mode
+    });
+  }
+
+  stopRecord() {
+    this.sharedService.setMacroRecordFlag(false);
+    this.sharedService.stopMacroRecording(this.configurationService.applicationName);
+    this.changeRecColor = this.sharedService.getMacroRecordFlag();
+  }
 
   changeBackgroundColor(color: string) {
     this.themeColor = color;

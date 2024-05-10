@@ -29,6 +29,7 @@ import { TabAndArrowsService } from './tab-and-arrows.service';
 import { StatusCodes } from 'http-status-codes';
 import { GetScreenNumberResponse } from '@softwareag/applinx-rest-apis/lib/model/getScreenNumberResponse';
 import { GXConst } from '../enum.service';
+import { SharedService } from '../shared.service';
 
 @Injectable({
   providedIn: 'root'
@@ -55,7 +56,9 @@ export class NavigationService {
               private storageService: StorageService,
               private tabAndArrowsService: TabAndArrowsService,
               private userExitsEventThrower: UserExitsEventThrowerService,
-              private messages: MessagesService) {
+              private messages: MessagesService,
+              private sharedService: SharedService,
+              ) {
     this.sendableFields = new Map<string, InputField>();
     this.setRoutingHandler();
     this.checkHostScreenUpdate();
@@ -104,6 +107,7 @@ export class NavigationService {
           this.errorMessage = 'The session has timed out due to inactivity.';
           this.isConnectedtoHost.next(false);
           this.isThereError = true;
+          this.sharedService.isSnackBarPresent()?this.sharedService.closeSnackBar():"";
         }
         else if ((this.isAuthDisabled() && this.isAutoLogin) ) { // show disconnect message                
           this.errorMessage = 'The session has been disconnected from the host.';          
@@ -158,6 +162,9 @@ export class NavigationService {
       this.userExitsEventThrower.firePostSendKey(newScreen);
       this.screenObjectUpdated.next (newScreen);      
       this.checkForIntermidateScreen();
+      if(this.sharedService.getMacroRecordFlag()){
+        this.sharedService.recordMacro(sendKeysRequest);
+      }
       
     }, errorResponse => {
        // this.logger.error(errorResponse);

@@ -1,0 +1,159 @@
+<div *ngIf="this.playMacro" class="container">
+  <form #playMacroForm="ngForm" (ngSubmit)="onPlayMacro(playMacroForm)">
+    <div>
+      <h6 class="con-header">Play Macro</h6>
+      <div *ngIf="!macroListFlag">
+        <mat-form-field>
+          <mat-label>Select Macro Name</mat-label>
+          <mat-select id="selPlayMacro" name="selPlayMacro" [(ngModel)]="selPlayMacro" required>
+            <mat-option *ngFor="let macro of this.macroList" [value]="macro">{{macro}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div *ngIf="macroListFlag">
+        <span>{{macroErrorMsg.notAvailable}}</span>
+      </div>
+    </div>
+    <div class="d-flex flex-column align-items-end">
+      <span>
+        <button *ngIf="!macroListFlag" type="submit" [disabled]="!playMacroForm.valid" class="dlt-button dlt-button-primary m-1">Play</button>
+        <button class="dlt-button dlt-button-primary m-1" mat-dialog-close>Cancel</button>
+      </span>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="this.recMacro">
+  <form #recordMacroForm="ngForm" (ngSubmit)="onRecordMacro(recordMacroForm)">
+    <h6 class="con-header">Record Macro</h6>
+    <mat-form-field class="input-record" appearance="outline">
+      <mat-label>Enter Macro Name</mat-label>
+      <input matInput type="text" 
+          name="txtRecordMacro" 
+          id="txtRecordMacro" 
+          class="form-control" 
+          maxlength="15"
+          ngModel 
+          pattern="^[a-zA-Z0-9-]*$"
+          #txtRecordMacro="ngModel" 
+          required >
+      <mat-hint style="color:rgb(255, 0, 0)" *ngIf="!txtRecordMacro.valid && txtRecordMacro.touched && !txtRecordMacro.errors?.pattern">
+        {{macroErrorMsg.mandatory}} 
+      </mat-hint>
+      <mat-hint style="color:rgb(255, 0, 0)" *ngIf="txtRecordMacro.errors?.pattern && txtRecordMacro.touched">
+        {{macroErrorMsg.pattern}}
+      </mat-hint>
+    </mat-form-field>
+    <div class="d-flex flex-column align-items-end pt-4">
+      <span>
+        <button type="submit" [disabled]="!recordMacroForm.valid"
+          class="dlt-button dlt-button-primary m-1">Record</button>
+        <button class="dlt-button dlt-button-primary m-1" mat-dialog-close>Cancel</button>
+      </span>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="this.renameMacro">
+
+  <form #renameMacroForm="ngForm" (ngSubmit)="onRenameMacro(renameMacroForm)">
+    <h6 class="con-header">Record Macro</h6>
+    <!-- <h5>{{MacroExitsMsg}}</h5> -->
+    <mat-form-field class="input-record" appearance="outline">
+      <mat-label>Enter New Macro Name</mat-label>
+      <input matInput 
+          type="text" 
+          name="txtRenameMacro" 
+          id="txtRenameMacro" 
+          class="form-control" 
+          maxlength="15"
+          ngModel 
+          pattern="^[a-zA-Z0-9-]*$"
+          #txtRenameMacro="ngModel" 
+          required (input)="hideDuplicateMsg()">
+          <mat-hint style="color:rgb(255, 0, 0)" *ngIf="!txtRenameMacro.valid && txtRenameMacro.touched && !txtRenameMacro.errors?.pattern">
+            {{macroErrorMsg.mandatory}}
+          </mat-hint>
+          <mat-hint style="color:rgb(255, 0, 0)" *ngIf="txtRenameMacro.errors?.pattern && txtRenameMacro.touched">
+            {{macroErrorMsg.pattern}}
+          </mat-hint>
+          <mat-hint style="color:rgb(255, 0, 0);font-size: 85%;" *ngIf="this.dupMacroFlag && !txtRenameMacro.touched">
+            {{macroErrorMsg.duplicate}}
+          </mat-hint>
+    </mat-form-field>
+    <div class="d-flex flex-column align-items-end pt-3">
+      <span>
+        <button type="submit" [disabled]="!renameMacroForm.valid"
+          class="dlt-button dlt-button-primary m-1">Save</button>
+      </span>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="this.viewMacro">
+  <form #viewMacroForm="ngForm" (ngSubmit)="onViewMacro(viewMacroForm)">
+    <div>
+      <h6 class="con-header">View Macro</h6>
+      <div *ngIf="!macroListFlag">
+        <mat-form-field>
+          <mat-label>Select Macro Name</mat-label>
+          <mat-select id="selViewMacro" name="selViewMacro" [(ngModel)]="selViewMacro" required>
+            <mat-option *ngFor="let macro of this.macroList" [value]="macro">{{ macro }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div *ngIf="macroListFlag">
+        <span>{{macroErrorMsg.notAvailable}}</span>
+      </div>
+    </div>
+    <div class="d-flex flex-column align-items-end">
+      <span>
+        <button *ngIf="!macroListFlag" type="submit" [disabled]="!viewMacroForm.valid" class="dlt-button dlt-button-primary m-1">View</button>
+        <button class="dlt-button dlt-button-primary m-1" mat-dialog-close>Cancel</button>
+      </span>
+    </div>
+    <div id="divViewMacro" *ngIf="viewMacroFlag" style="height:300px;overflow:scroll">
+      <!-- <h5>Name : {{selectedMacroObj.name}} </h5> -->
+      <!-- <h5>Steps : </h5> -->
+      <div *ngFor="let step of selectedMacroObj.steps;let i = index">
+        <div class="ml-3">Step : {{i+1}} </div>
+        <div class="ml-5">Key : {{step.sendKey}}</div>
+        <div *ngFor="let inputField of step.fields">
+          <div class="ml-5">Fields : {{inputField.name}}</div>
+          <div class="ml-5">Value : {{inputField.value}}</div>
+        </div>
+        <hr>
+      </div>
+    </div>
+
+
+  </form>
+</div>
+
+<div *ngIf="this.delMacro" class="container">
+  <form #deleteMacroForm="ngForm" (ngSubmit)="onDeleteMacro(deleteMacroForm)">
+    <div>
+      <h6 class="con-header">Delete Macro</h6>
+      <div *ngIf="!macroListFlag">
+        <mat-form-field>
+          <mat-label>Select Macro Name</mat-label>
+          <mat-select id="selDeleteMacro" name="selDeleteMacro" [(ngModel)]="selDeleteMacro" required>
+            <mat-option *ngFor="let macro of this.macroList" [value]="macro">
+              {{macro}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div *ngIf="macroListFlag">
+        <span>{{macroErrorMsg.notAvailable}}</span>
+      </div>
+    </div>
+    <div class="d-flex flex-column align-items-end">
+      <span>
+        <button *ngIf="!macroListFlag" type="submit" [disabled]="!deleteMacroForm.valid"
+          class="dlt-button dlt-button-primary m-1">Delete</button>
+        <button class="dlt-button dlt-button-primary m-1" mat-dialog-close>Cancel</button>
+      </span>
+    </div>
+  </form>
+</div>

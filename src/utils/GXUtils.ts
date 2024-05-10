@@ -246,4 +246,144 @@ export class GXUtils {
     public static showHostKeyFlag = false;
     public static MENU = "Menu";
     public static UNKNOWN = "UNKNOWN";
+    public static RecordMacro = 'record';
+    public static ViewMacro = 'view';
+    public static PlayMacro = 'play';
+    public static RenameMacro = 'rename';
+    public static MacroExitsMsg = "The Macro name already exists, Please enter a new Macro Name";
+    public static DeleteMacro = 'remove';
+    public static pwdMask = "*";
+  
+  public static MACRO_BASE_URL = "http://localhost:2380/";
+  public static GET_MACROLIST_URL = "applinx/rest/macro/list";
+  public static MACRO_URL = "applinx/rest/macro";
+
+  public static MACRO = {
+    play : "Play Macro",
+    record : "Record Macro",
+    view: "View Macro",
+    remove: "Remove Macro",
+    stop: "Stop Record Macro"
+  }
+  public static MACRO_FILE_ALREADY_EXISTS = "File already exists";
+  public static MACRO_NAME_IS_MANDATORY_MSG = "Macro name is mandatory."
+  public static MACRO_NAME_PATTERN_MSG = "Macro name can have alpha-numeric characters \"A-Z, a-z, 0-9\" and hypen \"-\" only."
+  public static MACRO_NAME_DUPLICATE_MSG = "The Macro name already exists, Please enter a new Macro name."
+  public static MACRO_NOT_AVAILABLE = "No Macros Available."
+  public static ENTER = "Enter";
+  public static NUMPADENTER = "NumpadEnter"
+  public static BACKSPACE = "Backspace";
+  public static TAB = "Tab";
+  public static IMPLICITTAB = "ImplicitTab";
+  public static FUNCTIONARRAY = ["F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12","F13", "F14", "F15", "F16", "F17", "F18", "F19", "F20", "F21", "F22", "F23", "F24"];
+  public static ARROWKEYARRAY = ["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp", "PageUp", "PageDown"];
+  public static IGNOREKEYARRAY = ["ControlLeft", "ControlRight", "ShiftRight", "ShiftLeft", 
+                                  "AltRight", "AltLeft", "Home", "End", "Insert", "Delete", "CapsLock", 
+                                  "Backspace", "AudioVolumeMute", "AudioVolumeDown", "AudioVolumeUp", "MetaLeft",
+                                  "Escape", "End", "Home" 
+                                ];
+  public static ARROWRIGHT = "ArrowRight";
+  public static ARROWLEFT = "ArrowLeft";
+  public static ARROWDOWN = "ArrowDown";
+  public static ARROWUP = "ArrowUp";
+  public static PAGEUP = "PageUp";
+  public static PAGEDOWN = "PageDown";
+  public static DELETE = "Delete";
+  public static ENABLETYPEAHEADFLAG = true; // Variable to enable/disable type ahead
+  public static fieldOrder = 0;
+  public static typeAheadCharacterArray: any = [];
+  public static typeAheadStringArray: any = [];
+  public static pagesArray: any = [];
+  public static pageNo: number = 0;
+  public static typeAhead = "TYPEAHEAD"
+  public static currentPage = "CURRENTPAGE"
+  public static implicitFlag = false;
+  public static dataTypes = {
+    ALPHANUMERIC: 'ALPHANUMERIC',
+    NUMERIC: 'NUMERIC',
+    ALPHA_ONLY: 'ALPHA_ONLY', //(AS/400)
+    DIGITS_ONLY: 'DIGITS_ONLY',  //(AS/400)
+    SIGNED_NUMERIC: 'SIGNED_NUMERIC',  //(AS/400)
+    KATAKANA_SHIFT: 'KATAKANA_SHIFT',  //(AS/400 Japanese katakana only field)
+    DBCS_ONLY: 'DBCS_ONLY',
+    DBCS_CAN_CREATE_SISO: 'DBCS_CAN_CREATE_SISO',
+    REVERSED: 'REVERSED'  //(AS/400 Hebrew field)
+  }
+
+  public static appendTypeAheadChar(typeAheadChar) {
+    this.typeAheadCharacterArray.push(typeAheadChar);
+  }
+
+  public static getTypeAheadCharsArray() {
+    return this.typeAheadCharacterArray;
+  }
+  public static getTypeAheadStringArray() {
+    return this.typeAheadStringArray;
+  }
+
+  public static createWord() {
+    let strObj = {};
+    strObj["value"] = this.typeAheadCharacterArray.length > 0 ? this.typeAheadCharacterArray.toString().replaceAll(",", "") : null;
+    strObj["active"] = true;
+    strObj["fieldOrder"] = this.fieldOrder++;
+    return strObj
+  }
+
+  public static createPage(nextPageFlag) {
+    let pageObj = {}
+    pageObj["inputs"] = this.typeAheadStringArray;
+    pageObj["visited"] = false;
+    pageObj["pageNo"] = this.pageNo++;
+    pageObj["nextPage"] = nextPageFlag;
+    return pageObj;
+  }
+
+  public static appendTypeAheadPageArray() {
+    this.pagesArray.push(this.createPage(false));
+    this.typeAheadStringArray = [];
+    console.log("this.pagesArray : ", this.pagesArray)
+  }
+
+  public static getPageArray() {
+    return this.pagesArray;
+  }
+
+  public static resetPageArray() {
+    this.pagesArray = [];
+  }
+
+  public static appendTypeAheadStringArray(event) {
+    let implicitTabFlag = false;
+    if (event.code == GXUtils.IMPLICITTAB) {
+      this.typeAheadStringArray.push(this.createWord());
+      implicitTabFlag = true;
+      this.setImplicitFlag(true);
+    } else if (event.code == GXUtils.TAB) {
+      this.typeAheadStringArray.push(this.createWord());
+      implicitTabFlag = false;
+    } else if (event.code == GXUtils.ENTER || event.key == GXUtils.NUMPADENTER) {
+      implicitTabFlag = false;
+      this.typeAheadStringArray.push(this.createWord());
+      this.pagesArray.push(this.createPage(true));
+      this.fieldOrder = 0;
+      this.typeAheadStringArray = [];
+    }
+    if (implicitTabFlag) {
+      this.pagesArray.push(this.createPage(false));
+      this.typeAheadStringArray = [];
+      implicitTabFlag = false;
+    }
+    this.typeAheadCharacterArray = [];
+    console.log("\n\n this.pagesArray : ", JSON.stringify(this.pagesArray));
+    console.log("this.typeAheadStringArray : ", JSON.stringify(this.typeAheadStringArray));
+    console.log("\n\n")
+  }
+
+  public static getImplicitFlag() {
+    return this.implicitFlag;
+  }
+
+  public static setImplicitFlag(value) {
+    this.implicitFlag = value;
+  }
 }
