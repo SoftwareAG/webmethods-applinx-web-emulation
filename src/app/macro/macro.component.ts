@@ -154,9 +154,10 @@ export class MacroComponent {
       if(element.fields && element.fields.length>0){
         let fieldsList = element.fields;
         fieldsList.forEach(field => {
-          if(field.type){
+          if(field.type && field.type == GXUtils.pwdText){
+            field.value = window.atob(field.value);
             let typeLength = field.value.length;
-            field.value = GXUtils.pwdMask.repeat(typeLength)
+            field.value = GXUtils.pwdMask.repeat(typeLength);
           }
         });
       }
@@ -178,10 +179,10 @@ export class MacroComponent {
             .viewMacro(selectedMacro,userName, this.applicationName, token)
             .subscribe(response =>{
               this.selViewMacroContent = response;
+              this.decryptBeforePlay(response["steps"])
               playObj["steps"] = response["steps"];
               this.macroPlaySubscription = this.macroService
                     .playMacro(playObj,token).subscribe(response =>{
-                      console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ",response);
                       this.dataService.setPlayMacroFlag(false);
                     },
                     error =>{
@@ -195,6 +196,19 @@ export class MacroComponent {
             }
             )
     this.matDialog.closeAll();
+  }
+
+  decryptBeforePlay(steps:any){
+    steps.forEach(element => {
+      let fieldsList = element.fields
+      if (fieldsList.length > 0){
+        fieldsList.forEach(fieldElement => {
+          if(fieldElement.type && fieldElement.type == GXUtils.pwdText){
+            fieldElement.value = window.atob(fieldElement.value)
+          }
+        });
+      }
+    });
   }
 
   onRecordMacro(form){  // Save Macro

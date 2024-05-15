@@ -253,6 +253,7 @@ export class GXUtils {
     public static MacroExitsMsg = "The Macro name already exists, Please enter a new Macro Name";
     public static DeleteMacro = 'remove';
     public static pwdMask = "*";
+    public static pwdText = "password";
   
   public static MACRO_BASE_URL = "http://localhost:2380/";
   public static GET_MACROLIST_URL = "applinx/rest/macro/list";

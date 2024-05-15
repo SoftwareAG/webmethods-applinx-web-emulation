@@ -125,7 +125,8 @@ export class SharedService {
       passwordFieldList.forEach(fieldEntry => {
          let pwdField = fieldsList.filter(item => item.name == fieldEntry["name"])[0];
          if(pwdField)
-            pwdField["type"] = "password";
+            pwdField["type"] = GXUtils.pwdText;
+            pwdField["value"] = window.btoa(pwdField["value"]);
       })
 
       let obj = {};
