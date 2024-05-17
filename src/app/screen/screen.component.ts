@@ -233,7 +233,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
           // console.log("currentPage : ", currentPage);
           if (currentPage) {
             let typeAheadEntries = currentPage.inputs.filter(item => item.active);
-            // console.log("CurrentPage - TypeAhead : ", typeAheadEntries);
+            //  console.log("CurrentPage - TypeAhead : ", typeAheadEntries);
             
             // Get the TypeAhead Fields currentPageInputFields2
             let inputFieldArray = this.getTypeAheadFields(screen);
@@ -271,15 +271,16 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
             // console.log("this.navigationService.getScreenId() : ", this.navigationService.getScreenId())
             // if (screen?.screenId != this.navigationService.getScreenId() && currentPage.nextPage) {
             if (currentPage.nextPage) {
-            //  console.log("Going to next page..........");
+              // console.log("Going to next page..........");
+              this.screenLockerService.setShowScreenSpinner(false);
                 currentPage.nextPage = false;
                 this.navigationService.sendKeys('[enter]')
               }
-  // console.log("################### end of Typeahead ########################### ");
+  //  console.log("################### end of Typeahead ########################### ");
           }
         }
       }else{
-        // console.log("Inside else of Typeahead.....")
+        //  console.log("Inside else of Typeahead.....")
         // this.navigationService.screenObjectUpdated.next(true);
         if(this.navigationService.isScreenUpdated.value){
           this.navigationService.isScreenUpdated.next(true);
@@ -385,6 +386,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   }
 
   onScreenInit(screen: GetScreenResponse): void {
+    console.log("@onScreenInit", screen)
     screen = screen || this.screenHolderService.getRuntimeScreen();
     this.keyboardMappingService.clearJSKeyboardMappings();//JSKeyboardMapping have to be clean for each page.
     screen.transformations.forEach((transform) => {

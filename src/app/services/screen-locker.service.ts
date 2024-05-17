@@ -84,6 +84,10 @@ export class ScreenLockerService {
     this.isScreenIdUpdated = isUpdated;
   }
 
+  setShowScreenSpinner(flag: boolean){
+    this.showScreenSpinner = false;
+  }
+
   isShowScreenSpinner(): boolean {
     return this.showScreenSpinner;
   }
