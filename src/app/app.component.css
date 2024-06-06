@@ -108,10 +108,17 @@ select {
 
 #slider {
     background-color: #1776bf;
-    height: 56px;
+    height: 54.5px;
     display: flex;
     align-items: center;
     width: 180px;
+}
+
+::ng-deep .mdc-slider .mdc-slider__track {
+    position: absolute;
+    top: 54%;
+    transform: translateY(-50%);
+    width: 100%;
 }
 
 ::ng-deep .mtSlider .mat-mdc-slider .mdc-slider__track--active_fill {
@@ -144,17 +151,20 @@ select {
 
 ::ng-deep .mtSlider .mat-mdc-slider .mdc-slider__track--active {
     height: 2px;
-    top: 2px
+    top: 1.5px;
+    transform: translateY(-50%);
 }
 
 ::ng-deep .mtSlider .mat-mdc-slider .mdc-slider__track--inactive {
     height: 2px;
     top: 2px;
+    transform: translateY(-100%);
 }
 
-::ng-deep .mtSlider .mat-mdc-slider .mdc-slider__track--inactive {
-    opacity: 1.24;
-}
+/* ::ng-deep .mtSlider .mat-mdc-slider .mdc-slider__track--inactive {
+    opacity: 1.0;
+    transform: translateY(-100%);
+} */
 
 /* .panelCustom {
     margin-left: 5px; 
@@ -191,9 +201,10 @@ select {
     height: 25px;
 }
 
-/* ::ng-deep .mdc-radio{
-    padding: 5px 5px;
-} */
+::ng-deep .mdc-radio{
+    /* padding: 5px 5px; */
+    margin-left: 2px;
+}
 
 ::ng-deep #black .mdc-radio .mdc-radio__native-control:enabled:not(:checked)+.mdc-radio__background .mdc-radio__outer-circle {
     border-color: black;
