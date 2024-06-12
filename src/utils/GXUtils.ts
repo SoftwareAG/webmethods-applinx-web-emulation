@@ -330,6 +330,16 @@ export class GXUtils {
     return strObj
   }
 
+  public static createFunctionPage(nextPageFlag, funcKey){
+    let pageObj = {}
+    pageObj["inputs"] = this.typeAheadStringArray;
+    pageObj["visited"] = false;
+    pageObj["pageNo"] = this.pageNo++;
+    pageObj["nextPage"] = nextPageFlag;
+    pageObj["funcKey"] = funcKey;
+    return pageObj;
+  }
+
   public static createPage(nextPageFlag) {
     let pageObj = {}
     pageObj["inputs"] = this.typeAheadStringArray;
@@ -342,7 +352,6 @@ export class GXUtils {
   public static appendTypeAheadPageArray() {
     this.pagesArray.push(this.createPage(false));
     this.typeAheadStringArray = [];
-    console.log("this.pagesArray : ", this.pagesArray)
   }
 
   public static getPageArray() {
@@ -362,10 +371,16 @@ export class GXUtils {
     } else if (event.code == GXUtils.TAB) {
       this.typeAheadStringArray.push(this.createWord());
       implicitTabFlag = false;
-    } else if (event.code == GXUtils.ENTER || event.key == GXUtils.NUMPADENTER) {
+    } else if (event.code == GXUtils.ENTER || event.code == GXUtils.NUMPADENTER) {
       implicitTabFlag = false;
       this.typeAheadStringArray.push(this.createWord());
       this.pagesArray.push(this.createPage(true));
+      this.fieldOrder = 0;
+      this.typeAheadStringArray = [];
+    } else if (GXUtils.FUNCTIONARRAY.indexOf(event.code) != -1){
+      implicitTabFlag = false;
+      this.typeAheadStringArray.push(this.createWord());
+      this.pagesArray.push(this.createFunctionPage(false, event.code));
       this.fieldOrder = 0;
       this.typeAheadStringArray = [];
     }
@@ -375,9 +390,6 @@ export class GXUtils {
       implicitTabFlag = false;
     }
     this.typeAheadCharacterArray = [];
-    console.log("\n\n this.pagesArray : ", JSON.stringify(this.pagesArray));
-    console.log("this.typeAheadStringArray : ", JSON.stringify(this.typeAheadStringArray));
-    console.log("\n\n")
   }
 
   public static getImplicitFlag() {
@@ -387,4 +399,4 @@ export class GXUtils {
   public static setImplicitFlag(value) {
     this.implicitFlag = value;
   }
-}
+  }

@@ -99,7 +99,6 @@ export class NavigationService {
   }
 
   errorHandler(errorResponse: HttpErrorResponse, nonActivityFlow: boolean) {
-    console.log(errorResponse.error.message);
     if (errorResponse.error.message.indexOf("Disconnected by host") > -1 ||
       errorResponse.error.message.indexOf("Session was disconnected by Host") > -1 ||
       errorResponse.error.message.indexOf("Not connected to Server (Software caused connection abort: recv failed)") > -1) {
@@ -130,7 +129,6 @@ export class NavigationService {
     if (this.screenLockerService.isLocked()) {
       return; // windows is loading...
     }
-
     this.getHostScreenNumber().subscribe (
       screenNumberResponse => {
         if (screenNumberResponse.screenNumber  > this.getScreenId()) {
@@ -156,7 +154,7 @@ export class NavigationService {
     const returnScreen = new ReturnScreen (shouldReturnScreen);
     const sendKeysRequest = new SendKeysRequest(sendKey, this.cursorPosition, this.screenSize, Array.from(this.sendableFields.values()),returnScreen);//,returnScreen
     this.userExitsEventThrower.firePreSendKey(sendKeysRequest); 
-    this.tearDown();      
+    this.tearDown();     
     this.screenService.updateScreen(sendKeysRequest, this.screenId, this.storageService.getAuthToken()).subscribe(newScreen => {
       // this.tearDown();      
       this.userExitsEventThrower.firePostSendKey(newScreen);

@@ -85,7 +85,7 @@ export class ScreenLockerService {
   }
 
   setShowScreenSpinner(flag: boolean){
-    this.showScreenSpinner = false;
+    this.showScreenSpinner = flag;
   }
 
   isShowScreenSpinner(): boolean {

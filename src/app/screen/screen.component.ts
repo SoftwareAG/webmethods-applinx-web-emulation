@@ -223,21 +223,19 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       if (!this.isChildWindow) this.onScreenInit(screen);
     }
     if(!this.sharedService.getPlayMacroFlag()){
-      if (GXUtils.ENABLETYPEAHEADFLAG &&(screen?.screenId != this.screenHolderService.getPreviousScreen()?.screenId )) {
+      //console.log("GXUtils.ENABLETYPEAHEADFLAG : ", GXUtils.ENABLETYPEAHEADFLAG)
+      // if ((GXUtils.ENABLETYPEAHEADFLAG) &&(screen?.screenId != this.screenHolderService.getPreviousScreen()?.screenId )) {
+        if (GXUtils.ENABLETYPEAHEADFLAG){
         this.checkForTypeAheadChars();   // Getting the user input
         // Reading the typeAhead content
         let pageArray = GXUtils.getPageArray();
-        // console.log("@@@@@@@@@@@@@@@@@@@@@@ Page Array - Before : ", JSON.stringify(pageArray));
         if (pageArray.length > 0){
           let currentPage = pageArray.filter(page => !page.visited)[0];
-          // console.log("currentPage : ", currentPage);
           if (currentPage) {
             let typeAheadEntries = currentPage.inputs.filter(item => item.active);
-            //  console.log("CurrentPage - TypeAhead : ", typeAheadEntries);
             
             // Get the TypeAhead Fields currentPageInputFields2
             let inputFieldArray = this.getTypeAheadFields(screen);
-            // console.log("Current Page - textFieldArray : ", inputFieldArray);
 
             let maxCompItem = "";
             let maxFieldLength = 0;
@@ -254,6 +252,11 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
               for (let i = 0; i < maxFieldLength; i++) {
                 if (i < minFieldLength) {
                     inputFieldArray[i].content = this.checkDataType(inputFieldArray[i].datatype, typeAheadEntries[i].value);
+                    const input = new InputField();
+                    input.setName(inputFieldArray[i].name);
+                    input.setValue(inputFieldArray[i].content);
+                    this.navigationService.setSendableField(input);
+
                     typeAheadEntries[i].active = false;
                     currentPage.visited = true;
                 } else {
@@ -265,23 +268,17 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
             }else{
               currentPage.visited = true;
             }
-            // console.log("#################### currentPage : ", JSON.stringify(currentPage));
-            // console.log("@@@@@@@@@@@@@@@@@@@@@@ Page Array - After jio: ", JSON.stringify(pageArray));
-            // console.log("screen?.screenId : ", screen?.screenId)
-            // console.log("this.navigationService.getScreenId() : ", this.navigationService.getScreenId())
-            // if (screen?.screenId != this.navigationService.getScreenId() && currentPage.nextPage) {
             if (currentPage.nextPage) {
-              // console.log("Going to next page..........");
               this.screenLockerService.setShowScreenSpinner(false);
-                currentPage.nextPage = false;
-                this.navigationService.sendKeys('[enter]')
-              }
-  //  console.log("################### end of Typeahead ########################### ");
+              currentPage.nextPage = false;
+              this.navigationService.sendKeys('[enter]')
+            } else if (!currentPage.nextPage && currentPage.funcKey) {
+              this.screenLockerService.setLocked(false);
+              this.navigationService.sendKeys(("[p"+currentPage.funcKey+"]").toLowerCase())
+            }
           }
         }
       }else{
-        //  console.log("Inside else of Typeahead.....")
-        // this.navigationService.screenObjectUpdated.next(true);
         if(this.navigationService.isScreenUpdated.value){
           this.navigationService.isScreenUpdated.next(true);
         }
@@ -386,7 +383,6 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   }
 
   onScreenInit(screen: GetScreenResponse): void {
-    console.log("@onScreenInit", screen)
     screen = screen || this.screenHolderService.getRuntimeScreen();
     this.keyboardMappingService.clearJSKeyboardMappings();//JSKeyboardMapping have to be clean for each page.
     screen.transformations.forEach((transform) => {
