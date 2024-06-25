@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-
+import { GXAdditionalKey } from '../app/services/enum.service';
+import { KeyboardMappingService } from 'src/app/services/keyboard-mapping.service';
 import { Position } from "@softwareag/applinx-rest-apis";
 import {BlackTheme, WhiteTheme, GreenTheme} from "./GXColorTheme"
 
@@ -324,7 +325,7 @@ export class GXUtils {
 
   public static createWord() {
     let strObj = {};
-    strObj["value"] = this.typeAheadCharacterArray.length > 0 ? this.typeAheadCharacterArray.toString().replaceAll(",", "") : null;
+    strObj["value"] = this.typeAheadCharacterArray.length > 0 ? this.typeAheadCharacterArray.toString().replaceAll(",", "") : "";
     strObj["active"] = true;
     strObj["fieldOrder"] = this.fieldOrder++;
     return strObj
@@ -380,16 +381,41 @@ export class GXUtils {
     } else if (GXUtils.FUNCTIONARRAY.indexOf(event.code) != -1){
       implicitTabFlag = false;
       this.typeAheadStringArray.push(this.createWord());
-      this.pagesArray.push(this.createFunctionPage(false, event.code));
+      this.pagesArray.push(this.createFunctionPage(false, GXUtils.setFunctionKeys(event).targetFunction));
       this.fieldOrder = 0;
       this.typeAheadStringArray = [];
-    }
+    } 
     if (implicitTabFlag) {
       this.pagesArray.push(this.createPage(false));
       this.typeAheadStringArray = [];
       implicitTabFlag = false;
     }
     this.typeAheadCharacterArray = [];
+  }
+
+  public static mapKey(keyCode: any, additionalKey: string): string{
+		return keyCode+'-'+additionalKey
+	}
+
+  public static setFunctionKeys(event){
+    let gx_event = event;
+    let additionalKey = GXAdditionalKey.NONE;
+		if(gx_event.altKey){
+			additionalKey = GXAdditionalKey.ALT;
+		}else if(gx_event.ctrlKey){
+			additionalKey = GXAdditionalKey.CTRL;
+		}else if(gx_event.shiftKey){
+			additionalKey = GXAdditionalKey.SHIFT;
+		}
+    let keyMap = null;
+		if(KeyboardMappingService.JsonServerKeyboardMappings != null){
+			//the priorties are: 1) injected JS functions 2) JSon configuration 3) Server definitions(from the designer)
+			keyMap = KeyboardMappingService.JSKeyboardMappings.get(GXUtils.mapKey(gx_event.keyCode, additionalKey));
+			if(keyMap == null){
+				keyMap = KeyboardMappingService.JsonServerKeyboardMappings.get(GXUtils.mapKey(gx_event.keyCode, additionalKey));
+			}
+		}
+    return keyMap;
   }
 
   public static getImplicitFlag() {

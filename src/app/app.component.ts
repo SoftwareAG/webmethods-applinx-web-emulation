@@ -83,7 +83,7 @@ export class AppComponent implements OnInit, OnDestroy {
   handleKeyboardEvent(event: KeyboardEvent): void {
     if (!this.sharedService.getPopUpFlag()) {
       if (this.screenLockerService.isLocked()) {
-        if (GXUtils.ENABLETYPEAHEADFLAG && !event.shiftKey) {
+        if (GXUtils.ENABLETYPEAHEADFLAG) {
           this.fnFormTypeaheadDetails(event);
         }
         return; // windows is loading...
@@ -100,7 +100,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  fnFormTypeaheadDetails(event: KeyboardEvent) {
+fnFormTypeaheadDetails(event: KeyboardEvent) {
     if (event.code) {
       if (GXUtils.IGNOREKEYARRAY.indexOf(event.code) != -1) {
         event.preventDefault();

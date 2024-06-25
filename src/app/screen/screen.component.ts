@@ -223,7 +223,6 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       if (!this.isChildWindow) this.onScreenInit(screen);
     }
     if(!this.sharedService.getPlayMacroFlag()){
-      //console.log("GXUtils.ENABLETYPEAHEADFLAG : ", GXUtils.ENABLETYPEAHEADFLAG)
       // if ((GXUtils.ENABLETYPEAHEADFLAG) &&(screen?.screenId != this.screenHolderService.getPreviousScreen()?.screenId )) {
         if (GXUtils.ENABLETYPEAHEADFLAG){
         this.checkForTypeAheadChars();   // Getting the user input
@@ -233,48 +232,63 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
           let currentPage = pageArray.filter(page => !page.visited)[0];
           if (currentPage) {
             let typeAheadEntries = currentPage.inputs.filter(item => item.active);
-            
             // Get the TypeAhead Fields currentPageInputFields2
             let inputFieldArray = this.getTypeAheadFields(screen);
-
-            let maxCompItem = "";
-            let maxFieldLength = 0;
-            let minFieldLength = inputFieldArray.length;
-            if (minFieldLength > 0) {
-              if (typeAheadEntries.length <= inputFieldArray.length) {
-                maxCompItem = GXUtils.currentPage;
-                maxFieldLength = typeAheadEntries.length;
-              } else {
-                maxCompItem = GXUtils.typeAhead;
-                maxFieldLength = typeAheadEntries.length; //inputFieldArray.length;
-              }
-              this.getCursorLocation(screen, inputFieldArray, typeAheadEntries);
-              for (let i = 0; i < maxFieldLength; i++) {
-                if (i < minFieldLength) {
-                    inputFieldArray[i].content = this.checkDataType(inputFieldArray[i].datatype, typeAheadEntries[i].value);
-                    const input = new InputField();
-                    input.setName(inputFieldArray[i].name);
-                    input.setValue(inputFieldArray[i].content);
-                    this.navigationService.setSendableField(input);
-
-                    typeAheadEntries[i].active = false;
-                    currentPage.visited = true;
-                } else {
-                  if (maxCompItem == GXUtils.typeAhead) {
-                    typeAheadEntries[i].active = false;
-                  }
+            let typeaheadCount = 0;
+            let inputfieldCount = 0;
+            if ((inputFieldArray.length==0 && typeAheadEntries.length == 0) || 
+                (inputFieldArray.length>0 && typeAheadEntries.length == 0)){
+              // do nothing
+            }else if ((typeAheadEntries.length >= inputFieldArray.length) && 
+                    !(inputFieldArray.length==0 && typeAheadEntries.length > 0)) {
+              while(typeaheadCount < typeAheadEntries.length){
+                inputFieldArray[inputfieldCount].content = this.checkDataType(inputFieldArray[inputfieldCount].datatype, typeAheadEntries[typeaheadCount].value);
+                typeAheadEntries[typeaheadCount].active = false;
+                const input = new InputField();
+                input.setName(inputFieldArray[inputfieldCount].name);
+                input.setValue(inputFieldArray[inputfieldCount].content);
+                this.navigationService.setSendableField(input);  
+                typeaheadCount++;
+                inputfieldCount++;
+                if (inputfieldCount == inputFieldArray.length){
+                  inputfieldCount = 0;
                 }
+
               }
-            }else{
-              currentPage.visited = true;
+            }else if (inputFieldArray.length==0 && typeAheadEntries.length > 0){
+              do{
+                typeAheadEntries[typeaheadCount].active = false;
+                typeaheadCount++;
+              }while (typeaheadCount < typeAheadEntries.length)
+            }else if(inputFieldArray.length>0 && typeAheadEntries.length>0 && 
+                      typeAheadEntries.length < inputFieldArray.length) {
+              do {
+                while (typeaheadCount < typeAheadEntries.length) {
+                        inputFieldArray[inputfieldCount].content = this.checkDataType(inputFieldArray[inputfieldCount].datatype, typeAheadEntries[typeaheadCount].value);
+                        typeAheadEntries[typeaheadCount].active = false;
+                        const input = new InputField();
+                        input.setName(inputFieldArray[inputfieldCount].name);
+                        input.setValue(inputFieldArray[inputfieldCount].content);
+                        this.navigationService.setSendableField(input);
+                        inputfieldCount++;
+                        typeaheadCount++;
+                    } 
+                    inputfieldCount++;
+                } while (inputfieldCount < inputFieldArray.length) 
             }
+            currentPage.visited = true;
+            this.getCursorLocation(screen, inputFieldArray, typeAheadEntries);
             if (currentPage.nextPage) {
+              //console.log("Going to next page!!!!!!!!!!!!!!")
               this.screenLockerService.setShowScreenSpinner(false);
               currentPage.nextPage = false;
               this.navigationService.sendKeys('[enter]')
             } else if (!currentPage.nextPage && currentPage.funcKey) {
-              this.screenLockerService.setLocked(false);
-              this.navigationService.sendKeys(("[p"+currentPage.funcKey+"]").toLowerCase())
+              //this.screenLockerService.setLocked(false);
+              // this.screenLockerService.setScreenIdUpdated(true);
+               this.screenLockerService.setShowScreenSpinner(false);
+              // this.screenLockerService.setScreenSpinnerHandler(null);
+              this.navigationService.sendKeys(currentPage.funcKey)
             }
           }
         }
@@ -321,13 +335,14 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   getCursorLocation(screen, inputFieldArray, typeAheadEntries){
       let typeAheadArrayLength = typeAheadEntries.length;
       let textboxArrayLength = inputFieldArray.length;
-      let focusIndex = 0 // typeAheadArrayLength%textboxArrayLength;
+      let focusIndex = 0;
       if (textboxArrayLength>typeAheadArrayLength){
         focusIndex = GXUtils.getImplicitFlag()?typeAheadArrayLength-1:typeAheadArrayLength;
       }else if(textboxArrayLength==typeAheadArrayLength){
-          focusIndex = GXUtils.getImplicitFlag()?typeAheadArrayLength-1:typeAheadArrayLength-textboxArrayLength;
+        focusIndex = GXUtils.getImplicitFlag()?typeAheadArrayLength-1:typeAheadArrayLength-textboxArrayLength;
       }else if (textboxArrayLength<typeAheadArrayLength){
-        focusIndex = textboxArrayLength-1;//GXUtils.getImplicitFlag()?typeAheadArrayLength%textboxArrayLength:typeAheadArrayLength%textboxArrayLength+1;
+        let totalFocusIndex = GXUtils.getImplicitFlag()?typeAheadArrayLength-1:typeAheadArrayLength;
+        focusIndex = totalFocusIndex%textboxArrayLength;
       }
       screen.cursor.fieldName = inputFieldArray[focusIndex].name;
       screen.cursor.position = inputFieldArray[focusIndex].position;
