@@ -344,8 +344,10 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
         let totalFocusIndex = GXUtils.getImplicitFlag()?typeAheadArrayLength-1:typeAheadArrayLength;
         focusIndex = totalFocusIndex%textboxArrayLength;
       }
-      screen.cursor.fieldName = inputFieldArray[focusIndex].name;
-      screen.cursor.position = inputFieldArray[focusIndex].position;
+      if(textboxArrayLength>0){
+        screen.cursor.fieldName = inputFieldArray[focusIndex].name;
+        screen.cursor.position = inputFieldArray[focusIndex].position;
+      }
   }
 
   private checkForTypeAheadChars(){
