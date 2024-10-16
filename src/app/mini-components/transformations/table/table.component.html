@@ -4,7 +4,7 @@
                                                'grid-column-end': transform.table.cornersCoordinates.bottomRight.column}">
   <thead class="tableHeader" [ngStyle]="{'border-style': 'solid', 'border-width': 'thin'}">
   <tr>
-    <th *ngFor="let col of transform.table.cols" name="{{col.name}}">
+    <th title="{{col.tooltip}}" *ngFor="let col of transform.table.cols" name="{{col.name}}">
       {{col.caption}}
     </th>
   </tr>

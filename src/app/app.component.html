@@ -20,6 +20,25 @@
   <sag-topnav *ngIf="!isSmallScreen()" brandsrc='assets/images/ApplinX-all white.svg' scrollStyle=""
     brandtitle='ApplinX Web Application' brandheight='56' brandwidth='196'>
     <sag-topnav-right right>
+        <!-- <div *ngIf = "this.changeRecColor">
+         <sag-topnav-item itemType="button" [matMenuTriggerFor]="matMenuMacro1" [disable]='false' title="Macro" (click)="macro()" itemId="copy" itemName=""
+          itemIcon="dlt-icon-submit-document" itemStyle="color: #B22222">
+         </sag-topnav-item>
+        </div>
+        <div *ngIf = "!this.changeRecColor">
+         <sag-topnav-item itemType="button" [matMenuTriggerFor]="matMenuMacro1" [disable]='false' title="Macro" (click)="macro()" itemId="copy" itemName=""
+          itemIcon="dlt-icon-submit-document" itemStyle="color: white">
+         </sag-topnav-item>
+       </div> -->
+       <mat-menu #matMenuMacro1="matMenu">
+          <mat-menu-content style="display: flex; flex-direction: row; padding: -1px 8px 0px 15px;">
+            <div title={{macroEvents.play}} *ngIf = "!recordStop" class="dlt-icon-play macro-icon" (click)="openMacro('play')"></div>
+            <div title={{macroEvents.record}} *ngIf = "!recordStop" class="dlt-icon-stop-circle macro-icon" (click)="openMacro('record')"></div>
+            <div title={{macroEvents.stop}} *ngIf = "recordStop" class="dlt-icon-stop macro-icon" (click)="stopRecord()"></div>
+            <div title={{macroEvents.view}} *ngIf = "!recordStop" class="dlt-icon-password-show macro-icon" (click)="openMacro('view')"></div>
+            <div title={{macroEvents.remove}} *ngIf = "!recordStop" class="dlt-icon-delete macro-icon" (click)="openMacro('remove')"></div>
+          </mat-menu-content>
+      </mat-menu>
       <sag-topnav-item itemType="button" [disable]='false' title="Copy text from host screen" (click)="copy()" itemId="copy" itemName=""
         itemIcon="dlt-icon-copy" itemStyle="color:white">
       </sag-topnav-item>
@@ -29,16 +48,18 @@
       <sag-topnav-item [matMenuTriggerFor]="menu" title="Zoom" itemType="button" itemIcon="dlt-icon-zoom-in"
         itemStyle="color:white" (click)="zoom()">
       </sag-topnav-item>
-      <mat-menu #menu="matMenu">
+      <mat-menu #menu="matMenu" class="mtSliderMenu">
         
-        <div id="slider">
-          <mat-slider thumbLabel class="panelCustom" vertical [displayWith]="formatLabel" [value]="zoomDefault"
-          [step]="zoomStep" [min]="zoomMinValue" [max]="zoomMaxValue" (valueChange)=onZoomChange($event)
-            aria-label="units"></mat-slider>
-            <div id="silder-default-btn">
-              <i class="dlt-icon-restore" title="Default" itemIcon="dlt-icon-zoom-in" (click)="setDefaultZoom()"
-                aria-hidden="true"></i>
-            </div>
+        <div id="slider" class="mtSlider">
+          <span id="silder-default-btn"> 
+            <i class="dlt-icon-restore" title="Default" itemIcon="dlt-icon-zoom-in" (click)="setDefaultZoom()"
+              aria-hidden="true" style="cursor: pointer;"></i>
+          </span>
+          <span>  
+            <mat-slider class="panelCustom" [displayWith]="formatLabel"
+          [step]="zoomStep" [min]="zoomMinValue" [max]="zoomMaxValue" (change)=onZoomChange($event)
+            aria-label="units" [discrete]="thumbLabel" [value]="value"><input matSliderThumb [(ngModel)]="value"/></mat-slider>
+          </span>
         </div>
       </mat-menu>
 
@@ -46,15 +67,15 @@
         itemStyle="color:white">
       </sag-topnav-item>
       <mat-menu #matMenuTheme="matMenu">
-        <mat-radio-group [(ngModel)]="themeColor">
-          <mat-menu-content style="display: flex; flex-direction: column; padding: 0px 8px 0px 15px;">
-            <mat-menu-item *ngFor="let color of themeColors; index as i">
-              <mat-radio-button [id]="getColor(color)" [style.--border-color]="getColor(color)" [value]="color"
-              [matTooltip]="color" [matTooltipPosition]="'after'"
-              (change)="changeBackgroundColor($event.value)"></mat-radio-button>
-            </mat-menu-item>
-          </mat-menu-content>
-        </mat-radio-group>
+          <mat-radio-group [(ngModel)]="themeColor">
+            <mat-menu-content style="display: flex; flex-direction: column; padding: 0px 8px 0px 8px;width: 54px; align-items: center;">
+              <mat-menu-item *ngFor="let color of themeColors; index as i">
+                <mat-radio-button style="padding: 5px 5px;" [class]="getColor(color)" [id]="getColor(color)" [style.--border-color]="getColor(color)" [value]="color"
+                [matTooltip]="color" [matTooltipPosition]="'after'"
+                (change)="changeBackgroundColor($event.value)"></mat-radio-button>
+              </mat-menu-item>
+            </mat-menu-content>
+          </mat-radio-group>
       </mat-menu>
       <sag-topnav-item itemType="button" [disable]='false' title="Refresh" (click)="reload()" itemId="reload"
         itemName="" itemIcon="dlt-icon-refresh" itemStyle="color:white">

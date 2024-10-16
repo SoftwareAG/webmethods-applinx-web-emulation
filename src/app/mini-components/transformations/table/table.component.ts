@@ -33,6 +33,21 @@ export class TableComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
+  //  console.log(changes);
+  }
+
+  ngOnInit(){
+    let colDetails = this.transform.table.cols;
+    let rowDetails = this.transform.table.rows[0].items;
+    rowDetails.forEach((element,index) => {
+      let colCaption = colDetails[index].caption;
+      let colDataLength = element.length;
+      if(colCaption.length > colDataLength){
+        colDetails[index].caption = colDetails[index].caption.substr(0, colDataLength);
+        colDetails[index]["tooltip"] = colCaption;
+      }else{
+        colDetails[index]["tooltip"] = colDetails[index].caption;
+      }
+    })
   }
 }

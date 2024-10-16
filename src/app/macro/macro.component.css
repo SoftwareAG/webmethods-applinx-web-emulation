@@ -1,0 +1,146 @@
+.containter {
+
+    width: 450px;
+    height: 150%;
+}
+
+.listofdisplay {
+    width: 290px;
+    height: 20px;
+    margin-left: 25px;
+    margin-top: 25px;
+
+}
+
+ul,li {
+    list-style:none;
+}
+.nav {
+    /*display: inline-block; */
+    margin: 0 15px 0 0;
+    list-style-type: none;
+    /* padding:2; */
+
+
+
+
+}
+
+/* .nav li{
+    margin-left:10px;
+  } */
+
+.existingmarco {
+
+    width: 200px;
+    height: 150px;
+    margin-left: 25px;
+    margin-top: 25px;
+    word-break: break-all !important;
+    overflow: auto !important;
+}
+
+.existingmarcoinput {
+
+    width: auto;
+    height: 200px;
+    word-break: nowrap;
+    margin-left: 25px;
+    margin-top: 25px;
+    position: relative;
+}
+
+.existingmarcoinput label {
+    margin-top: 25px;
+}
+
+.existingmarcoinput button {
+    margin-top: 25px;
+    float: right;
+    margin-right: 20px;
+}
+
+.chkSimulate {
+    word-break: break-all;
+}
+
+.scroballablemarco {
+
+    width: 200px;
+    overflow-y: scroll;
+    height: 75px;
+    resize: none;
+    border: 1px solid black;
+}
+
+
+.buttoncls {
+    width: 100px;
+    height: 100px;
+}
+
+ul,
+li {
+    font-family: 'Font Awesome 6 Free';
+    margin-left: 10px !important;
+    color: #006992;
+
+}
+.button-primary {
+    left: auto;
+}
+
+.play-con {
+    height: 120px;
+}
+
+.view-con{
+    height: 120px;
+}
+
+/* .del-con {
+    height: 120px;
+} */
+
+.con-header {
+    background-color: #1776bf;
+    color: white;
+    text-align: center;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}
+
+.input-record {
+    height: 50px;
+}
+
+.red-dot {
+    animation: blink 1s infinite;
+  }
+  
+  @keyframes blink {
+    0%, 50% {
+      opacity: 1;
+    }
+    51%, 100% {
+      opacity: 0;
+    }
+  }
+
+  ::ng-deep .mat-checkbox-ripple .mat-ripple-element {
+    background-color: #1776bf !important;
+  }
+
+  ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: #1776bf !important;
+  }
+
+  ::ng-deep .mat-checkbox-interminate.mat-accent .mat-checkbox-background {
+    background-color: #1776bf !important;
+  }
+
+  .mat-form-field {
+    display: inherit !important;
+  }
