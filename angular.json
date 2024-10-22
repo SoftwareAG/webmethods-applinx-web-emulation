@@ -42,7 +42,8 @@
               "node_modules/@softwareag/dlt-components/js/delite.min.js",
               "node_modules/@chenfengyuan/datepicker/dist/datepicker.min.js",
               "node_modules/timepicker/jquery.timepicker.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ]
           },
           "configurations": {

@@ -19,6 +19,7 @@ import { Injector, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule} from '@angular/material/icon';
+import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatFormFieldModule} from '@angular/material/form-field';
 import {OverlayModule} from '@angular/cdk/overlay';
 import {MatSliderModule} from '@angular/material/slider';
@@ -26,7 +27,7 @@ import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatDialogModule, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatRadioModule} from '@angular/material/radio';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTooltipModule, TooltipPosition } from '@angular/material/tooltip';
 //import { MatDialog } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -38,7 +39,7 @@ import { ApiModule, Configuration, ConfigurationParameters} from '@softwareag/ap
 import { ScreenComponent } from './screen/screen.component';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { WebLoginComponent } from './webLogin/webLogin.component';
-import { TopnavModule } from '@softwareag/dln';
+//import { TopnavModule } from '@softwareag/dln';
 import { environment} from '../environments/environment';
 import { FieldComponent } from './mini-components/field/field.component';
 import { ClickableComponent } from './mini-components/transformations/clickable/clickable.component';
@@ -119,10 +120,11 @@ const routes: Routes = [
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    TopnavModule,
+    // TopnavModule,
     MatFormFieldModule,
     BrowserAnimationsModule,
     MatIconModule,
+    MatToolbarModule,
     MatSidenavModule,    
     MatProgressSpinnerModule,
     MatDialogModule,

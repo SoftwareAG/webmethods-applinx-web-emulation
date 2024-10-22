@@ -24,7 +24,6 @@
     "@angular/router": "17.2.4",
     "@chenfengyuan/datepicker": "1.0.10",
     "@softwareag/applinx-rest-apis": "10.15.5",
-    "@softwareag/dln": "2.0.0",
     "@softwareag/dlt": "12.0.0",
     "@types/rbush": "3.0.0",
     "bootstrap": "5.1.3",
