@@ -15,7 +15,7 @@
  */ 
  
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
@@ -31,7 +31,7 @@ import { UserExitsEventThrowerService } from './user-exits-event-thrower.service
 @Injectable({
   providedIn: 'root'
 })
-export class RouteGuardService implements CanActivate {
+export class RouteGuardService  {
 
   constructor(private router: Router, private storageService: StorageService, 
     private screenHolderService: ScreenHolderService,

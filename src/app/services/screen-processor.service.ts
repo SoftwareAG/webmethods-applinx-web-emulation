@@ -147,7 +147,7 @@ export class ScreenProcessorService {
   // Cut field parts which collides with rectangle. If field collides completely then return null.
   private cutField(field: Field, rect: Rectangle): Field {
     if (!field || !rect) return field;
-    if (!field.content || rect.data?.startsWith('Table')) return null;
+    // if (!field.content || rect.data?.startsWith('Table')) return null; //Fix for APX-14287
 
     const fieldPos = field.positionInWindow ?? field.position;
     if (fieldPos.column >= rect.minX && fieldPos.column + field.length <= rect.maxX) 

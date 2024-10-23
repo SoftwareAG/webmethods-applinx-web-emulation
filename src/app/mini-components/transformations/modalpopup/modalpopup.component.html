@@ -1,13 +1,15 @@
-<div id="copyParentDiv" tabindex="10" >
-    <div id="copyDiv" class="copyWrapper crosshair" (mousedown)="handleMouseDown($event)" (mouseup)="handleMouseUp($event)" ></div>
+<div id="copyParentDiv" tabindex="10">
+    <div id="copyDiv" class="copyWrapper crosshair" (mousedown)="handleMouseDown($event)"
+        (mouseup)="handleMouseUp($event)"></div>
     <div class="modal-footer unselectable" unselectable="on">
         <div class="container">
             <div class="row">
-                <div class="col-11 instruction"><p *ngIf="copyFlag">{{copyInstruction}} <mark class="selectbgcolor">{{copyInstruction_bgcolor}}</mark></p></div>
+                <div class="col-11 instruction">
+                    <p *ngIf="copyFlag">{{copyInstruction}} <mark
+                            class="selectbgcolor">{{copyInstruction_bgcolor}}</mark></p>
+                </div>
                 <div class="col-1">
-                    <mat-dialog-actions>
-                        <button mat-button mat-dialog-close>Cancel</button>
-                    </mat-dialog-actions>
+                    <button mat-button mat-dialog-close>Cancel</button>
                 </div>
             </div>
         </div>

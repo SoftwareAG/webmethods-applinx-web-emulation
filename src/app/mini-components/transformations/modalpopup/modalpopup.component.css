@@ -6,7 +6,7 @@ div.modal-footer {
     justify-content: space-between;
 }
 
-.mat-dialog-actions{
+.mat-mdc-dialog-actions{
     padding: 0;
     min-height: 0;
 }
