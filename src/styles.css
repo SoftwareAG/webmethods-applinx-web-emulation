@@ -785,6 +785,8 @@ div[name="Menu"]#gx_screenArea input.gx_intf {
 	font-family: "Courier New" !important;
 	font-size: 18px !important;
 	white-space: pre !important;
+	display: block;
+	margin: -7px;
 }
 
 .grid-item {
@@ -794,8 +796,11 @@ div[name="Menu"]#gx_screenArea input.gx_intf {
 
 .copyWrapper {
 	position: relative;
-	height: 100% !important;
-	width: 100% !important;
+	height: 90% !important;
+	width: 95% !important;
+	margin: 1.5rem;
+	border: 1px solid grey;
+	padding: 1rem;
 }
 
 .selWidgetClass {
@@ -806,6 +811,7 @@ div[name="Menu"]#gx_screenArea input.gx_intf {
 .instruction {
 	font-size: small;
 	font-style: italic;
+	text-align: center;
 }
 
 .sm-radio .dlt-radio-button label {
@@ -849,3 +855,9 @@ div[name="Menu"]#gx_screenArea input.gx_intf {
 .mat-mdc-menu-content{
 	padding: 0px !important;
 } */
+
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+    width: auto !important;
+    height: auto !important;
+}

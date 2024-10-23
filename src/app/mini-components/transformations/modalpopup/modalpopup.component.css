@@ -10,7 +10,3 @@ div.modal-footer {
     padding: 0;
     min-height: 0;
 }
-
-::ng-deep .mat-mdc-dialog-container{
-    background-color: white !important;
-}

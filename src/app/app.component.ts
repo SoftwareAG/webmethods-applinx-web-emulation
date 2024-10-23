@@ -432,13 +432,13 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
     let objArray = [];
     let formattedArray = [];
     let maxLine = 0;
+    if(rawData.fields.length > 0){
     this.generateObjectArray(rawData.fields, objArray);
     this.formatTransformation(rawData.transformations, objArray);
     if (rawData && rawData.windows) {
       this.formatTransformationOfWindows(rawData.windows, objArray);
       // this.drawBorderForPopUp(rawData.windows, objArray)
     }
-    console.log(objArray);
     let lineNo = 0;
     objArray.sort((a, b) => {
       return a.row - b.row;
@@ -455,6 +455,7 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
     } else {
       this.formatPrintPage(formattedArray);
     }
+  }
   }
 
   formatPrintPage(formattedArray) {
@@ -474,6 +475,7 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
 
   formatCopyPage(formattedArray, printFlag) {
     let divElement = document.createElement("div");
+    divElement.style.cssText ="border :1px solid black;"
     let lineIdentifier = 0;
     formattedArray.forEach(element => {
       let paraElement = document.createElement("span");
@@ -481,16 +483,13 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
       paraElement.id = "gx_text";
       paraElement.tabIndex = lineIdentifier++;
       divElement.appendChild(paraElement);
-      let lineBreakElement = document.createElement("br");
-      divElement.appendChild(lineBreakElement);
-      divElement.tabIndex = lineIdentifier++;
     });
     const dialogRef = this.matDialog.open(ModalpopupComponent, {
       data: {
         content: divElement.innerHTML,
         typeFlag: printFlag
-      }, height: '100%',
-      width: '90%',
+      },  height: '80%',
+          width: '75%',
     });
     this.sharedService.setPopUpFlag(true);
     dialogRef.afterClosed().subscribe(result => {
@@ -502,7 +501,7 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
     let stringMaster = "                                                                                ";
     lineDetails.forEach(entry => {
       if (entry.data) {
-        stringMaster = GXUtils.replaceString(stringMaster, entry.col, entry.data);
+        stringMaster = GXUtils.replaceString(stringMaster, entry.col-1, entry.data);
       }
 
     })
