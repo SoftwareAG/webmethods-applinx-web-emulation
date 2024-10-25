@@ -97,7 +97,7 @@ export class ModalpopupComponent implements OnInit {
     }
     this.copiedText.forEach((element, index) => {
      // if (element.trim() != "") {
-       lineArray[lineObjArray[index].tabIndex].innerHTML = GXUtils.replaceBetween(lineArray[lineObjArray[index].tabIndex].innerHTML,startIndex, endIndex,"<span class='customselect'>"+element+"</span>")
+       lineArray[lineObjArray[index].tabIndex].innerHTML = GXUtils.replaceBetween(lineArray[lineObjArray[index].tabIndex]["innerText"],startIndex, endIndex,"<span class='customselect'>"+element+"</span>")
     //  }
     });
   }
