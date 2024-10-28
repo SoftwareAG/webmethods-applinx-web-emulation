@@ -242,7 +242,7 @@ export class GXUtils {
     public static themeColorsList = ['Black', 'White', 'Green'];
     public static defaultThemeColor = 'White';
     public static themecolorConfig = {Black: BlackTheme, White: WhiteTheme, Green: GreenTheme}
-	  public static copyInstruction = "For Copying, select the text inside the box that needs to be copied with mouse, the copied text background color will change to  ";
+	  public static copyInstruction = "For Copying, select the text inside the box (from top-left to bottom-right) that needs to be copied with mouse, the copied text background color will change to  ";
     public static copyInstruction_bgcolor = "Blue";
     public static showHostKeyFlag = false;
     public static MENU = "Menu";
