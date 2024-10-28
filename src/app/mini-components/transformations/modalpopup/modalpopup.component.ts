@@ -12,7 +12,8 @@ export class ModalpopupComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private clipboard: Clipboard) { }
   printFlag: boolean = false;
-  copyInstruction: string = GXUtils.copyInstruction;
+  copyInstructionLineOne: string = GXUtils.copyInstructionLineOne;
+  copyInstructionLineTwo: string = GXUtils.copyInstructionLineTwo;
   copyInstruction_bgcolor: string = GXUtils.copyInstruction_bgcolor;
   selection: any;
   copiedText: any = [];
@@ -96,12 +97,12 @@ export class ModalpopupComponent implements OnInit {
       }
     }
     this.copiedText.forEach((element, index) => {
-      if (element.trim() != "") {
-       lineArray[lineObjArray[index].tabIndex].innerHTML = GXUtils.replaceBetween(lineArray[lineObjArray[index].tabIndex].innerHTML,startIndex, endIndex,"<span class='customselect'>"+element+"</span>")
-      }
+     // if (element.trim() != "") {
+       lineArray[lineObjArray[index].tabIndex].innerHTML = GXUtils.replaceBetween(lineArray[lineObjArray[index].tabIndex]["innerText"],startIndex, endIndex,"<span class='customselect'>"+element+"</span>")
+    //  }
     });
   }
-
+  
   handleMouseUp(event) {
     
     if (window.getSelection) {                      //only work if supported

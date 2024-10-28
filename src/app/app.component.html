@@ -17,64 +17,141 @@
 </section>
 
 <ng-container *ngIf="storageService.isConnected()">
-  <sag-topnav *ngIf="!isSmallScreen()" brandsrc='assets/images/ApplinX-all white.svg' scrollStyle=""
-    brandtitle='ApplinX Web Application' brandheight='56' brandwidth='196'>
-    <sag-topnav-right right>
-      <sag-topnav-item itemType="button" [disable]='false' title="Copy text from host screen" (click)="copy()" itemId="copy" itemName=""
-        itemIcon="dlt-icon-copy" itemStyle="color:white">
-      </sag-topnav-item>
-      <sag-topnav-item itemType="button" [disable]='false' title="Print host screen snapshot" (click)="print()" itemId="print" itemName=""
-        itemIcon="dlt-icon-print" itemStyle="color:white">
-      </sag-topnav-item>
-      <sag-topnav-item [matMenuTriggerFor]="menu" title="Zoom" itemType="button" itemIcon="dlt-icon-zoom-in"
-        itemStyle="color:white" (click)="zoom()">
-      </sag-topnav-item>
-      <mat-menu #menu="matMenu">
-        
-        <div id="slider">
-          <mat-slider thumbLabel class="panelCustom" vertical [displayWith]="formatLabel" [value]="zoomDefault"
-          [step]="zoomStep" [min]="zoomMinValue" [max]="zoomMaxValue" (valueChange)=onZoomChange($event)
-            aria-label="units"></mat-slider>
-            <div id="silder-default-btn">
-              <i class="dlt-icon-restore" title="Default" itemIcon="dlt-icon-zoom-in" (click)="setDefaultZoom()"
-                aria-hidden="true"></i>
-            </div>
-        </div>
-      </mat-menu>
+  <mat-toolbar class="buttonBGcolor">
+    <button mat-icon-button [matMenuTriggerFor]="zoomMain" class="buttonBGcolor  headerLeft" aria-label="Example icon-button with a menu">
+      <mat-icon class="iconHeight" svgIcon="sideMenu" aria-hidden="false"></mat-icon>
+    </button>
+    <mat-menu #zoomMain="matMenu">
+      <button mat-menu-item mat-icon-button class="example-icon buttonBGcolorForSubmenu " [matMenuTriggerFor]="matMenuMacro" (click)="macro()" #tooltip="matTooltip" matTooltip="Macro2">
+        <mat-icon class="iconHeight" svgIcon="macroNoRecord" aria-hidden="false"></mat-icon>
+      </button>
+      <button mat-icon-button class="example-icon buttonBGcolorForSubmenu col" (click)="copy()" id="copy" #tooltip="matTooltip" matTooltip="Copy text from host screen" [matTooltipPosition]="position.value!">
+        <mat-icon class="iconHeight" svgIcon="copy" aria-hidden="false"></mat-icon>
+      </button>
+      <button mat-icon-button class="example-icon buttonBGcolorForSubmenu col" (click)="print()" id="print" #tooltip="matTooltip" matTooltip="Print host screen snapshot" [matTooltipPosition]="position.value!"> 
+        <mat-icon class="iconHeight" svgIcon="print" aria-hidden="false"></mat-icon>
+      </button>
+      <button mat-menu-item mat-icon-button class="example-icon buttonBGcolorForSubmenu col"  [matMenuTriggerFor]="sideZoomMenu" #tooltip="matTooltip" matTooltip="Zoom" [matTooltipPosition]="position.value!">
+        <mat-icon class="iconHeight" svgIcon="zoom" aria-hidden="false" ></mat-icon>
+      </button>
+      <button mat-menu-item mat-icon-button class="example-icon buttonBGcolorForSubmenu col" [matMenuTriggerFor]="sideMenuTheme"  #tooltip="matTooltip" matTooltip="Style" [matTooltipPosition]="position.value!">
+        <mat-icon class="iconHeight" svgIcon="style" aria-hidden="false"></mat-icon>
+      </button>
+      <button mat-icon-button class="buttonBGcolorForSubmenu col" (click)="reload()" id="reload" #tooltip="matTooltip" matTooltip="Refresh" [matTooltipPosition]="position.value!">
+        <mat-icon class="iconHeight" svgIcon="reload" aria-hidden="false"></mat-icon>
+      </button>
+      <button mat-icon-button class="example-icon buttonBGcolorForSubmenu col" #tooltip="matTooltip" matTooltip="Configuration" [matTooltipPosition]="position.value!">
+        <mat-icon class="iconHeight" svgIcon="settings" aria-hidden="false"></mat-icon>
+      </button>
+      <button mat-icon-button class="example-icon buttonBGcolorForSubmenu col" #tooltip="matTooltip" matTooltip="Send to Host" [matTooltipPosition]="position.value!">
+        <mat-icon class="iconHeight" svgIcon="sendToHost" aria-hidden="false"></mat-icon>
+      </button>
+      <button mat-icon-button class="example-icon buttonBGcolorForSubmenu col" (click)="logout()" itemId="logout" #tooltip="matTooltip" matTooltip="Log Off" [matTooltipPosition]="position.value!">
+        <mat-icon class="iconHeight" svgIcon="close" aria-hidden="false"></mat-icon>
+      </button>
+    </mat-menu>
 
-      <sag-topnav-item [matMenuTriggerFor]="matMenuTheme" title="Style" itemType="button" itemIcon="dlt-icon-palette"
-        itemStyle="color:white">
-      </sag-topnav-item>
-      <mat-menu #matMenuTheme="matMenu">
-        <mat-radio-group [(ngModel)]="themeColor">
-          <mat-menu-content style="display: flex; flex-direction: column; padding: 0px 8px 0px 15px;">
-            <mat-menu-item *ngFor="let color of themeColors; index as i">
-              <mat-radio-button [id]="getColor(color)" [style.--border-color]="getColor(color)" [value]="color"
-              [matTooltip]="color" [matTooltipPosition]="'after'"
-              (change)="changeBackgroundColor($event.value)"></mat-radio-button>
-            </mat-menu-item>
-          </mat-menu-content>
-        </mat-radio-group>
-      </mat-menu>
-      <sag-topnav-item itemType="button" [disable]='false' title="Refresh" (click)="reload()" itemId="reload"
-        itemName="" itemIcon="dlt-icon-refresh" itemStyle="color:white">
-      </sag-topnav-item>
-      <sag-topnav-item itemType="button" [disable]='false' title="Configuration" itemId="configuration" itemName=""
-        itemIcon="dlt-icon-settings" itemStyle="color:white">
-      </sag-topnav-item>
-      <sag-topnav-item itemType="button" [disable]='false' title="Send to host" itemId="sendToHost" itemName=""
-        itemIcon="dlt-icon-send" itemStyle="color:white">
-      </sag-topnav-item>
-      <sag-topnav-item itemType="button" [disable]='false' title="Logoff" (click)="logout()" itemId="logout" itemName=""
-        itemIcon="dlt-icon-close" itemStyle="color:white">
-      </sag-topnav-item>
-    </sag-topnav-right>
-  </sag-topnav>
+    <mat-menu #sideZoomMenu="matMenu" class="mtSliderMenu">
+      <div id="slider" class="mtSlider">
+        <span id="silder-default-btn"> 
+          <i class="dlt-icon-restore" title="Default" (click)="setDefaultZoom()"
+            aria-hidden="true" style="cursor: pointer;"></i>
+        </span>
+        <span>  
+          <mat-slider class="panelCustom" [displayWith]="formatLabel"
+        [step]="zoomStep" [min]="zoomMinValue" [max]="zoomMaxValue" (change)=onZoomChange($event)
+          aria-label="units" [discrete]="thumbLabel" [value]="value"><input matSliderThumb [(ngModel)]="value"/></mat-slider>
+        </span>
+      </div>
+    </mat-menu>
+    <mat-menu #sideMenuTheme="matMenu">
+      <mat-radio-group [(ngModel)]="themeColor">
+        <mat-menu-content style="display: flex; flex-direction: column; padding: 0px 8px 0px 8px;width: 54px; align-items: center;">
+          <mat-menu-item *ngFor="let color of themeColors; index as i">
+            <mat-radio-button style="padding: 5px 5px;" [class]="getColor(color)" [id]="getColor(color)" [style.--border-color]="getColor(color)" [value]="color"
+            [matTooltip]="color" [matTooltipPosition]="'after'"
+            (change)="changeBackgroundColor($event.value)"></mat-radio-button>
+          </mat-menu-item>
+        </mat-menu-content>
+      </mat-radio-group>
+  </mat-menu>
+    <div class="divBGcolor">
+      <img class="logoImage" src="assets/images/ApplinX-tsa-logo-light.svg" alt="">
+    </div>
+    <!-- <span class="example-spacer"></span> -->
+     <div class="row nowrapRow headerRight">
 
+   <!--  <div *ngIf = "this.changeRecColor">
+      <button mat-icon-button class="example-icon buttonBGcolor " [matMenuTriggerFor]="matMenuMacro" (click)="macro()" #tooltip="matTooltip" matTooltip="Macro1">
+        <mat-icon class="iconHeight" svgIcon="macroRecord" aria-hidden="false"></mat-icon>
+      </button>
+    </div>
+   <div *ngIf = "!this.changeRecColor" class="col">
+      <button mat-icon-button class="example-icon buttonBGcolor " [matMenuTriggerFor]="matMenuMacro" (click)="macro()" #tooltip="matTooltip" matTooltip="Macro2">
+        <mat-icon class="iconHeight" svgIcon="macroNoRecord" aria-hidden="false"></mat-icon>
+      </button>
+    </div>
+       <mat-menu #matMenuMacro="matMenu">
+        <mat-menu-content style="display: flex; flex-direction: row; padding: -1px 8px 0px 15px;">
+          <div title={{macroEvents.play}} *ngIf = "!recordStop" class="dlt-icon-play macro-icon" (click)="openMacro('play')"></div>
+          <div title={{macroEvents.record}} *ngIf = "!recordStop" class="dlt-icon-stop-circle macro-icon" (click)="openMacro('record')"></div>
+          <div title={{macroEvents.stop}} *ngIf = "recordStop" class="dlt-icon-stop macro-icon" (click)="stopRecord()"></div>
+          <div title={{macroEvents.view}} *ngIf = "!recordStop" class="dlt-icon-password-show macro-icon" (click)="openMacro('view')"></div>
+          <div title={{macroEvents.remove}} *ngIf = "!recordStop" class="dlt-icon-delete macro-icon" (click)="openMacro('remove')"></div>
+        </mat-menu-content>
+    </mat-menu> -->
+    
 
-
-
-
+    <button mat-icon-button class="example-icon buttonBGcolor col" (click)="copy()" id="copy" #tooltip="matTooltip" matTooltip="Copy text from host screen">
+      <mat-icon class="iconHeight" svgIcon="copy" aria-hidden="false"></mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon buttonBGcolor col" (click)="print()" id="print" #tooltip="matTooltip" matTooltip="Print host screen snapshot"> 
+      <mat-icon class="iconHeight" svgIcon="print" aria-hidden="false"></mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon buttonBGcolor col" (click)="zoom()" [matMenuTriggerFor]="menu" #tooltip="matTooltip" matTooltip="Zoom">
+      <mat-icon class="iconHeight" svgIcon="zoom" aria-hidden="false" ></mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" class="mtSliderMenu">
+      <div id="slider" class="mtSlider">
+        <span id="silder-default-btn"> 
+          <i class="dlt-icon-restore" title="Default" (click)="setDefaultZoom()"
+            aria-hidden="true" style="cursor: pointer;"></i>
+        </span>
+        <span>  
+          <mat-slider class="panelCustom" [displayWith]="formatLabel"
+        [step]="zoomStep" [min]="zoomMinValue" [max]="zoomMaxValue" (change)=onZoomChange($event)
+          aria-label="units" [discrete]="thumbLabel" [value]="value"><input matSliderThumb [(ngModel)]="value"/></mat-slider>
+        </span>
+      </div>
+    </mat-menu>
+    <button mat-icon-button class="example-icon buttonBGcolor col" [matMenuTriggerFor]="matMenuTheme"  #tooltip="matTooltip" matTooltip="Style">
+      <mat-icon class="iconHeight" svgIcon="style" aria-hidden="false"></mat-icon>
+    </button>
+    <mat-menu #matMenuTheme="matMenu">
+      <mat-radio-group [(ngModel)]="themeColor">
+        <mat-menu-content style="display: flex; flex-direction: column; padding: 0px 8px 0px 8px;width: 54px; align-items: center;">
+          <mat-menu-item *ngFor="let color of themeColors; index as i">
+            <mat-radio-button style="padding: 5px 5px;" [class]="getColor(color)" [id]="getColor(color)" [style.--border-color]="getColor(color)" [value]="color"
+            [matTooltip]="color" [matTooltipPosition]="'after'"
+            (change)="changeBackgroundColor($event.value)"></mat-radio-button>
+          </mat-menu-item>
+        </mat-menu-content>
+      </mat-radio-group>
+  </mat-menu>
+    <button mat-icon-button class="buttonBGcolor col" (click)="reload()" id="reload" #tooltip="matTooltip" matTooltip="Refresh">
+      <mat-icon class="iconHeight" svgIcon="reload" aria-hidden="false"></mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon buttonBGcolor col" #tooltip="matTooltip" matTooltip="Configuration">
+      <mat-icon class="iconHeight" svgIcon="settings" aria-hidden="false"></mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon buttonBGcolor col" #tooltip="matTooltip" matTooltip="Send to Host">
+      <mat-icon class="iconHeight" svgIcon="sendToHost" aria-hidden="false"></mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon buttonBGcolor col" (click)="logout()" itemId="logout" #tooltip="matTooltip" matTooltip="Log Off">
+      <mat-icon class="iconHeight" svgIcon="close" aria-hidden="false"></mat-icon>
+    </button>
+  </div>
+  </mat-toolbar>
 
   <div class="middle-container">
     <div *ngIf="!isSmallScreen()" class="flexContainer" [hidden]="!displayScreen">
@@ -128,6 +205,140 @@
     </mat-sidenav-container>
   </ng-container>
 </ng-container>
+
+<!-- <ng-container *ngIf="storageService.isConnected()">
+  <sag-topnav *ngIf="!isSmallScreen()" brandsrc='assets/images/ApplinX-all white.svg' scrollStyle=""
+    brandtitle='ApplinX Web Application' brandheight='56' brandwidth='196'>
+    <sag-topnav-right right>
+         <div *ngIf = "this.changeRecColor">
+         <sag-topnav-item itemType="button" [matMenuTriggerFor]="matMenuMacro1" [disable]='false' title="Macro" (click)="macro()" itemId="copy" itemName=""
+          itemIcon="dlt-icon-submit-document" itemStyle="color: #B22222">
+         </sag-topnav-item>
+        </div>
+        <div *ngIf = "!this.changeRecColor">
+         <sag-topnav-item itemType="button" [matMenuTriggerFor]="matMenuMacro1" [disable]='false' title="Macro" (click)="macro()" itemId="copy" itemName=""
+          itemIcon="dlt-icon-submit-document" itemStyle="color: white">
+         </sag-topnav-item>
+       </div>
+       <mat-menu #matMenuMacro1="matMenu">
+          <mat-menu-content style="display: flex; flex-direction: row; padding: -1px 8px 0px 15px;">
+            <div title={{macroEvents.play}} *ngIf = "!recordStop" class="dlt-icon-play macro-icon" (click)="openMacro('play')"></div>
+            <div title={{macroEvents.record}} *ngIf = "!recordStop" class="dlt-icon-stop-circle macro-icon" (click)="openMacro('record')"></div>
+            <div title={{macroEvents.stop}} *ngIf = "recordStop" class="dlt-icon-stop macro-icon" (click)="stopRecord()"></div>
+            <div title={{macroEvents.view}} *ngIf = "!recordStop" class="dlt-icon-password-show macro-icon" (click)="openMacro('view')"></div>
+            <div title={{macroEvents.remove}} *ngIf = "!recordStop" class="dlt-icon-delete macro-icon" (click)="openMacro('remove')"></div>
+          </mat-menu-content>
+      </mat-menu>
+      <sag-topnav-item itemType="button" [disable]='false' title="Copy text from host screen" (click)="copy()" itemId="copy" itemName=""
+        itemIcon="dlt-icon-copy" itemStyle="color:white">
+      </sag-topnav-item>
+      <sag-topnav-item itemType="button" [disable]='false' title="Print host screen snapshot" (click)="print()" itemId="print" itemName=""
+        itemIcon="dlt-icon-print" itemStyle="color:white">
+      </sag-topnav-item>
+      <sag-topnav-item [matMenuTriggerFor]="menu" title="Zoom" itemType="button" itemIcon="dlt-icon-zoom-in"
+        itemStyle="color:white" (click)="zoom()">
+      </sag-topnav-item>
+      <mat-menu #menu="matMenu" class="mtSliderMenu">
+        
+        <div id="slider" class="mtSlider">
+          <span id="silder-default-btn"> 
+            <i class="dlt-icon-restore" title="Default" itemIcon="dlt-icon-zoom-in" (click)="setDefaultZoom()"
+              aria-hidden="true" style="cursor: pointer;"></i>
+          </span>
+          <span>  
+            <mat-slider class="panelCustom" [displayWith]="formatLabel"
+          [step]="zoomStep" [min]="zoomMinValue" [max]="zoomMaxValue" (change)=onZoomChange($event)
+            aria-label="units" [discrete]="thumbLabel" [value]="value"><input matSliderThumb [(ngModel)]="value"/></mat-slider>
+          </span>
+        </div>
+      </mat-menu>
+
+      <sag-topnav-item [matMenuTriggerFor]="matMenuTheme" title="Style" itemType="button" itemIcon="dlt-icon-palette"
+        itemStyle="color:white">
+      </sag-topnav-item>
+      <mat-menu #matMenuTheme="matMenu">
+          <mat-radio-group [(ngModel)]="themeColor">
+            <mat-menu-content style="display: flex; flex-direction: column; padding: 0px 8px 0px 8px;width: 54px; align-items: center;">
+              <mat-menu-item *ngFor="let color of themeColors; index as i">
+                <mat-radio-button style="padding: 5px 5px;" [class]="getColor(color)" [id]="getColor(color)" [style.--border-color]="getColor(color)" [value]="color"
+                [matTooltip]="color" [matTooltipPosition]="'after'"
+                (change)="changeBackgroundColor($event.value)"></mat-radio-button>
+              </mat-menu-item>
+            </mat-menu-content>
+          </mat-radio-group>
+      </mat-menu>
+      <sag-topnav-item itemType="button" [disable]='false' title="Refresh" (click)="reload()" itemId="reload"
+        itemName="" itemIcon="dlt-icon-refresh" itemStyle="color:white">
+      </sag-topnav-item>
+      <sag-topnav-item itemType="button" [disable]='false' title="Configuration" itemId="configuration" itemName=""
+        itemIcon="dlt-icon-settings" itemStyle="color:white">
+      </sag-topnav-item>
+      <sag-topnav-item itemType="button" [disable]='false' title="Send to host" itemId="sendToHost" itemName=""
+        itemIcon="dlt-icon-send" itemStyle="color:white">
+      </sag-topnav-item>
+      <sag-topnav-item itemType="button" [disable]='false' title="Logoff" (click)="logout()" itemId="logout" itemName=""
+        itemIcon="dlt-icon-close" itemStyle="color:white">
+      </sag-topnav-item>
+    </sag-topnav-right>
+  </sag-topnav>
+
+
+
+
+
+
+  <div class="middle-container">
+    <div *ngIf="!isSmallScreen()" class="flexContainer" [hidden]="!displayScreen">
+      <div class="main-container">
+        <div class="maindiv" id="maindiv">
+          <router-outlet (activate)="onActivate($event)" (deactivate)="onDeactivate()"></router-outlet>
+        </div>
+      </div>
+    </div>
+    <div id="app-host-keys-btns" class="hostKeys key-transform-container hostKeys-btns-container"
+      *ngIf="hostKeyTransforms">
+      <app-host-keys-template [transformations]="hostKeyTransforms" [themeColor] = "themeColor" [multipleHostKeys] = "this.hostKeysBool">
+      </app-host-keys-template>
+    </div>
+  </div> -->
+
+  <!-- *************************** For mobile *************************** -->
+  <!-- <ng-container *ngIf="isSmallScreen()">
+    <mat-sidenav-container>
+      <mat-sidenav #sidenav mode="side">
+        <sag-topnav-right>
+          <sag-topnav-item itemType="button" [disable]='false' title="Close sidebar" (click)="sidenav.toggle()"
+            itemIcon="dlt-icon-arrow-left" itemStyle="color:white">
+          </sag-topnav-item>
+          <sag-topnav-item itemType="button" [disable]='false' title="Refresh" (click)="reload()"
+            itemIcon="dlt-icon-refresh" itemStyle="color:white">
+          </sag-topnav-item>
+          <sag-topnav-item itemType="button" [disable]='false' title="Logoff-2" (click)="logout()"
+            itemIcon="dlt-icon-close" itemStyle="color:white">
+          </sag-topnav-item>
+        </sag-topnav-right>
+        <div style="bottom: 5px; position: fixed; width: max(7%, 56px); margin: 0 auto;"><img
+            src="assets/images/ApplinX-all white.svg"></div>
+      </mat-sidenav>
+      <mat-sidenav-content style="position: absolute; width: 100%;">
+        <div>
+          <mat-icon [hidden]="sidenav.opened" (click)="sidenav.toggle()"
+            style="position: fixed;">navigate_next</mat-icon>
+          <div class="flexContainer" [hidden]="!displayScreen">
+            <div style="align-self: flex-start;">
+              <router-outlet (activate)="onActivate($event)" (deactivate)="onDeactivate()"></router-outlet>
+            </div>
+            <div class="hostKeys" *ngIf="hostKeyTransforms" style="max-width: 10%; right: 0; align-self: center;"
+              [ngStyle]="{'margin-left': sidenav.opened ? '1%' : '5%'}">
+              <app-host-keys-template [transformations]="hostKeyTransforms">
+              </app-host-keys-template>
+            </div>
+          </div>
+        </div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </ng-container>
+</ng-container> -->
 
 <router-outlet *ngIf="!this.storageService.isConnected()" (activate)="onActivate($event)"
   (deactivate)="onDeactivate()"></router-outlet>

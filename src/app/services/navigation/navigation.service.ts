@@ -29,6 +29,7 @@ import { TabAndArrowsService } from './tab-and-arrows.service';
 import { StatusCodes } from 'http-status-codes';
 import { GetScreenNumberResponse } from '@softwareag/applinx-rest-apis/lib/model/getScreenNumberResponse';
 import { GXConst } from '../enum.service';
+import { SharedService } from '../shared.service';
 
 @Injectable({
   providedIn: 'root'
@@ -55,7 +56,9 @@ export class NavigationService {
               private storageService: StorageService,
               private tabAndArrowsService: TabAndArrowsService,
               private userExitsEventThrower: UserExitsEventThrowerService,
-              private messages: MessagesService) {
+              private messages: MessagesService,
+              private sharedService: SharedService,
+              ) {
     this.sendableFields = new Map<string, InputField>();
     this.setRoutingHandler();
     this.checkHostScreenUpdate();
@@ -96,7 +99,6 @@ export class NavigationService {
   }
 
   errorHandler(errorResponse: HttpErrorResponse, nonActivityFlow: boolean) {
-    console.log(errorResponse.error.message);
     if (errorResponse.error.message.indexOf("Disconnected by host") > -1 ||
       errorResponse.error.message.indexOf("Session was disconnected by Host") > -1 ||
       errorResponse.error.message.indexOf("Not connected to Server (Software caused connection abort: recv failed)") > -1) {
@@ -104,6 +106,7 @@ export class NavigationService {
           this.errorMessage = 'The session has timed out due to inactivity.';
           this.isConnectedtoHost.next(false);
           this.isThereError = true;
+          this.sharedService.isSnackBarPresent()?this.sharedService.closeSnackBar():"";
         }
         else if ((this.isAuthDisabled() && this.isAutoLogin) ) { // show disconnect message                
           this.errorMessage = 'The session has been disconnected from the host.';          
@@ -126,7 +129,6 @@ export class NavigationService {
     if (this.screenLockerService.isLocked()) {
       return; // windows is loading...
     }
-
     this.getHostScreenNumber().subscribe (
       screenNumberResponse => {
         if (screenNumberResponse.screenNumber  > this.getScreenId()) {
@@ -152,12 +154,15 @@ export class NavigationService {
     const returnScreen = new ReturnScreen (shouldReturnScreen);
     const sendKeysRequest = new SendKeysRequest(sendKey, this.cursorPosition, this.screenSize, Array.from(this.sendableFields.values()),returnScreen);//,returnScreen
     this.userExitsEventThrower.firePreSendKey(sendKeysRequest); 
-    this.tearDown();      
+    this.tearDown();     
     this.screenService.updateScreen(sendKeysRequest, this.screenId, this.storageService.getAuthToken()).subscribe(newScreen => {
       // this.tearDown();      
       this.userExitsEventThrower.firePostSendKey(newScreen);
       this.screenObjectUpdated.next (newScreen);      
       this.checkForIntermidateScreen();
+      if(this.sharedService.getMacroRecordFlag()){
+        this.sharedService.recordMacro(sendKeysRequest);
+      }
       
     }, errorResponse => {
        // this.logger.error(errorResponse);

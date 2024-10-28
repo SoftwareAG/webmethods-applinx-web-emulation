@@ -42,8 +42,11 @@ import { ScreenHolderService } from '../services/screen-holder.service';
 import { UserExitsEventThrowerService } from '../services/user-exits-event-thrower.service';
 import { NGXLogger } from 'ngx-logger';
 import { MessagesService } from '../services/messages.service';
+import { SharedService } from '../services/shared.service'
 import { ScreenProcessorService } from '../services/screen-processor.service';
 import { ScreenLockerService } from '../services/screen-locker.service'
+import { MatDialog } from '@angular/material/dialog';
+import { MacroComponent } from '../macro/macro.component';
 
 @Component({
   selector: 'app-screen',
@@ -86,13 +89,16 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   isScreenUpdatedSubscription: Subscription;
   screenObjectUpdatedSubscription: Subscription;
   gridChangedSubscription: Subscription;
+  inputFields: any = [];
+  intensifiedScr: boolean = false;
 
   constructor(private screenService: ScreenService, private navigationService: NavigationService,
               private storageService: StorageService, private tabAndArrowsService: TabAndArrowsService,
               private keyboardMappingService: KeyboardMappingService, private userExitsEventThrower: UserExitsEventThrowerService,
               private ref: ElementRef, private router: Router, private screenHolderService: ScreenHolderService,
               private logger: NGXLogger, private messages: MessagesService,         
-              private screenProcessorService: ScreenProcessorService, private screenLockerService: ScreenLockerService ) {}
+              private screenProcessorService: ScreenProcessorService, private screenLockerService: ScreenLockerService,
+              private sharedService: SharedService,) {}
               
   ngAfterViewInit(): void {
     if (!this.isChildWindow) {
@@ -135,7 +141,8 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       if (newScreen) {     
         this.navigationService.screenObjectUpdated.next(null);
         this.postGetScreen (newScreen);
-        this.getRawScreenData();
+            //this.screenHolderService.setRawScreenData(newScreen)
+            this.getRawScreenData()
       }
     });
 
@@ -216,7 +223,153 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       if (this.hasChildWindows()) this.childWindows = [];
       if (!this.isChildWindow) this.onScreenInit(screen);
     }
+    if(!this.sharedService.getPlayMacroFlag()){
+      // if ((GXUtils.ENABLETYPEAHEADFLAG) &&(screen?.screenId != this.screenHolderService.getPreviousScreen()?.screenId )) {
+        if (GXUtils.ENABLETYPEAHEADFLAG){
+        this.checkForTypeAheadChars();   // Getting the user input
+        // Reading the typeAhead content
+        let pageArray = GXUtils.getPageArray();
+        if (pageArray.length > 0){
+          let currentPage = pageArray.filter(page => !page.visited)[0];
+          if (currentPage) {
+            let typeAheadEntries = currentPage.inputs.filter(item => item.active);
+            // Get the TypeAhead Fields currentPageInputFields2
+            let inputFieldArray = this.getTypeAheadFields(screen);
+            let typeaheadCount = 0;
+            let inputfieldCount = 0;
+            if ((inputFieldArray.length==0 && typeAheadEntries.length == 0) || 
+                (inputFieldArray.length>0 && typeAheadEntries.length == 0)){
+              // do nothing
+            }else if ((typeAheadEntries.length >= inputFieldArray.length) && 
+                    !(inputFieldArray.length==0 && typeAheadEntries.length > 0)) {
+              while(typeaheadCount < typeAheadEntries.length){
+                inputFieldArray[inputfieldCount].content = this.checkDataType(inputFieldArray[inputfieldCount].datatype, typeAheadEntries[typeaheadCount].value);
+                typeAheadEntries[typeaheadCount].active = false;
+                const input = new InputField();
+                input.setName(inputFieldArray[inputfieldCount].name);
+                input.setValue(inputFieldArray[inputfieldCount].content);
+                this.navigationService.setSendableField(input);  
+                typeaheadCount++;
+                inputfieldCount++;
+                if (inputfieldCount == inputFieldArray.length){
+                  inputfieldCount = 0;
+                }
 
+              }
+            }else if (inputFieldArray.length==0 && typeAheadEntries.length > 0){
+              do{
+                typeAheadEntries[typeaheadCount].active = false;
+                typeaheadCount++;
+              }while (typeaheadCount < typeAheadEntries.length)
+            }else if(inputFieldArray.length>0 && typeAheadEntries.length>0 && 
+                      typeAheadEntries.length < inputFieldArray.length) {
+              do {
+                while (typeaheadCount < typeAheadEntries.length) {
+                        inputFieldArray[inputfieldCount].content = this.checkDataType(inputFieldArray[inputfieldCount].datatype, typeAheadEntries[typeaheadCount].value);
+                        typeAheadEntries[typeaheadCount].active = false;
+                        const input = new InputField();
+                        input.setName(inputFieldArray[inputfieldCount].name);
+                        input.setValue(inputFieldArray[inputfieldCount].content);
+                        this.navigationService.setSendableField(input);
+                        inputfieldCount++;
+                        typeaheadCount++;
+                    } 
+                    inputfieldCount++;
+                } while (inputfieldCount < inputFieldArray.length) 
+            }
+            currentPage.visited = true;
+            this.getCursorLocation(screen, inputFieldArray, typeAheadEntries);
+            if (currentPage.nextPage) {
+              //console.log("Going to next page!!!!!!!!!!!!!!")
+              this.screenLockerService.setShowScreenSpinner(false);
+              currentPage.nextPage = false;
+              this.navigationService.sendKeys('[enter]')
+            } else if (!currentPage.nextPage && currentPage.funcKey) {
+              //this.screenLockerService.setLocked(false);
+              // this.screenLockerService.setScreenIdUpdated(true);
+               this.screenLockerService.setShowScreenSpinner(false);
+              // this.screenLockerService.setScreenSpinnerHandler(null);
+              this.navigationService.sendKeys(currentPage.funcKey)
+            }
+          }
+        }
+      }else{
+        if(this.navigationService.isScreenUpdated.value){
+          this.navigationService.isScreenUpdated.next(true);
+        }
+      } 
+     }
+  }
+
+  checkDataType(fieldDataType, data){
+    let returnString = "";
+    if (data) {
+      for (let i = 0; i < data.length; i++) {
+        if (fieldDataType == GXUtils.dataTypes.NUMERIC) {
+          if ((/[0-9,.]/.test(data[i]))) {
+            returnString += data[i]
+          }
+        }
+        else if (fieldDataType == GXUtils.dataTypes.DIGITS_ONLY) {
+          if ((/[0-9]/.test(data[i]))) {
+            returnString += data[i]
+          }
+        }
+        else if (fieldDataType == GXUtils.dataTypes.SIGNED_NUMERIC) {
+          if ((/[0-9.,+-]/.test(data[i]))) {
+            returnString += data[i]
+          }
+        }
+        else if (fieldDataType == GXUtils.dataTypes.ALPHA_ONLY) {
+          if ((/[a-zA-Z]/.test(data[i]))) {
+            returnString += data[i]
+          }
+        }
+        else {
+          returnString = data;
+        }
+      }
+    }
+    return returnString
+  }
+
+  getCursorLocation(screen, inputFieldArray, typeAheadEntries){
+      let typeAheadArrayLength = typeAheadEntries.length;
+      let textboxArrayLength = inputFieldArray.length;
+      let focusIndex = 0;
+      if (textboxArrayLength>typeAheadArrayLength){
+        focusIndex = GXUtils.getImplicitFlag()?typeAheadArrayLength-1:typeAheadArrayLength;
+      }else if(textboxArrayLength==typeAheadArrayLength){
+        focusIndex = GXUtils.getImplicitFlag()?typeAheadArrayLength-1:typeAheadArrayLength-textboxArrayLength;
+      }else if (textboxArrayLength<typeAheadArrayLength){
+        let totalFocusIndex = GXUtils.getImplicitFlag()?typeAheadArrayLength-1:typeAheadArrayLength;
+        focusIndex = totalFocusIndex%textboxArrayLength;
+      }
+      if(textboxArrayLength>0){
+        screen.cursor.fieldName = inputFieldArray[focusIndex].name;
+        screen.cursor.position = inputFieldArray[focusIndex].position;
+      }
+  }
+
+  private checkForTypeAheadChars(){
+    let typeAheadCharsArray = GXUtils.getTypeAheadCharsArray();
+    if (typeAheadCharsArray.length>0 ){
+      let event = {};
+      event["code"] = GXUtils.IMPLICITTAB;
+      GXUtils.appendTypeAheadStringArray(event);
+    }
+    let typeAheadStringArray = GXUtils.getTypeAheadStringArray();
+    if (typeAheadStringArray.length > 0){
+      GXUtils.appendTypeAheadPageArray();  
+    }
+  }
+
+  private getTypeAheadFields(screen){
+    return screen.fields.filter(entry => {
+      if(entry){
+        return entry.protected == false ;
+      }
+    }); 
   }
 
   private redirectToRoute(screenName: string): void {
@@ -263,21 +416,55 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     this.navigationService.setCursorPosition(screen.cursor);
     screen.fields = this.screenProcessorService.processRegionsToHide(screen.fields, screen.transformations);
     this.m_screen = screen;
+    this.addOrRemoveBorder(this.m_screen);
     this.screenLockerService.setLocked(false);
     //Example of injecting keyboard mapping
     // this.keyboardMappingService.addKeyboardMapping(GXAdditionalKey.NONE, GXKeyCodes.F3, popup, true, cancel);
   }
 
   /**
+   * Get Index of Screen Type
+   */
+  addOrRemoveBorder(m_screen: any) {
+  let windowTitles = false;
+  m_screen.windows?.forEach(win => {
+    if(win?.title === 'ADDITIONAL OPTIONS' || win?.title === 'SECURITY NOTES' || win?.title === ' Help for SYSEXT Utility ') {
+      windowTitles = true;
+    }
+  })
+
+  m_screen?.fields.forEach((field: any, i: number) => {
+    if(field?.isIntensified === true || field?.background === 'LightRed') {
+      this.intensifiedScr = true;
+    } else if(windowTitles) {
+      this.intensifiedScr = false;
+    }
+  })
+}
+
+  /*
    * Find fields (like messageLine) which are out of child-window bounds. their position is in main screen.
    * Shift these fields to the main screen.
-  **/
+  */
    private shiftFieldsToMainWindow(screen: GetScreenResponse): void {
     const lastWindowIndex = screen.windows.length - 1;
     const windowBounds = screen.windows[lastWindowIndex].bounds;
     const mainScreenFields = new Map<string, number>();
     const currentWindowName = screen.name;
     this.m_screen.fields = this.m_screen.fields.filter(f => f);
+    let currentScreenFields = screen.fields
+    let prevScreenFields = this.m_screen.fields
+    let prevScreenFieldsArray = [];
+    let currentScreenFieldsArray = [];
+
+    prevScreenFields.forEach((prevElement, index) => {
+      if(prevElement){
+          prevScreenFieldsArray.push({key:this.fieldToString(prevElement), value:prevElement.content, index: index})
+      }
+    });
+    currentScreenFields.forEach((currentElement, index) => {
+      currentScreenFieldsArray.push({key:this.fieldToString(currentElement), value:currentElement.content, index: index})
+    });
     this.m_screen.fields.forEach((fld, i) => mainScreenFields.set(this.fieldToString(fld), i));
 
     // NEED TO FIX TABLE ITEMS POSITION AND MAYBE OTHER TRANSFORMATIONS
@@ -286,6 +473,12 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
             const index = mainScreenFields.get(this.fieldToString(field));
             if (!isNaN(index)) {
               this.m_screen.fields[index] = null;
+              prevScreenFieldsArray.forEach((entry, prevIndex) =>{
+                let selectedIndex = currentScreenFieldsArray.map(e => e.key).indexOf(entry.key);
+                if ( selectedIndex == -1){
+                  this.m_screen.fields[prevIndex] = null;
+                }
+              })
             }
             this.m_screen.fields.push(field);
             fields[i] = null;

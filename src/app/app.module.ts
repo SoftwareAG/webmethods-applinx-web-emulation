@@ -19,6 +19,7 @@ import { Injector, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule} from '@angular/material/icon';
+import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatFormFieldModule} from '@angular/material/form-field';
 import {OverlayModule} from '@angular/cdk/overlay';
 import {MatSliderModule} from '@angular/material/slider';
@@ -26,15 +27,19 @@ import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatDialogModule, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatRadioModule} from '@angular/material/radio';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTooltipModule, TooltipPosition } from '@angular/material/tooltip';
 //import { MatDialog } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppComponent } from './app.component';
 import { ApiModule, Configuration, ConfigurationParameters} from '@softwareag/applinx-rest-apis'
 import { ScreenComponent } from './screen/screen.component';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { WebLoginComponent } from './webLogin/webLogin.component';
-import { TopnavModule } from '@softwareag/dln';
+//import { TopnavModule } from '@softwareag/dln';
 import { environment} from '../environments/environment';
 import { FieldComponent } from './mini-components/field/field.component';
 import { ClickableComponent } from './mini-components/transformations/clickable/clickable.component';
@@ -58,12 +63,17 @@ import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { LineComponent } from './mini-components/transformations/line/line.component';
 import { CheckboxComponent } from './mini-components/transformations/checkbox/checkbox.component';
 import { JSMethodsService } from '../common/js-functions/js-methods.service';
-import { LoggerModule, NGXLogger, NgxLoggerLevel } from 'ngx-logger';
+import { LoggerModule, NGXLogger, NgxLoggerLevel, TOKEN_LOGGER_SERVER_SERVICE } from 'ngx-logger';
 import { RouterModule, Routes } from '@angular/router';
 import { ScreenHolderService } from './services/screen-holder.service';
 import { OAuth2HandlerService } from './services/oauth2-handler.service';
 import { RouteGuardService } from './services/route-guard.service';
-import { ScreenProcessorService } from './services/screen-processor.service'
+import { ScreenProcessorService } from './services/screen-processor.service';
+import { MacroComponent } from './macro/macro.component';
+import { SharedService } from './services/shared.service';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { HttpHeaders } from '@angular/common/http';
+import { AuthTokenServerService } from './services/logger.service'
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -101,6 +111,7 @@ const routes: Routes = [
     CalendarComponent,
     LineComponent,
     CheckboxComponent,
+    MacroComponent,
   ].concat(generatedPages),
   imports: [
     ApiModule.forRoot(apiConfigFactory),
@@ -109,21 +120,38 @@ const routes: Routes = [
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    TopnavModule,
+    // TopnavModule,
     MatFormFieldModule,
     BrowserAnimationsModule,
     MatIconModule,
+    MatToolbarModule,
     MatSidenavModule,    
     MatProgressSpinnerModule,
     MatDialogModule,
     MatSliderModule,
+    MatSelectModule,
+    MatInputModule,
+    ScrollingModule,
+    // MatSnackBar,
+    MatSnackBarModule,
     OverlayModule,
     MatMenuModule,
     MatRadioModule,
-    MatTooltipModule, 
+    MatTooltipModule,
+    MatCheckboxModule,  
     // MatDialog,
-    LoggerModule.forRoot({serverLoggingUrl: environment.basePath+'/logger', level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.TRACE})
-  ],
+    LoggerModule.forRoot(
+      {serverLoggingUrl: environment.basePath+'/logger', 
+      level: NgxLoggerLevel.ERROR, 
+      serverLogLevel: NgxLoggerLevel.ERROR,
+    },
+    {
+      serverProvider: {
+        provide: TOKEN_LOGGER_SERVER_SERVICE, useClass: AuthTokenServerService
+      }
+    }
+    )
+  ],  
   providers: [NavigationService, 
     StorageService, 
     TabAndArrowsService, 
@@ -137,6 +165,7 @@ const routes: Routes = [
     OAuth2HandlerService,
     RouteGuardService,
     ScreenProcessorService,
+    SharedService,
     { provide: MAT_DIALOG_DATA, useValue: {} },
     {provide: 'IJSFunctionService', useClass: JSMethodsService}
   ],  
