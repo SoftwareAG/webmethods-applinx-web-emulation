@@ -5,10 +5,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-11 instruction">
-                    <p *ngIf="copyFlag">{{copyInstruction}} <mark
-                            class="selectbgcolor">{{copyInstruction_bgcolor}}</mark></p>
+                    <p class="mb-0" *ngIf="copyFlag">{{copyInstructionLineOne}} </p>
+                    <p *ngIf="copyFlag">{{copyInstructionLineTwo}} 
+                        <mark class="selectbgcolor">{{copyInstruction_bgcolor}}</mark></p>
                 </div>
-                <div class="col-1">
+                <div class="col-1 px-0">
                     <button mat-button mat-dialog-close>Cancel</button>
                 </div>
             </div>
