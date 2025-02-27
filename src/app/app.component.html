@@ -1,4 +1,4 @@
-<cds-modal [open]="errorFlag" (overlaySelected)="errorFlag = false" (close)="errorFlag = false">
+<cds-modal id="readonly_modal" [open]="errorFlag" (overlaySelected)="errorFlag = false" (close)="errorFlag = false">
   <cds-modal-header (closeSelect)="errorFlag = false" [showCloseButton]="showCloseButton">
     <!-- <p class="cds--modal-header__label cds--type-delta">No service required</p> -->
     <p class="cds--modal-header__heading cds--type-beta">{{errorMessage}}</p>
@@ -6,13 +6,18 @@
   <div class="cds--modal-content">
     <p>Press the Reconnect button to start a new session.</p>
   </div>
-  <cds-modal-footer>
+  <div class="reconnect-container">
+    <button cdsButton="primary" (click)="errorFlag = false" [attr.modal-primary-focus]="true" class="custom-btn">
+      Reconnect
+    </button>
+  </div>
+  <!-- <cds-modal-footer>
     <ng-container>
       <button cdsButton="primary" (click)="errorFlag = false" [attr.modal-primary-focus]="true">
         Okay
       </button>
     </ng-container>
-  </cds-modal-footer>
+  </cds-modal-footer> -->
 </cds-modal>
 
 <ng-container *ngIf="storageService.isConnected()">

@@ -50,6 +50,8 @@ export class MacroComponent {
   reportProgress = false;
   defaultHeaders = new HttpHeaders();
   vinoth: boolean =  false ;
+  selectedDelMacro: any;
+  selectedPlayMacro: any;
 
   @Input() operationType: string;
   @Output() dataEmitter = new EventEmitter<any>();

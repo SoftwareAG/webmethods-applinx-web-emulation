@@ -5,16 +5,16 @@
     <form [formGroup]="form" (ngSubmit)="onConnect()">
       <div class="box-model">
         <cds-text-label *ngIf="authMethod !== 'oidc' && authMethod !== 'disabled'">
-          Username
+          User Name
           <input cdsText type="text" [theme]="theme" class="input-field" [ngClass]="this.username.disabled ? 'opacity' : ''"
-            formControlName="username" id="usernameInput" required placeholder="username...">
+            formControlName="username" id="usernameInput" required placeholder="User Name">
         </cds-text-label>
-        
+        <br />
         <div *ngIf="authMethod !== 'oidc' && authMethod !== 'disabled'">
           <cds-password-label>
             Password
             <input cdsPassword type="password" [theme]="theme" [ngClass]="this.username.disabled ? 'opacity' : ''" formControlName="password"
-              id="passwordInput" [placeholder]="password" required>
+              id="passwordInput" placeholder="Password" required>
           </cds-password-label>
           <ng-container *ngIf="authMethod === 'hostAuth'">
             <cds-password-label>
@@ -25,7 +25,7 @@
           </ng-container>
         </div>
         <div style="padding-top: 6%;">
-          <button [cdsButton]="kind" [size]="md" [disabled]="!this.username.value && this.authMethod !== 'oidc' && this.authMethod !== 'disabled'" class="connect-btn">
+          <button [cdsButton]="kind" [size]="md" [disabled]="!this.username.value && this.authMethod !== 'oidc' && this.authMethod !== 'disabled'" class="connect-btn custom-btn">
             Connect
           </button>
         </div>

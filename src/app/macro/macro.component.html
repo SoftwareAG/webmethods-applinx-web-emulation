@@ -1,12 +1,12 @@
 <cds-modal [open]="this.playMacro" (overlaySelected)="this.playMacro = true" (close)="this.playMacro = false">
   <form #playMacroForm="ngForm">
-    <cds-modal-header style="background-color: grey;" (closeSelect)="this.playMacro = false" [showCloseButton]="false">
+    <cds-modal-header (closeSelect)="this.playMacro = false" [showCloseButton]="false" class="model-border">
       <p class="cds--modal-header__heading cds--type-beta">Play Macro</p>
     </cds-modal-header>
-    <div class="cds--modal-content">
+    <div class="cds--modal-content card custom-margin">
       <cds-text-label>
-        Select Macro:</cds-text-label>
-      <cds-dropdown [size]="size" (selected)="selected($event)">
+        <p class="label-size">Select a Macro to Play<span class="mandatory">*</span>:</p></cds-text-label>
+      <cds-dropdown [size]="size" (selected)="selected($event)" [(ngModel)]="selectedPlayMacro" name="playMacro">
         <cds-dropdown-list [items]="macroList" required></cds-dropdown-list>
       </cds-dropdown>
      </div>
@@ -15,7 +15,7 @@
         <button cdsButton="secondary" class="customButton" (click)="this.playMacro = false">
           Cancel
         </button>
-        <button cdsButton="primary" class="customButton" (click)="this.playMacro = false;" (click)="onPlayMacro()">
+        <button cdsButton="primary" class="customButton" (click)="this.playMacro = false;" (click)="onPlayMacro()" [disabled]="!selectedPlayMacro">
           Play
         </button>
       </ng-container>
@@ -25,18 +25,18 @@
 
 <cds-modal [open]="this.recMacro" (overlaySelected)="this.recMacro = true" (close)="this.recMacro = false">
   <form #recordMacroForm="ngForm">
-    <cds-modal-header style="background-color: grey;" (closeSelect)="this.recMacro = false" [showCloseButton]="false">
+    <cds-modal-header (closeSelect)="this.recMacro = false" [showCloseButton]="false" class="model-border">
       <p class="cds--modal-header__heading cds--type-beta">Record Macro</p>
     </cds-modal-header>
-    <div class="cds--modal-content">
+    <div class="cds--modal-content card custom-margin">
      <div id="macroRecordContainer">
       <cds-text-label>
-        Enter Macro Name:
+        <p class="label-size">Enter Macro Name<span class="mandatory">*</span>:</p>
         <input cdsText [size]="'lg'" [placeholder]="'Enter Macro Name'" name="txtRecordMacro" id="txtRecordMacro" (ngModelChange)="clearValidation()"
           class="form-control" ngModel #txtRecordMacro="ngModel" required maxlength="15">
       </cds-text-label>
     </div>
-      <div class="alert alert-danger" *ngIf="validationFlag">The Macro name already exists, Please enter a new Macro name.</div>
+      <div class="alert-msg" *ngIf="validationFlag">The Macro name already exists, Please enter a new Macro name.</div>
     </div>
     <cds-modal-footer>
       <ng-container>
@@ -48,38 +48,15 @@
   </form>
 </cds-modal>
 
-<!-- <cds-modal [open]="this.renameMacro" (overlaySelected)="this.renameMacro = true" (close)="this.renameMacro = false">
-  <form #renameMacroForm="ngForm">
-    <cds-modal-header style="background-color: grey;" (closeSelect)="this.renameMacro = false"
-      [showCloseButton]="false">
-      <p class="cds--modal-header__heading cds--type-beta">Rename Macro</p>
-    </cds-modal-header>
-    <div class="cds--modal-content card">
-      <div>
-        Enter New Macro Name:
-        <input matInput type="text" cdsText name="txtRenameMacro" id="txtRenameMacro" class="form-control"
-          maxlength="15" ngModel pattern="^[a-zA-Z0-9-]*$" #txtRecordMacro="ngModel" required>
-      </div>
-    </div>
-    <cds-modal-footer>
-      <ng-container>
-        <button cdsButton="secondary" class="customButton" (click)="this.renameMacro = false">Cancel</button>
-        <button cdsButton="primary" class="customButton" type="submit"
-          (click)="this.renameMacro = false;onRenameMacro(renameMacroForm)">Record</button>
-      </ng-container>
-    </cds-modal-footer>
-  </form>
-</cds-modal> -->
-
 <cds-modal [open]="this.viewMacro" (overlaySelected)="this.viewMacro = true" (close)="this.viewMacro = false">
   <form #viewMacroForm="ngForm" (ngSubmit)="onViewMacro()">
-    <cds-modal-header (closeSelect)="this.viewMacro = false" [showCloseButton]="false">
+    <cds-modal-header (closeSelect)="this.viewMacro = false" [showCloseButton]="false" class="model-border">
       <p class="cds--modal-header__heading cds--type-beta">View Macro</p>
     </cds-modal-header>
     <div class="cds--modal-content card custom-margin">
-      <cds-text-label>
-        Select Macro:</cds-text-label>
-      <cds-dropdown [size]="size" (selected)="selected($event)">
+      <cds-text-label for="viewMacro">
+        <p class="label-size"> Select a Macro to View<span class="mandatory">*</span>:</p></cds-text-label>
+      <cds-dropdown [size]="size" (selected)="selected($event)" [(ngModel)]="selectedMacro" name="viewMacro">
         <cds-dropdown-list [items]="macroList" required></cds-dropdown-list>
       </cds-dropdown>
     </div>
@@ -88,7 +65,7 @@
         <button cdsButton="secondary" class="customButton" (click)="this.viewMacro = false">
           Cancel
         </button>
-        <button cdsButton="primary" class="customButton">
+        <button cdsButton="primary" class="customButton" [disabled]="!selectedMacro">
           View
         </button>
       </ng-container>
@@ -110,13 +87,14 @@
 </cds-modal>
 
 <cds-modal [open]="this.delMacro" (overlaySelected)="this.delMacro = false" (close)="this.delMacro = false">
-  <cds-modal-header (closeSelect)="this.delMacro = false" [showCloseButton]="false">
+  <cds-modal-header (closeSelect)="this.delMacro = false" [showCloseButton]="false" class="model-border">
     <p class="cds--modal-header__heading cds--type-beta">Delete Macro</p>
   </cds-modal-header>
-  <div class="cds--modal-content">
+  <div class="cds--modal-content card custom-margin">
     <cds-text-label>
-      Select Macro:</cds-text-label>
-    <cds-dropdown [size]="size" (selected)="selected($event)">
+      <p class="label-size">Select a Macro for Deletion<span class="mandatory">*</span>:</p>
+    </cds-text-label>
+    <cds-dropdown [size]="size" (selected)="selected($event)" [(ngModel)]="selectedDelMacro" name="delmacro">
       <cds-dropdown-list [items]="macroList"></cds-dropdown-list>
     </cds-dropdown>
   </div>
@@ -125,7 +103,7 @@
       <button cdsButton="secondary" class="customButton" (click)="this.delMacro = false">
         Cancel
       </button>
-      <button cdsButton="primary" class="customButton" (click)="this.delMacro = false; onDeleteMacro()">
+      <button cdsButton="primary" class="customButton" (click)="this.delMacro = false; onDeleteMacro()" [disabled]="!selectedDelMacro">
         Delete
       </button>
     </ng-container>
