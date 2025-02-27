@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Software AG
+ * Copyright IBM Corp. 2024, 2025
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,13 +45,11 @@ import { MessagesService } from '../services/messages.service';
 import { SharedService } from '../services/shared.service'
 import { ScreenProcessorService } from '../services/screen-processor.service';
 import { ScreenLockerService } from '../services/screen-locker.service'
-import { MatDialog } from '@angular/material/dialog';
-import { MacroComponent } from '../macro/macro.component';
 
 @Component({
   selector: 'app-screen',
   templateUrl: './screen.component.html',
-  styleUrls: ['./screen.component.css']
+  styleUrls: ['./screen.component.scss']
 })
 export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 

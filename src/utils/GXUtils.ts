@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Software AG
+ * Copyright IBM Corp. 2024, 2025
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -252,8 +252,8 @@ export class GXUtils {
     public static ViewMacro = 'view';
     public static PlayMacro = 'play';
     public static RenameMacro = 'rename';
-    public static MacroExitsMsg = "The Macro name already exists, Please enter a new Macro Name";
     public static DeleteMacro = 'remove';
+    public static stopRecordMacro = 'stopRecord';
     public static pwdMask = "*";
     public static pwdText = "password";
   
@@ -426,4 +426,24 @@ export class GXUtils {
   public static setImplicitFlag(value) {
     this.implicitFlag = value;
   }
+
+  public static monthListShort = [
+    "Jan", // January
+    "Feb", // February
+    "Mar", // March
+    "Apr", // April
+    "May", // May
+    "Jun", // June
+    "Jul", // July
+    "Aug", // August
+    "Sep", // September
+    "Oct", // October
+    "Nov", // November
+    "Dec"  // December
+  ];
+  public static format1 = "M. d, Y";
+  public static format2 = "m/d/Y";
+  public static format3 = "d/m/y";
+  public static format4 = "m-Y"; 
+  public static format5 = "d.m.y";
   }

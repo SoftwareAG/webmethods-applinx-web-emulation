@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Software AG
+ * Copyright IBM Corp. 2024, 2025
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -209,16 +209,18 @@ export class ScreenProcessorService {
   private processCalendar(transform: AbstractTransformation, leadingLabel: any) {
     let dateInputs = new Set<string>();
     let calendar = transform as CalendarTransformation;
-    calendar.dateInputFields.forEach(i => {
-      const inputPos = GXUtils.posToString(i?.field?.position);
-      if (inputPos)
-        dateInputs.add(inputPos);
-    });
-    leadingLabel?.regionsToHide?.forEach(reg => {
-      const pos = GXUtils.posToString({ row: reg.topLeft.row, column: reg.topLeft.column });
-      if (dateInputs.has(pos))
-        this.tree.insert(new Rectangle(reg, 'Calendar'));
-    });
+    if (calendar.dateInputFields.length == 1) {
+      calendar.dateInputFields.forEach(i => {
+        const inputPos = GXUtils.posToString(i?.field?.position);
+        if (inputPos)
+          dateInputs.add(inputPos);
+      });
+      leadingLabel?.regionsToHide?.forEach(reg => {
+        const pos = GXUtils.posToString({ row: reg.topLeft.row, column: reg.topLeft.column });
+        if (dateInputs.has(pos))
+          this.tree.insert(new Rectangle(reg, 'Calendar'));
+      });
+    }
   }
 
   private getFieldPosition(field: Field): Position {

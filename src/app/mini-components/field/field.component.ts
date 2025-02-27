@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Software AG
+ * Copyright IBM Corp. 2024, 2025
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import {Field} from '@softwareag/applinx-rest-apis';
 @Component({
   selector: 'app-field',
   templateUrl: './field.component.html',
-  styleUrls: ['./field.component.css']
+  styleUrls: ['./field.component.scss']
 })
 export class FieldComponent implements OnChanges {
 
@@ -31,7 +31,10 @@ export class FieldComponent implements OnChanges {
   bgClass: string;
   content: string[];
 
-  constructor(public storageService: StorageService, private doms : DomSanitizer) {}
+  constructor(public storageService: StorageService, private doms : DomSanitizer) {
+    this.field?console.log(">>@constructor>>> this.field.content = ", this.field.content):"";
+    this.field?console.log(">>@constructor>>> this.field.visualContent = ", this.field.visualContent):"";
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.field) {

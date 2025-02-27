@@ -3,45 +3,42 @@
     <div><img src="assets/images/ApplinX-tsa-logo-on-white.svg"></div>
     <span class="dlt-form-label">{{'Version: ' + version}}</span>
     <form [formGroup]="form" (ngSubmit)="onConnect()">
-
-      <div *ngIf="authMethod !== 'oidc' && authMethod !== 'disabled'" class="dlt-form-item" style="padding-top: 2vh">
-        <label class="dlt-form-label" for="text-input-2">Username</label>
-        <div class="dlt-form-group">
-          <input [ngClass]="this.username.disabled ? 'opacity' : ''" formControlName="username" id="usernameInput" type="text" required class="dlt-text-input" placeholder="username...">
-          <button class="clear-icon" type="button"><i class="dlt-icon-close"></i></button>
+      <div class="box-model">
+        <cds-text-label *ngIf="authMethod !== 'oidc' && authMethod !== 'disabled'">
+          Username
+          <input cdsText type="text" [theme]="theme" class="input-field" [ngClass]="this.username.disabled ? 'opacity' : ''"
+            formControlName="username" id="usernameInput" required placeholder="username...">
+        </cds-text-label>
+        
+        <div *ngIf="authMethod !== 'oidc' && authMethod !== 'disabled'">
+          <cds-password-label>
+            Password
+            <input cdsPassword type="password" [theme]="theme" [ngClass]="this.username.disabled ? 'opacity' : ''" formControlName="password"
+              id="passwordInput" [placeholder]="password" required>
+          </cds-password-label>
+          <ng-container *ngIf="authMethod === 'hostAuth'">
+            <cds-password-label>
+              New Password
+              <input cdsPassword type="password" [ngClass]="this.username.disabled ? 'opacity' : ''" formControlName="newPassword"
+                id="newPasswordInput" type="password" required>
+            </cds-password-label>
+          </ng-container>
+        </div>
+        <div style="padding-top: 6%;">
+          <button [cdsButton]="kind" [size]="md" [disabled]="!this.username.value && this.authMethod !== 'oidc' && this.authMethod !== 'disabled'" class="connect-btn">
+            Connect
+          </button>
         </div>
       </div>
-
-      <div *ngIf="authMethod !== 'oidc' && authMethod !== 'disabled'" class="dlt-form-item">
-        <label class="dlt-form-label" for="password-input-2">Password</label>
-        <div class="dlt-form-group">
-          <input [ngClass]="this.username.disabled ? 'opacity' : ''" formControlName="password" id="passwordInput" type="password" required class="dlt-text-input">
-          <button class="clear-icon clear-icon-more-padding" type="button"><i class="dlt-icon-close"></i></button>
-          <button class="password-show-icon" type="button" title="Show Password"><i class="dlt-icon-password-show"></i></button>
-        </div>
-
-        <ng-container *ngIf="authMethod === 'hostAuth'">
-          <label class="dlt-form-label" for="password-input-3">New Password</label>
-          <div class="dlt-form-group">
-            <input [ngClass]="this.username.disabled ? 'opacity' : ''" formControlName="newPassword" id="newPasswordInput" type="password" required class="dlt-text-input">
-            <button class="clear-icon clear-icon-more-padding" type="button"><i class="dlt-icon-close"></i></button>
-            <button class="password-show-icon" type="button" title="Show New Password"><i class="dlt-icon-password-show"></i></button>
-          </div>
-        </ng-container>     
-      </div>
-
+      
       <span id="errorMsg" style="color: #ff0000; white-space: pre-line;" *ngIf="errorMessage != ''">
         {{errorMessage}}
       </span>
 
-      <div style="padding-top: 6%;">
-        <button style="width: 100%" class="dlt-button dlt-button-primary" id="connect" type="submit" [disabled]="!this.username.value && this.authMethod !== 'oidc' && this.authMethod !== 'disabled'">Connect</button>
-      </div>
+     
     </form>
   </div>
   <footer class="dlt-footer">
-    <!-- <p>Copyright ֲ© 2023 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its
-      subsidiaries and/or its affiliates and/or their licensors.
-    </p> --> 
+<!-- copyright information should be here -->
   </footer>
 </div>

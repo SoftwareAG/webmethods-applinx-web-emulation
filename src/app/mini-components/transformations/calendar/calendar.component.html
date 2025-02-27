@@ -1,15 +1,24 @@
-<div class="dlt-form-item input"
-  *ngIf="transform && sendableField" 
-  [ngStyle]="{'grid-row-start': field.position.row, 'grid-column-start': field.position.column, 
+<div class="input" *ngIf="transform && sendableField" [ngStyle]="{'grid-row-start': field.position.row, 'grid-column-start': field.position.column, 
     'grid-column-end': field.position.column + transform.dateInputFields[0].format.length + 2}">
-  <div class="dlt-form-group">
-    <input
-      (focus)="onFocus()" 
-      type="text" 
-      class="dlt-date-picker" 
-      [placeholder]="transform.dateInputFields[0].format"
-      value="{{field.content.trim()}}"             
-      [ngStyle]="{'grid-row-start': field.position.row, 'grid-column-start': field.position.column}">
-    <i #datepickerIcon class="dlt-icon-calendar datepicker-icon"></i>
+  <div class="">
+      <cds-date-picker
+          class=""
+          [label]=""
+          [id]="defaultLabel"
+          [placeholder]="'Select a date'"
+          [cdsLayer]="light"
+          [value]="defaultDate"
+          [size]="'sm'"
+          [theme]="theme"
+          [disabled]="disabled"
+          [readonly]="readonly"
+          [invalid]="invalid"
+          [invalidText]="invalidText"
+          [warn]="warn"
+          [warnText]="warnText"
+          [dateFormat]="defaultFormat"
+          (valueChange)="valueChange($event)"
+      ></cds-date-picker>
   </div>
+  {{defaultFormat}}
 </div>

@@ -144,3 +144,54 @@ li {
   .mat-form-field {
     display: inherit !important;
   }
+
+  .macroPopUpSize{
+    width: 40em;
+    height: 20em;
+  }
+
+.custom-border{
+  border-style: groove;
+  border-width: 2px;
+  border-radius: 5px;
+  background-color: lightgrey;
+  padding: 10px;
+  margin-left: 4%;
+  margin-right: 4%;
+  margin-bottom: 4%;
+}
+
+.cds--modal-content{
+  padding-bottom: 45px;
+}
+
+.custom-margin{
+  padding-left: 4%;
+  padding-right: 4%;
+}
+
+.span-margin{
+  margin-top: 4%;
+}
+
+// button{
+//   display: flex;               /* Use flexbox for alignment */
+//     justify-content: center;     /* Center horizontally */
+//     align-items: center;         /* Center vertically */
+    // height: 60px;                /* Set a fixed height */
+    // width: 210px;                /* Set a fixed width */
+//     padding: 0;    
+// }
+
+.Macrobutton {
+	display: flex;                  /* Use flexbox for alignment */
+	justify-content: center;        /* Center horizontally */
+	align-items: center !important; /* Center vertically */
+	// height: 60px;                /* Set a fixed height */
+	width: 8rem;                    /* Set a fixed width */
+	padding: 0;
+	font-size: large;
+	font-style: oblique;
+	font-variant: normal;
+  padding-block: 0px !important;
+  }

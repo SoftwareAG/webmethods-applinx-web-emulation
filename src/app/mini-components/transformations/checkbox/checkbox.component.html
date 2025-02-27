@@ -1,13 +1,6 @@
 <ng-container *ngIf="transform">
-  <div class="dlt-checkbox-group" [ngStyle]="{'grid-row-start': transform.position.row, 'grid-column-start': transform.position.column, 'grid-row-end': transform.position.row, 'grid-column-end': transform.position.column}" [ngClass]="transform.style">
-    <div style="position: absolute" class="dlt-checkbox">
-      <input type="checkbox" id="checkbox-1" 
-              (change)="onSelect($event)" 
-              (focus)="onFocus()"
-              [ngStyle]="{'grid-row-start': transform.position.row, 'grid-column-start': transform.position.column}">
-      <label style="position: initial" for="checkbox-1"></label>
-    </div>
-  </div>
-
-  <app-text *ngIf="transform.leadingLabel" [transform]="transform.leadingLabel"></app-text>
+  <cds-checkbox id="checkbox-1" [disabled]="false" [indeterminate]="false" (checkedChange)="onSelect($event)"
+    [hideLabel]="false"
+    [ngStyle]="{'grid-row-start': transform.position.row, 'grid-column-start': transform.position.column}">
+  </cds-checkbox>
 </ng-container>

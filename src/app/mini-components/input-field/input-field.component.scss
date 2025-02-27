@@ -2,9 +2,10 @@
   display: contents;
 }
 input {
-  height: calc(var(--text-font-size) + 2px) !important;
+//  height: calc(var(--text-font-size) + 2px) !important;
   line-height: calc(var(--text-font-size)) !important;
-  width: fit-content !important;
+//width: fit-content !important;
   padding: 0px;
   margin-top: -1px;
+  height: 20px;
 }

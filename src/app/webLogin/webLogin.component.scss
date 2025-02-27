@@ -1,0 +1,43 @@
+.wrapper {
+  display: block;
+  position: relative;
+  margin-top: 5%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 25%;
+  background-repeat: no-repeat;
+}
+label {
+  padding-top: 1vh;
+}
+.opacity {
+  opacity: 0.3;
+}
+footer {
+  bottom: 0;
+  position: fixed;
+}
+.connect-btn {
+  width: 100rem;
+  max-width: -webkit-fill-available;
+  display: flex;                  /* Use flexbox for alignment */
+  justify-content: center;        /* Center horizontally */
+  align-items: center;                     /* Set a fixed width */
+  padding: 0;
+  font-size: large;
+  font-style: oblique;
+  font-variant: normal;
+}
+.box-model {
+  margin-top: 1rem;
+}
+// .box-model{
+//   margin: 2rem 0rem;
+//   // border: 1px solid #8d8d8d;
+//   padding: 1.5rem 1rem;
+//   border-radius: 10px;
+//   border-left: 8px solid #1776bf;
+//   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+//   // box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+// }
+

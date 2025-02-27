@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Software AG
+ * Copyright IBM Corp. 2024, 2025
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,14 +22,32 @@ import {NavigationService} from '../../../services/navigation/navigation.service
 @Component({
   selector: 'app-multiple-options',
   templateUrl: './multiple-options.component.html',
-  styleUrls: ['./multiple-options.component.css']
+  styleUrls: ['./multiple-options.component.scss']
 })
 export class MultipleOptionsComponent implements OnChanges {
 
   @Input() transform: MultipleOptionsTransformation;
   inputField: InputField;
+  manyRadios = ["one", "two", "three", "four", "five", "six"];
+  entries : any = []; // [{"content":"MODIFY"},{"content":"DELETE"},{"content":"DISPLAY"}]
+  constructor(private navigationService: NavigationService) {
+  }
 
-  constructor(private navigationService: NavigationService) {}
+  ngOnInit(){
+    // console.log("######## ");
+    // console.log(this.transform);
+    // console.log("######## ")
+    if (this.transform.type == "MultipleOptionsTransformation" && this.transform.multipleOptionsType === 'Combobox'){
+      let tempElement = this.transform.items; //JSON.parse(JSON.stringify(element.items));
+      if (tempElement){
+        tempElement.forEach(entry => {
+          entry["content"] = entry.key;
+          entry["selected"] = (entry.value.trim()!== "")?false: true;
+          this.entries.push(entry)
+        });
+      }
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     const field: Field = changes.transform.currentValue.field;
@@ -68,6 +86,7 @@ export class MultipleOptionsComponent implements OnChanges {
   }
 
   onSelect(value: any): void{
+    console.log(">>>>>>>>>>>> Value : ", JSON.stringify(value));
     this.inputField.setValue(value);
     this.navigationService.setSendableField(this.inputField);
   }

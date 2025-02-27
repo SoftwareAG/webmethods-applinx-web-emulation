@@ -1,7 +1,8 @@
-<button [ngClass]="transform.style" *ngIf="transform.triggerType === 'Button'" (click)="onClick()" class="dlt-button dlt-button-primary"
+<button cdsButton="secondary" size="lg" *ngIf="transform.triggerType === 'Button'" (click)="onClick()" class="button-corner btn-width" [ngClass]="transform.style"
         [ngStyle]="{'grid-row-start': transform.position.row, 'grid-column-start': transform.position.column, 'grid-column-end': (transform.position.column+transform.triggerText.length+2), 'line-height': '1rem', 'height': '1.4rem'}">
   {{transform.triggerText}}
 </button>
+
 <a [ngClass]="transform.style" *ngIf="transform.triggerType === 'Link'" (click)="onClick()" class="dlt-links"
    [ngStyle]="{'grid-row-start': transform.position.row, 'grid-column-start': transform.position.column, 'grid-column-end': (transform.position.column+transform.triggerText.length+1)}">
   {{transform.triggerText}}

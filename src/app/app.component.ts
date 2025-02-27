@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Software AG
+ * Copyright IBM Corp. 2024, 2025
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ComponentFactoryResolver, HostListener, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { NavigationService } from './services/navigation/navigation.service';
 import { StorageService } from './services/storage.service';
 import { WebLoginComponent } from './webLogin/webLogin.component';
@@ -25,27 +25,30 @@ import { ScreenHolderService } from './services/screen-holder.service';
 import { ScreenComponent } from './screen/screen.component';
 import { GXGeneratedPage } from './generated-pages/GXGeneratedPage';
 import { INGXLoggerConfig, NGXLogger } from 'ngx-logger';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LifecycleUserExits } from './user-exits/LifecycleUserExits';
 import { UserExitsEventThrowerService } from './services/user-exits-event-thrower.service';
 import { OAuth2HandlerService } from './services/oauth2-handler.service';
 import { MessagesService } from './services/messages.service';
 import { HostKeyTransformation, Cursor, SessionService, InfoService, MacroService } from '@softwareag/applinx-rest-apis';
-import { MatDialog } from '@angular/material/dialog';
 import { ModalpopupComponent } from './mini-components/transformations/modalpopup/modalpopup.component';
 import { GXUtils } from 'src/utils/GXUtils';
 import { MacroComponent } from './macro/macro.component';
 import { SharedService } from './services/shared.service';
 import { ConfigurationService } from './services/configuration.service';
-import {MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {TooltipPosition, MatTooltipModule} from '@angular/material/tooltip';
+import { IconService, ModalService } from 'carbon-components-angular';
+import Notification20 from '@carbon/icons/es/notification/20';
+import UserAvatar20 from '@carbon/icons/es/user--avatar/20';
+import AppSwitcher20 from '@carbon/icons/es/app/20';
+import AddIcon from '@carbon/icons/es/4K/32';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  providers: [],
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
 
@@ -59,7 +62,8 @@ export class AppComponent implements OnInit, OnDestroy {
   hostKeysBool: boolean = false;
   showHostKeyFlag: boolean = GXUtils.showHostKeyFlag;
   errorMessage: string;
-
+  errorFlag : boolean = false;
+  showCloseButton : boolean = true;
   disconnectSubscription: Subscription;
   hostKeysEmitterSubscription: Subscription;
   screenInitializedSubscription: Subscription;
@@ -78,12 +82,23 @@ export class AppComponent implements OnInit, OnDestroy {
   recMacroTitle: any;
   changeRecColor: boolean = false;
   recordStop: boolean = false;
+  showButtonFlag : boolean = true;
   macroEvents = GXUtils.MACRO;
   macroFileListSubscription: Subscription;
-  macroList: any;
+  macroList: any= [];
+  userName: string = "";
   listFlag: any;
-  positionOptions: TooltipPosition[] = ['after'];
-  position = new FormControl(this.positionOptions[0]);
+  notificationObj: boolean;
+  notificationToastObj: any;
+  align = "left";
+  flip: boolean = false;
+  macroSaveSubscription: Subscription;
+  basePath = 'http://localhost:2380/applinx/rest';
+  observe = "body";
+  reportProgress = false;
+  defaultHeaders = new HttpHeaders();
+
+  @ViewChild('container', { read: ViewContainerRef, static: true }) container: ViewContainerRef;
 
   RELOAD_ICON =`<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M204-318q-22-38-33-78t-11-82q0-134 93-228t227-94h7l-64-64 56-56 160 160-160 160-56-56 64-64h-7q-100 0-170 70.5T240-478q0 26 6 51t18 49l-60 60ZM481-40 321-200l160-160 56 56-64 64h7q100 0 170-70.5T720-482q0-26-6-51t-18-49l60-60q22 38 33 78t11 82q0 134-93 228t-227 94h-7l64 64-56 56Z"/></svg>`; // Autorenew
   CLOSE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>`; //Close
@@ -170,20 +185,10 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
     private keyboardMappingService: KeyboardMappingService, public screenLockerService: ScreenLockerService,
     private screenHolderService: ScreenHolderService, private userExitsEventThrower: UserExitsEventThrowerService,
     private logger: NGXLogger, private httpClient: HttpClient, private messages: MessagesService,
-    private oAuth2handler: OAuth2HandlerService, private matDialog: MatDialog,
-    private sharedService: SharedService, private configurationService: ConfigurationService,
-    private infoService: InfoService, private macroService: MacroService,iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
-      iconRegistry.addSvgIconLiteral('reload', sanitizer.bypassSecurityTrustHtml(this.RELOAD_ICON)); 
-      iconRegistry.addSvgIconLiteral('close', sanitizer.bypassSecurityTrustHtml(this.CLOSE_ICON));
-      iconRegistry.addSvgIconLiteral('settings', sanitizer.bypassSecurityTrustHtml(this.SETTINGS_ICON));
-      iconRegistry.addSvgIconLiteral('sendToHost', sanitizer.bypassSecurityTrustHtml(this.SENDTOHOST_ICON));
-      iconRegistry.addSvgIconLiteral('zoom', sanitizer.bypassSecurityTrustHtml(this.ZOOM_ICON));
-      iconRegistry.addSvgIconLiteral('print', sanitizer.bypassSecurityTrustHtml(this.PRINT_ICON));
-      iconRegistry.addSvgIconLiteral('copy', sanitizer.bypassSecurityTrustHtml(this.COPY_ICON));
-      iconRegistry.addSvgIconLiteral('macroNoRecord', sanitizer.bypassSecurityTrustHtml(this.MACRO_NO_RECORD_ICON));
-      iconRegistry.addSvgIconLiteral('macroRecord', sanitizer.bypassSecurityTrustHtml(this.MACRO_RECORD_ICON));
-      iconRegistry.addSvgIconLiteral('style', sanitizer.bypassSecurityTrustHtml(this.STYLE_ICON));
-      iconRegistry.addSvgIconLiteral('sideMenu', sanitizer.bypassSecurityTrustHtml(this.SIDE_MENU_ICON));
+    private oAuth2handler: OAuth2HandlerService, private sharedService: SharedService, private configurationService: ConfigurationService,
+    private infoService: InfoService, private macroService: MacroService, sanitizer: DomSanitizer,
+    protected iconService: IconService, protected modalService: ModalService, private componentFactoryResolver: ComponentFactoryResolver 
+  ) {
     this.userExitsEventThrower.clearEventListeners();
     this.userExitsEventThrower.addEventListener(new LifecycleUserExits(infoService, navigationService, storageService, keyboardMappingService, logger));
     this.getLoggerConfiguration();
@@ -208,10 +213,10 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
       this.changeRecColor = data !== '' && data !== null ? true : false;
     });
 
-    let macTitle = this.sharedService;
-    this.recMacroTitle = macTitle.getRecMacroTitle;
     document.documentElement.style.setProperty('--text-font-size', this.zoomDefault + 'px');
     this.value = this.zoomDefault;
+
+
   }
 
   getLoggerConfiguration() {
@@ -229,6 +234,7 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
   }
 
   ngOnInit(): void {
+    this.iconService.registerAll([Notification20, UserAvatar20, AppSwitcher20]);
     this.changeBackgroundColor(this.themeColor);
     this.logger.debug(this.messages.get("INITIALIZING_WEB_APPLICATION"));
     this.screenInitializedSubscription = this.screenHolderService.screenInitialized.subscribe(initialized => {
@@ -246,7 +252,6 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
         this.showDisconnectionMessage();
       }
     })
-
   }
   public range: number = 1;
 
@@ -260,6 +265,7 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
   showDisconnectionMessage(): void {
     const targetModal = document.getElementById('readonly_modal');
     targetModal.classList.add('dlt-modal-window__open');
+    this.errorFlag = true;
   }
 
   reconnect(): void {
@@ -267,7 +273,7 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
     targetModal.classList.remove('dlt-modal-window__open')
     this.storageService.setNotConnected();
     this.clearMacroDetails();
-    this.matDialog.closeAll();
+   
   }
 
   reload(): void {
@@ -458,7 +464,7 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
   }
   }
 
-  formatPrintPage(formattedArray) {
+  formatPrintPage(formattedArray: any) {
     let printDetails = formattedArray;
     let height = window.screen.availHeight - 400;
     let width = window.screen.availWidth - 750;
@@ -466,14 +472,14 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
     popupWindow.document.open();
     popupWindow.document.write('<div class="copyWrapper crosshair" style="white-space: pre !important;"><pre>');
     printDetails.forEach(element => {
-      popupWindow.document.write("<div>" + element + "</div>");
+      popupWindow.document.write("<div>" + element +  "</div>");
     })
     popupWindow.document.write('</pre></div>')
     popupWindow.print();
     popupWindow.close();
   }
 
-  formatCopyPage(formattedArray, printFlag) {
+  formatCopyPage(formattedArray, printFlag) { // vinoth
     let divElement = document.createElement("div");
     divElement.style.cssText ="border :1px solid black;"
     let lineIdentifier = 0;
@@ -484,17 +490,15 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
       paraElement.tabIndex = lineIdentifier++;
       divElement.appendChild(paraElement);
     });
-    const dialogRef = this.matDialog.open(ModalpopupComponent, {
-      data: {
-        content: divElement.innerHTML,
-        typeFlag: printFlag
-      },  height: '80%',
-          width: '75%',
-    });
-    this.sharedService.setPopUpFlag(true);
-    dialogRef.afterClosed().subscribe(result => {
-      this.sharedService.setPopUpFlag(false);
-    });
+
+    const divToRemove = document.getElementById("copyContainer")
+    if (divToRemove){
+      divToRemove.parentNode?.removeChild(divToRemove); 
+    }
+        const factoryCopy = this.componentFactoryResolver.resolveComponentFactory(ModalpopupComponent);
+        const referenceCopy = this.container.createComponent(factoryCopy);
+        (referenceCopy.instance as ModalpopupComponent).copyData = divElement.innerHTML;
+        (referenceCopy.instance as ModalpopupComponent).typeFlag = printFlag;
   }
 
   formatLineText(lineDetails) {
@@ -571,32 +575,78 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
       this.hostConnectionSubscription.unsubscribe();
     }
   }
-
-  macro() {
+/*
+  macro_test() {
     this.recordStop = this.sharedService.getMacroRecordFlag();
+    this.getMacro().subscribe((response: any) => {
+      console.log("Test Response..... ", response)
+      response.fileList.forEach(file => {
+        this.macroList.push(file.substring(0, file.length - 5))
+      });
+      sessionStorage.setItem("macroFileList", JSON.parse(JSON.stringify(this.macroList)));
+      this.macroList = [];
+    })
   }
 
-  openMacro(paramType: string) {
-    let viewFlag = this.listFlag;
-    const dialogRef = this.matDialog.open(MacroComponent,
-      {
-        data: { paramType, viewFlag },
-        height: 'auto',
-        width: '40%',
-      });
-    this.sharedService.setPopUpFlag(true);
-    dialogRef.afterClosed().subscribe(result => {
-      this.sharedService.setPopUpFlag(false);
-      this.changeRecColor = this.sharedService.getMacroRecordFlag(); // Changing the color of macro icon when it is in record mode
+  getMacro_test() {
+    let applicationName = this.configurationService.applicationName;
+    let headers = this.defaultHeaders;
+    headers = headers.set('userName', String(this.userName));
+    headers = headers.set('applicationName', String(applicationName));
+    headers = headers.set('Authorization', String(this.storageService.getAuthToken()));
+    return this.httpClient.get(`${this.basePath}/macro/list`, {
+      // withCredentials: this.configuration.withCredentials,
+      headers: headers,
+      observe: "body", //this.observe,
+      reportProgress: this.reportProgress
     });
   }
+*/
+  macro() {
+    this.showButtonFlag = true;
+    this.recordStop = this.sharedService.getMacroRecordFlag();
+    let token = this.storageService.getAuthToken();
+    let applicationName = this.configurationService.applicationName;
+    let tempUserName = sessionStorage.getItem('userName');
+    this.userName = tempUserName.substr(1, tempUserName.length-2);
+    this.macroFileListSubscription = this.macroService
+        .getMacro(this.userName, applicationName,token)
+        .subscribe(data =>{
+        data.fileList.forEach(file =>{
+          this.macroList.push(file.substring(0, file.length-5))
+        });
+        sessionStorage.setItem("macroFileList", JSON.parse(JSON.stringify(this.macroList)));
+        this.macroList = [];
+      });
 
-  stopRecord() {
-    this.sharedService.setMacroRecordFlag(false);
-    this.sharedService.stopMacroRecording(this.configurationService.applicationName);
-    this.changeRecColor = this.sharedService.getMacroRecordFlag();
   }
 
+  openMacro(paramType: string) { 
+    console.log("Action :", paramType)
+    this.showButtonFlag = false;
+    const divToRemove = document.getElementById("macroRecordContainer")
+    if (divToRemove){
+      divToRemove.parentNode?.removeChild(divToRemove); 
+    }
+
+    const factory = this.componentFactoryResolver.resolveComponentFactory(MacroComponent);
+    const reference = this.container.createComponent(factory);
+    (reference.instance as MacroComponent).operationType = paramType;
+    this.sharedService.setPopUpFlag(true);
+    reference.instance.dataEmitter;
+   console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",reference.instance.dataService.getMacroRecordFlag());
+
+    if (paramType == "stopRecord"){
+      this.changeRecColor = reference.instance.onRecordStopColor(false)
+    }else if (paramType == "record"){
+      this.changeRecColor = reference.instance.onRecordStopColor(true)
+
+    }
+  }
+
+  onClose() {
+    this.notificationObj = false;  // Clear the toast notification
+  }
   changeBackgroundColor(color: string) {
     this.themeColor = color;
     this.isOpenThemeStyle = false;
@@ -654,9 +704,6 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
     document.documentElement.style.setProperty('--gx-intf', this.themecolorConfig[color]['gx-intf']);
     document.documentElement.style.setProperty('--text-shadow-gx-lrd-intf', this.themecolorConfig[color]['text-shadow-gx-lrd-intf']);
     document.documentElement.style.setProperty('--text-shadow-gx-lwt-gx-intf', this.themecolorConfig[color]['text-shadow-gx-lwt-gx-intf']);
-
-    //this is for delite button hover
-    // document.documentElement.style.setProperty('--dlt-color-interactive-primary-hover', this.themecolorConfig[color]['btn-hover-color']);
   }
 
   setDefaultZoom() {
@@ -685,7 +732,10 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
     }
     return color.toLowerCase();
   }
-
+  selected(event: any){
+    let themeColor = event.currentTarget.id;
+    this.changeBackgroundColor(themeColor);
+  }
 }
 
 
