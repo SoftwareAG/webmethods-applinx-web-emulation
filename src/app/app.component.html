@@ -22,8 +22,8 @@
 
 <ng-container *ngIf="storageService.isConnected()">
 
-  <cds-header cdsTheme="g90">
-    <img class="logoImage" src="assets/images/ApplinX-tsa-logo-light.svg" alt="">
+  <cds-header cdsTheme="g90" brand="IBM ApplinX">
+    <!-- <img class="logoImage" src="assets/images/ApplinX-tsa-logo-light.svg" alt=""> -->
     <cds-header-global> 
       
       <cds-overflow-menu [flip]="false" [customTrigger]="customMacroTrigger" description="Macro" [align]="align">
@@ -72,8 +72,10 @@
             <div class="tooltip">{{value}}px</div>
           </div>
           <cds-placeholder></cds-placeholder>
-          <div class="range-value" cdsTheme="g90" (click)="setDefaultZoom()">
-            <svg cdsIcon="restart" size="20"></svg>
+          <div>
+            <cds-icon-button buttonId="icon-btn1" type="button" kind="secondary"  description="Default">
+              <svg class="cds--btn__icon" cdsIcon="restart" size="20"></svg>
+            </cds-icon-button>
           </div>
         </cds-overflow-menu>
         <cds-placeholder></cds-placeholder>
@@ -83,10 +85,9 @@
   
       <cds-overflow-menu [flip]="false" [customTrigger]="customColorTrigger" description="Style" [align]="align" >
         <div cdsTheme="g90">
-        <cds-overflow-menu-option id="White" (click)="selected($event)" [divider]="true"><div class="square-white"></div>
-        </cds-overflow-menu-option>
-        <cds-overflow-menu-option id="Black" (click)="selected($event)" [divider]="true"><div class="square-black"></div></cds-overflow-menu-option>
-        <cds-overflow-menu-option id="Green" (click)="selected($event)" [divider]="true"><div class="square-green"></div></cds-overflow-menu-option>
+          <cds-overflow-menu-option id="Black" (click)="selected($event)" [divider]="true"><div class="square-black"></div></cds-overflow-menu-option>
+          <cds-overflow-menu-option id="White" (click)="selected($event)" [divider]="true"><div class="square-white"></div></cds-overflow-menu-option>
+          <cds-overflow-menu-option id="Green" (click)="selected($event)" [divider]="true"><div class="square-green"></div></cds-overflow-menu-option>
       </div>
       </cds-overflow-menu>
       <cds-placeholder></cds-placeholder>

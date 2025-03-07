@@ -494,3 +494,9 @@ a.cds--header__name {
     padding-bottom: 1rem;
     margin-right: 1rem;
   }
+
+:host ::ng-deep cds-header a,
+:host ::ng-deep cds-header .cds--header__name {
+    cursor: default !important;
+    // font-size: larger;
+}
