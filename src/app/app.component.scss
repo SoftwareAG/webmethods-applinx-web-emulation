@@ -396,7 +396,7 @@ a.cds--header__name {
     // Slider
     .input-range {
       height: 100px;
-      width: 45px;
+      width: 48px;
       border-radius: 5px;
       background: #262626;
       outline: none;
@@ -456,9 +456,9 @@ a.cds--header__name {
   
   .tooltip {
     position: absolute;
-    top: 40px;
-    left: -60%;
-    transform: translateX(-50%);
+    top: 40%;
+    right: 112%; /* Moves tooltip to the left */
+    transform: translateY(-50%);
     background-color: rgba(0, 0, 0, 0.7);
     color: white;
     padding: 5px 10px;
@@ -467,12 +467,22 @@ a.cds--header__name {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s;
+    white-space: nowrap;
   }
   
-  input[type="range"]:hover + .tooltip {
-    opacity: 1;
+  /* Tooltip arrow on the right */
+  .tooltip::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 100%; /* Positions arrow on the right */
+    transform: translateY(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent transparent rgba(0, 0, 0, 0.7);
   }
   
+  input[type="range"]:hover + .tooltip,
   input[type="range"]:active + .tooltip {
     opacity: 1;
   }
@@ -489,14 +499,58 @@ a.cds--header__name {
     border: 1px solid var(--cds-border-subtle);
     cursor: pointer;
 }
+
 .reconnect-container {
     text-align: -webkit-right;
     padding-bottom: 1rem;
     margin-right: 1rem;
   }
 
-:host ::ng-deep cds-header a,
-:host ::ng-deep cds-header .cds--header__name {
-    cursor: default !important;
-    // font-size: larger;
-}
+  .active-option {
+    // border: 1px solid #ffffff;
+    background-color: #525252;
+  }
+
+  /* Tooltip container */
+.tooltip-container {
+    position: relative;
+    // display: inline-block; /* Ensures elements align horizontally */
+  }
+  
+  /* Tooltip text */
+  .custom-tooltip {
+    visibility: hidden;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    position: absolute;
+    left: 110%; /* Position to the right */
+    top: 50%;
+    transform: translateY(-50%); /* Center vertically */
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 1000;
+  }
+  
+  /* Tooltip arrow */
+  .custom-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%; /* Move arrow to the left */
+    transform: translateY(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent rgba(0, 0, 0, 0.8) transparent transparent;
+  }
+  
+  /* Show tooltip on hover */
+  .tooltip-container:hover .custom-tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+  

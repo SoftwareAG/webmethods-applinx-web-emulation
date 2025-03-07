@@ -72,11 +72,9 @@
             <div class="tooltip">{{value}}px</div>
           </div>
           <cds-placeholder></cds-placeholder>
-          <div>
-            <cds-icon-button buttonId="icon-btn1" type="button" kind="secondary"  description="Default">
+            <cds-icon-button buttonId="icon-btn1" type="button" kind="secondary" description="Reset" (click)="setDefaultZoom()">
               <svg class="cds--btn__icon" cdsIcon="restart" size="20"></svg>
             </cds-icon-button>
-          </div>
         </cds-overflow-menu>
         <cds-placeholder></cds-placeholder>
         <ng-template #customZoomTrigger>
@@ -85,9 +83,21 @@
   
       <cds-overflow-menu [flip]="false" [customTrigger]="customColorTrigger" description="Style" [align]="align" >
         <div cdsTheme="g90">
-          <cds-overflow-menu-option id="Black" (click)="selected($event)" [divider]="true"><div class="square-black"></div></cds-overflow-menu-option>
-          <cds-overflow-menu-option id="White" (click)="selected($event)" [divider]="true"><div class="square-white"></div></cds-overflow-menu-option>
-          <cds-overflow-menu-option id="Green" (click)="selected($event)" [divider]="true"><div class="square-green"></div></cds-overflow-menu-option>
+          <cds-overflow-menu-option id="Black" (click)="selected($event, 'Black')" [divider]="true"
+          [ngClass]="{'active-option': selectedColor === 'Black'}" class="tooltip-container">
+          <div class="square-black"></div>
+          <span class="custom-tooltip">Black</span>
+        </cds-overflow-menu-option>
+          <cds-overflow-menu-option id="White" (click)="selected($event, 'White')" [divider]="true"
+            [ngClass]="{'active-option': selectedColor === 'White'}" class="tooltip-container">
+            <span class="custom-tooltip">White</span>
+            <div class="square-white"></div>
+          </cds-overflow-menu-option>
+          <cds-overflow-menu-option id="Green" (click)="selected($event, 'Green')" [divider]="true"
+            [ngClass]="{'active-option': selectedColor === 'Green'}" class="tooltip-container">
+            <div class="square-green"></div>
+            <span class="custom-tooltip">Green</span>
+          </cds-overflow-menu-option>
       </div>
       </cds-overflow-menu>
       <cds-placeholder></cds-placeholder>

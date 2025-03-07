@@ -97,6 +97,7 @@ export class AppComponent implements OnInit, OnDestroy {
   observe = "body";
   reportProgress = false;
   defaultHeaders = new HttpHeaders();
+  selectedColor: string = '';
 
   @ViewChild('container', { read: ViewContainerRef, static: true }) container: ViewContainerRef;
 
@@ -534,6 +535,7 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
     } else if (component instanceof WebLoginComponent) {
       this.loginComponent = component;
       this.changeBackgroundColor('White');
+      this.selectedColor = "White";
     }
   }
 
@@ -732,7 +734,8 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
     }
     return color.toLowerCase();
   }
-  selected(event: any){
+  selected(event: any, color: string){
+    this.selectedColor = color;
     let themeColor = event.currentTarget.id;
     this.changeBackgroundColor(themeColor);
   }
