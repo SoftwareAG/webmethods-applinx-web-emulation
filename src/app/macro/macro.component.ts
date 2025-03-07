@@ -52,6 +52,7 @@ export class MacroComponent {
   vinoth: boolean =  false ;
   selectedDelMacro: any;
   selectedPlayMacro: any;
+  selectedViewMacro: any;
 
   @Input() operationType: string;
   @Output() dataEmitter = new EventEmitter<any>();
@@ -223,12 +224,12 @@ export class MacroComponent {
     let macroObj = {};
     macroObj["steps"] = this.dataService.getMacroSteps();
     let token = this.storageService.getAuthToken();
-    console.log("$$$$$New Macro Name : ", newMarcoName);
+    // console.log("$$$$$New Macro Name : ", newMarcoName);
     this.macroSaveSubscription = this.macroService
       .saveMacro(macroObj, newMarcoName + ".json", this.user, this.applicationName, token)
       .subscribe(response => {
-        console.log("Save Response : ", response)
-
+        //console.log("Save Response : ", response)
+        this.dataService.clearMacroObj();
         this.dataService.setMacroRecordFlag(false);
         this.notificationService.showToast({
           title: 'Save Macro',

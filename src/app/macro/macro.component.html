@@ -56,8 +56,8 @@
     <div class="cds--modal-content card custom-margin">
       <cds-text-label for="viewMacro">
         <p class="label-size"> Select a Macro to View<span class="mandatory">*</span>:</p></cds-text-label>
-      <cds-dropdown [size]="size" (selected)="selected($event)" [(ngModel)]="selectedMacro" name="viewMacro">
-        <cds-dropdown-list [items]="macroList" required></cds-dropdown-list>
+      <cds-dropdown [size]="size" (selected)="selected($event)" [(ngModel)]="selectedViewMacro" name="viewMacro">
+        <cds-dropdown-list [items]="macroList" required ></cds-dropdown-list>
       </cds-dropdown>
     </div>
     <cds-modal-footer>
