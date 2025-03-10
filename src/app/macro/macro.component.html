@@ -32,11 +32,12 @@
      <div id="macroRecordContainer">
       <cds-text-label>
         <p class="label-size">Enter Macro Name<span class="mandatory">*</span>:</p>
-        <input cdsText [size]="'lg'" [placeholder]="'Enter Macro Name'" name="txtRecordMacro" id="txtRecordMacro" (ngModelChange)="clearValidation()"
+        <input cdsText [size]="'lg'" [placeholder]="'Enter Macro Name'" name="txtRecordMacro" id="txtRecordMacro" (ngModelChange)="clearValidation()" pattern="^[a-zA-Z0-9-]*$"
           class="form-control" ngModel #txtRecordMacro="ngModel" required maxlength="15">
       </cds-text-label>
     </div>
       <div class="alert-msg" *ngIf="validationFlag">The Macro name already exists, Please enter a new Macro name.</div>
+      <div class="alert-msg" *ngIf="txtRecordMacro.invalid && (txtRecordMacro.dirty || txtRecordMacro.touched) && txtRecordMacro.errors?.pattern">Special Characters are not allowed in Macro name.</div>
     </div>
     <cds-modal-footer>
       <ng-container>

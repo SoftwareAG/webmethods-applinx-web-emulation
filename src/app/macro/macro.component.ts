@@ -171,6 +171,15 @@ export class MacroComponent {
         this.macroPlaySubscription = this.macroService
           .playMacro(playObj, this.token).subscribe(response => {
             this.dataService.setPlayMacroFlag(false);
+            console.log("Response for Play Macro : ", response)
+          }, error => {
+            console.log("Error Response for Play Macro : ", error)
+            this.notificationService.showToast({
+              title: 'Play Macro',
+              caption: error.error.message,
+              //duration: 500000, // Duration in milliseconds (optional)
+              type: 'error',
+            });
           })
       });
   }

@@ -131,6 +131,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
         if (value === true) {
           this.navigationService.isScreenUpdated.next(false);
           this.getScreen();
+          this.getRawScreenData();
         }
       });
     }
