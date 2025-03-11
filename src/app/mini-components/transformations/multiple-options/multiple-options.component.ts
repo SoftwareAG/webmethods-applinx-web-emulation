@@ -42,7 +42,7 @@ export class MultipleOptionsComponent implements OnChanges {
       if (tempElement){
         tempElement.forEach(entry => {
           entry["content"] = entry.key;
-          entry["selected"] = (entry.value.trim()!== "")?false: true;
+          entry["selected"] = (entry.value.trim()!== this.transform.field?.content?.trim())?false: true;
           this.entries.push(entry)
         });
       }
