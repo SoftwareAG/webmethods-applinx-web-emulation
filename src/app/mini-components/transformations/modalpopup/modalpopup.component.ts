@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef, Input, HostListener } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { GXUtils } from 'src/utils/GXUtils';
 import { DialogService } from 'carbon-components-angular';
@@ -15,6 +15,17 @@ export class ModalpopupComponent implements OnInit {
     private clipboard: Clipboard) { }
   @Input() copyData: string;
   @Input() typeFlag: boolean;
+  @HostListener('document:keydown.escape', ['$event'])
+  handleEscKey(event: KeyboardEvent) {
+    if (this.copyModalFlag) {
+      this.closeModal();
+    }
+  }
+ 
+  closeModal() {
+    this.copyModalFlag = false; // Force modal to close
+    console.log("Modal closed by Esc");
+  }
   printFlag: boolean = false;
   copyInstructionLineOne: string = GXUtils.copyInstructionLineOne;
   copyInstructionLineTwo: string = GXUtils.copyInstructionLineTwo;
