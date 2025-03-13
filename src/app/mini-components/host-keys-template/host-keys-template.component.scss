@@ -38,26 +38,23 @@
   outline: unset !important;
 }
 
-.custom-button {
-  // padding-left: 7px;  /* Custom left padding */
-  // padding-right: 7px; /* Custom right padding */
-  margin-top: 10%;
-  width: auto;
-  border-radius: 7px;
-  //display: flex;              /* Use flexbox for alignment */
-  //justify-content: center;    /* Center horizontally */
-  // align-items: center; 
-  //text-align: center;
-}
-
 button {
   display: flex;                  /* Use flexbox for alignment */
-  justify-content: center;        /* Center horizontally */
+  justify-content: center; 
+  text-align: center;             /* Center horizontally */
   align-items: center;            /* Center vertically */
   // height: 60px;                /* Set a fixed height */
   width: 8rem;                    /* Set a fixed width */
   padding: 0;
-  font-size: large !important;
+  font-size: smaller !important;
   font-style: oblique;
   font-variant: normal;
+}
+
+.overflowText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100px;
+  display: inline-block;
 }

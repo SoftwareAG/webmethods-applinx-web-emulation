@@ -29,7 +29,9 @@ export class HostKeysTemplateComponent implements OnInit {
   @Input() multipleHostKeys: boolean;
 
   constructor(public navigationService: NavigationService) { }
-
+  align="left";
+  isOpen = false;
+  caret = true;
   ngOnInit(): void {
   }
 
