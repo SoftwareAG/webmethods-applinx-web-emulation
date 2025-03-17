@@ -121,8 +121,8 @@ export class MacroComponent {
         this.notificationService.showToast({
           title: 'Delete Macro',
           caption: "The selected Macro " + this.selectedMacro.split(".")[0] + " is deleted successfully!",
-          //                  duration: 500000, // Duration in milliseconds (optional)
-          type: 'error',
+          duration: 5000, // Duration in milliseconds (optional)
+          type: 'success',
         });
       }, error => {
       })
@@ -177,7 +177,7 @@ export class MacroComponent {
             this.notificationService.showToast({
               title: 'Play Macro',
               caption: error.error.message,
-              //duration: 500000, // Duration in milliseconds (optional)
+              duration: 5000, // Duration in milliseconds (optional)
               type: 'error',
             });
           })
@@ -243,7 +243,7 @@ export class MacroComponent {
         this.notificationService.showToast({
           title: 'Save Macro',
           caption: "The new Macro " + newMarcoName + " has been saved successfully!",
-          //duration: 5000, // Duration in milliseconds (optional)
+          duration: 5000, // Duration in milliseconds (optional)
           type: 'success',
         });
       },
@@ -252,7 +252,7 @@ export class MacroComponent {
           this.notificationService.showToast({
             title: 'Save Macro',
             caption: "An Unexpected Error has occured while saving the Macro!",
-            //duration: 500000, // Duration in milliseconds (optional)
+            duration: 5000, // Duration in milliseconds (optional)
             type: 'error',
           });
         });
