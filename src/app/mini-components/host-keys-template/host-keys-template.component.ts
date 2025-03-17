@@ -12,10 +12,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
-import {Component, Input, OnInit} from '@angular/core';
-import {NavigationService} from '../../services/navigation/navigation.service';
-import {HostKeyTransformation} from '@softwareag/applinx-rest-apis';
+ */
+import { Component, Input, OnInit } from '@angular/core';
+import { NavigationService } from '../../services/navigation/navigation.service';
+import { HostKeyTransformation } from '@softwareag/applinx-rest-apis';
 
 @Component({
   selector: 'app-host-keys-template',
@@ -29,9 +29,10 @@ export class HostKeysTemplateComponent implements OnInit {
   @Input() multipleHostKeys: boolean;
 
   constructor(public navigationService: NavigationService) { }
-  align="left";
-  isOpen = false;
-  caret = true;
+  align: string = "left";
+  isOpen: boolean = false;
+  caret: boolean = true;
+  highContrast: boolean = false;
   ngOnInit(): void {
   }
 

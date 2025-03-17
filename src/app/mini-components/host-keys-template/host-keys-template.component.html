@@ -1,45 +1,41 @@
-<!-- <div class="hostKeysContainer" *ngIf= "!this.multipleHostKeys">
+<div class="hostKeysContainer" *ngIf="!this.multipleHostKeys">
   <ng-container *ngFor="let transform of transformations; index as i">
-    <button cdsButton="secondary" size="lg" class="button-corner" id="on-hover" *ngFor="let hostKey of transform.hostKeys" (click)="onClick(hostKey.action)">
-      {{hostKey.caption}}
-    </button>
-  </ng-container>
-  <button cdsButton size="lg" class="button-corner" id="enter" [ngClass] = "{green_enter: themeColor === 'Green'}" 
-  style="margin-top: 10%" (click)="this.navigationService.sendKeys('[enter]')">Enter</button>
-</div>
-<div class="multiplehostKeysContainer" *ngIf= "this.multipleHostKeys">
-  <ng-container *ngFor="let transform of transformations; index as i">
-    <button cdsButton size="lg" class="button-corner" [ngClass] = "{green_secondary: themeColor === 'Green'}" id="on-hover" *ngFor="let hostKey of transform.hostKeys" (click)="onClick(hostKey.action)">
-      {{hostKey.caption}}
-    </button>
-  </ng-container>
-  <button cdsButton size="lg" class="button-corner" id="enter" [ngClass] = "{green_enter: themeColor === 'Green'}" style="margin-top: 10%" (click)="this.navigationService.sendKeys('[enter]')">Enter </button>
-</div> -->
-
-<div class="hostKeysContainer" *ngIf= "!this.multipleHostKeys">
-  <ng-container *ngFor="let transform of transformations; index as i">
-    <button cdsButton="secondary" size="lg" class="button-corner" [ngClass]="{green_secondary: themeColor === 'Green'}" id="on-hover"
-      *ngFor="let hostKey of transform.hostKeys" (click)="onClick(hostKey.action)">
-        <cds-tooltip [isOpen]="isOpen" [caret]="caret" [align]="align" description="{{hostKey.caption}}">
+    <button cdsButton="secondary" size="lg" class="button-corner" [ngClass]="{green_secondary: themeColor === 'Green'}"
+      id="on-hover" *ngFor="let hostKey of transform.hostKeys" (click)="onClick(hostKey.action)">
+      <cds-tooltip [isOpen]="isOpen" [caret]="caret" [align]="align" [highContrast]="highContrast"
+        description="{{hostKey.caption}}">
         <span class="overflowText">
           {{hostKey.caption}}
         </span>
       </cds-tooltip>
     </button>
   </ng-container>
-  <button cdsButton size="lg" class="button-corner" id="enter" [ngClass] = "{green_enter: themeColor === 'Green'}" 
-  style="margin-top: 10%" (click)="this.navigationService.sendKeys('[enter]')">Enter</button>
+  <button cdsButton size="lg" class="button-corner" id="enter" [ngClass]="{green_enter: themeColor === 'Green'}"
+    style="margin-top: 10%" (click)="this.navigationService.sendKeys('[enter]')">
+    <cds-tooltip [isOpen]="isOpen" [caret]="caret" [align]="align" [highContrast]="highContrast" description="Enter">
+      <span class="overflowText">
+        Enter
+      </span>
+    </cds-tooltip>
+  </button>
 </div>
+
 <div class="multiplehostKeysContainer" *ngIf= "this.multipleHostKeys">
   <ng-container *ngFor="let transform of transformations; index as i">
     <button cdsButton size="lg" class="button-corner" [ngClass]="{green_secondary: themeColor === 'Green'}" id="on-hover"
       *ngFor="let hostKey of transform.hostKeys" (click)="onClick(hostKey.action)">
-        <cds-tooltip [isOpen]="isOpen" [caret]="caret" [align]="align" description="{{hostKey.caption}}">
+        <cds-tooltip [isOpen]="isOpen" [caret]="caret" [align]="align" [highContrast]="highContrast"  description="{{hostKey.caption}}">
         <span class="overflowText">
           {{hostKey.caption}}
         </span>
       </cds-tooltip>
     </button>
   </ng-container>
-  <button cdsButton size="lg" class="button-corner" id="enter" [ngClass] = "{green_enter: themeColor === 'Green'}" style="margin-top: 10%" (click)="this.navigationService.sendKeys('[enter]')">Enter </button>
+  <button cdsButton size="lg" class="button-corner" id="enter" [ngClass] = "{green_enter: themeColor === 'Green'}" style="margin-top: 10%" (click)="this.navigationService.sendKeys('[enter]')">
+    <cds-tooltip [isOpen]="isOpen" [caret]="caret" [align]="align" [highContrast]="highContrast"  description="Enter">
+      <span class="overflowText">
+        Enter
+      </span>
+    </cds-tooltip>
+  </button>
 </div>
