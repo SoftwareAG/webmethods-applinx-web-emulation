@@ -802,7 +802,7 @@ div[name="Menu"]#gx_screenArea input.gx_intf {
     inline-size: 3rem !important;
 }
 .cds--overflow-menu-options--open {
-    width: auto;
+    width: max-content;
 	margin-left: -3px;
 	margin-top: 0.15rem;
 }
