@@ -72,9 +72,9 @@
             <div class="tooltip">{{value}}px</div>
           </div>
           <cds-placeholder></cds-placeholder>
-            <cds-icon-button buttonId="icon-btn1" type="button" kind="secondary" description="Reset" (click)="setDefaultZoom()">
-              <svg class="cds--btn__icon" cdsIcon="restart" size="20"></svg>
-            </cds-icon-button>
+          <cds-header-action description="Reset" cdsTheme="g90">
+            <svg class="cds--btn__icon" cdsIcon="restart" size="20" (click)="setDefaultZoom()"></svg>
+          </cds-header-action>
         </cds-overflow-menu>
         <cds-placeholder></cds-placeholder>
         <ng-template #customZoomTrigger>
