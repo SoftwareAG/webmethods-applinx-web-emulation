@@ -315,7 +315,7 @@ a.gx_hky:hover {
 
 /* 2nd alternating table row */
 .gx_tbl_alternating2 {
-	background-color: var(--table-body-alternating2);
+	background-color: var(--table-body-alternating2) !important;
 }
 
 tbody .gx_tbl_alternating2 {
@@ -895,4 +895,45 @@ tbody, td, tfoot, th, thead, tr {
     padding: 0.35rem 1rem;
     border-radius: 5px;
 	color: black ;
+}
+.cds--list-box {
+	border-color: var(--table-body-select-border-color) !important;
+    background-color: var(--table-body-select-background-color) !important;
+}
+
+.cds--list-box__label {
+    color: var(--table-body-select-color) !important;
+}
+.cds--list-box__menu-item {
+    border-color: var(--table-body-select-border-color);
+    background-color: var(--table-body-select-background-color);
+    color: var(--table-body-select-color) !important;
+}
+.cds--list-box__menu-item__option {
+    color: inherit !important;
+}
+.cds--list-box__menu-item:hover {
+    background-color: #1776bf !important;
+    color: #ffffff !important;
+}
+.cds--data-table--zebra tbody tr:not(.cds--parent-row):not(.cds--data-table--selected) {
+    background-color: var(--table-body-alternating1) !important;
+    color: var(--table-body-text-color) !important;
+}
+
+.cds--data-table--zebra tbody tr:nth-child(even):not(.cds--parent-row):not(.cds--data-table--selected) {
+    background-color: var(--table-body-alternating2) !important; /* Ensure different alternating color */
+}
+
+.cds--data-table td, .cds--data-table tbody th {
+    color: var(--table-body-text-color) !important;
+}
+.cds--dropdown {
+    border: 1px solid var(--cds-border-strong) !important;
+}
+.cds--list-box__field {
+    padding-inline: 1rem 1rem !important;
+}
+.cds--list-box__menu-icon > svg {
+    fill: var(--table-body-select-color) !important;
 }
