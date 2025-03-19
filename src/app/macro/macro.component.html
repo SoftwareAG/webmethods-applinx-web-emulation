@@ -12,10 +12,10 @@
      </div>
     <cds-modal-footer>
       <ng-container>
-        <button cdsButton="secondary" class="customButton" (click)="this.playMacro = false">
+        <button cdsButton="secondary" class="customButton" (click)="onCancelMacro('play')">
           Cancel
         </button>
-        <button cdsButton="primary" class="customButton" (click)="this.playMacro = false;" (click)="onPlayMacro()" [disabled]="!selectedPlayMacro">
+        <button cdsButton="primary" class="customButton" (click)="this.playMacro = false;onPlayMacro()" [disabled]="!selectedPlayMacro">
           Play
         </button>
       </ng-container>
@@ -41,7 +41,7 @@
     </div>
     <cds-modal-footer>
       <ng-container>
-        <button cdsButton="secondary" class="customButton" (click)="onCancel()">Cancel</button>
+        <button cdsButton="secondary" class="customButton" (click)="onCancelMacro('record')">Cancel</button>
         <button cdsButton="primary" class="customButton" type="submit" [disabled]="!recordMacroForm.valid"
           (click)="onRecordMacro(recordMacroForm)">Record</button>
       </ng-container>
@@ -63,7 +63,7 @@
     </div>
     <cds-modal-footer>
       <ng-container>
-        <button cdsButton="secondary" class="customButton" (click)="this.viewMacro = false">
+        <button cdsButton="secondary" class="customButton" (click)="onCancelMacro('view')">
           Cancel
         </button>
         <button cdsButton="primary" class="customButton" [disabled]="!selectedMacro">
@@ -101,7 +101,7 @@
   </div>
   <cds-modal-footer>
     <ng-container>
-      <button cdsButton="secondary" class="customButton" (click)="this.delMacro = false">
+      <button cdsButton="secondary" class="customButton" (click)="onCancelMacro('remove')">
         Cancel
       </button>
       <button cdsButton="primary" class="customButton" (click)="this.delMacro = false; onDeleteMacro()" [disabled]="!selectedDelMacro">

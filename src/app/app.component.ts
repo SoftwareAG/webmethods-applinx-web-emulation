@@ -480,7 +480,7 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
     popupWindow.close();
   }
 
-  formatCopyPage(formattedArray, printFlag) { // vinoth
+  formatCopyPage(formattedArray, printFlag) {
     let divElement = document.createElement("div");
     divElement.style.cssText ="border :1px solid black;"
     let lineIdentifier = 0;

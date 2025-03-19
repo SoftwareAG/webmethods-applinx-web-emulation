@@ -49,7 +49,6 @@ export class MacroComponent {
   observe = "body";
   reportProgress = false;
   defaultHeaders = new HttpHeaders();
-  vinoth: boolean =  false ;
   selectedDelMacro: any;
   selectedPlayMacro: any;
   selectedViewMacro: any;
@@ -87,16 +86,11 @@ export class MacroComponent {
       case GXUtils.PlayMacro:
         this.playMacro = !this.playMacro;
         break;
-      case GXUtils.RenameMacro:
-        this.MacroExitsMsg = GXUtils.MACRO_NAME_DUPLICATE_MSG
-        this.renameMacro = !this.renameMacro;
-        this.dupMacroFlag = true;
-        this.dataService.setPopUpFlag(true);
-        break;
       case GXUtils.stopRecordMacro:
         this.onStopRecordMacro();
         break;
     }
+    
   }
 
 
@@ -111,7 +105,8 @@ export class MacroComponent {
   }
 
   onCancelMacro(operation: string) {
-    this.setOperationTypeFlag(operation)
+    this.setOperationTypeFlag(operation);
+    this.dataService.setPopUpFlag(false);
   }
 
   onDeleteMacro() {
@@ -126,6 +121,7 @@ export class MacroComponent {
         });
       }, error => {
       })
+      this.dataService.setPopUpFlag(false);
   }
 
   onViewMacro() {
@@ -138,6 +134,7 @@ export class MacroComponent {
         this.selectedMacroObj["steps"] = this.selViewMacroContent.steps;
         this.viewMacroFlag = true;
       })
+      this.dataService.setPopUpFlag(false);
   }
 
   setPasswordMask(stepsArray) {
@@ -182,6 +179,7 @@ export class MacroComponent {
             });
           })
       });
+      this.dataService.setPopUpFlag(false);
   }
 
   decryptBeforePlay(steps: any) {
@@ -225,7 +223,7 @@ export class MacroComponent {
           this.validationFlag = true;
         }
       });
-      this.vinoth = false;
+     
   }
 
   onStopRecordMacro() { // Save Macro End - Saves the Macro & its steps in a .json file.
@@ -256,7 +254,7 @@ export class MacroComponent {
             type: 'error',
           });
         });
-        this.vinoth = true
+        this.dataService.setPopUpFlag(false);
   }
 
   selected(event: Event) {
