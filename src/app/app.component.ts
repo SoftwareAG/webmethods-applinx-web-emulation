@@ -265,13 +265,13 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
 
   showDisconnectionMessage(): void {
     const targetModal = document.getElementById('readonly_modal');
-    targetModal.classList.add('dlt-modal-window__open');
+    // targetModal.classList.add('dlt-modal-window__open');
     this.errorFlag = true;
   }
 
   reconnect(): void {
     const targetModal = document.getElementById('readonly_modal');
-    targetModal.classList.remove('dlt-modal-window__open')
+    // targetModal.classList.remove('dlt-modal-window__open')
     this.storageService.setNotConnected();
     this.clearMacroDetails();
    
@@ -736,7 +736,10 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
   }
   selected(event: any, color: string){
     this.selectedColor = color;
+    console.log(">>>>>>>>>>>>>>>>>>>>",this.selectedColor);
     let themeColor = event.currentTarget.id;
+    console.log(">>>>>>>>>>>>>>>>>>>>",themeColor);
+
     this.changeBackgroundColor(themeColor);
   }
 }

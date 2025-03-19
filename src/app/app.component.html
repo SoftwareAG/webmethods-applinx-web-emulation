@@ -7,7 +7,7 @@
     <p>Press the Reconnect button to start a new session.</p>
   </div>
   <div class="reconnect-container">
-    <button cdsButton="primary" (click)="errorFlag = false" [attr.modal-primary-focus]="true" class="custom-btn">
+    <button cdsButton="primary" (click)="errorFlag = false; reconnect()" [attr.modal-primary-focus]="true" class="custom-btn">
       Reconnect
     </button>
   </div>
