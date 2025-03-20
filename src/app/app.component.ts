@@ -312,6 +312,7 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
 
   copy() {
     GXUtils.setCopyFlag(true);
+    this.sharedService.setPopUpFlag(true);
     this.getScreenData(false);
   }
 
