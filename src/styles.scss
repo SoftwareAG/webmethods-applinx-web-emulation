@@ -867,10 +867,10 @@ tbody, td, tfoot, th, thead, tr {
 .cds--header__action:active, a.cds--header__menu-item:active {
     background-color: transparent !important;
 }
-.cds--btn--primary:focus {
-    box-shadow: inset 0 0 0 0px var(--cds-button-focus-color, var(--cds-focus, #0f62fe)), inset 0 0 0 0px var(--cds-background, #ffffff) !important;
-	border-top: 0px;
-}
+// .cds--btn--primary:focus {
+//     box-shadow: inset 0 0 0 0px var(--cds-button-focus-color, var(--cds-focus, #0f62fe)), inset 0 0 0 0px var(--cds-background, #ffffff) !important;
+// 	border-top: 2px;
+// }
 
 .cds--modal-container {
     display: inline-table !important;
@@ -936,4 +936,7 @@ tbody, td, tfoot, th, thead, tr {
 }
 .cds--list-box__menu-icon > svg {
     fill: var(--table-body-select-color) !important;
+}
+.cds--text-input {
+    font-size: inherit !important;
 }
