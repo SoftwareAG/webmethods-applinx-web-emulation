@@ -93,14 +93,10 @@ export class MacroComponent {
     
   }
 
-
   getMacroListDetails() {
     this.tempMacroList = sessionStorage.getItem("macroFileList");
     if(this.tempMacroList){
-      let tempMacroListArray = this.tempMacroList.split(",");
-      tempMacroListArray.forEach(element => {
-        this.macroList.push({ "content": element })
-      });
+      this.macroList = this.tempMacroList.split(",");
     }
   }
 
@@ -259,7 +255,7 @@ export class MacroComponent {
   }
 
   selected(event: Event) {
-    this.selectedMacro = event["item"].content + ".json";
+    this.selectedMacro = event + ".json";
   }
 
   onCancel(){

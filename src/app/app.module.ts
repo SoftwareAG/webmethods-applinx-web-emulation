@@ -57,7 +57,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { AuthTokenServerService } from './services/logger.service'
 import { DatePickerModule, IconModule, IconService } from 'carbon-components-angular';
 import { UIShellModule } from 'carbon-components-angular/ui-shell';
-import { ButtonModule, InputModule, DropdownModule, TableModule, ThemeModule, DialogModule, SliderModule, ToggletipModule, ContextMenuModule, CheckboxModule, RadioModule, TooltipModule, NotificationModule } from 'carbon-components-angular';
+import { ButtonModule, InputModule, DropdownModule, TableModule, ThemeModule, DialogModule, SliderModule, ToggletipModule, ContextMenuModule, CheckboxModule, RadioModule, TooltipModule, NotificationModule, SelectModule  } from 'carbon-components-angular';
 
 // Icons
 import settings20 from '@carbon/icons/es/settings/20';
@@ -140,6 +140,7 @@ const routes: Routes = [
     DatePickerModule, 
     NotificationModule, 
     TooltipModule,
+    SelectModule, 
     LoggerModule.forRoot(
       {
         serverLoggingUrl: environment.basePath + '/logger',
