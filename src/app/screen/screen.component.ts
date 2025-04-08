@@ -62,7 +62,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     const tag = event.target.tagName;
     const id = event.target.id;
     const val = event.target.value;
-    if (tag?.toLowerCase() === 'input' && id?.length > 0) {
+    if (tag?.toLowerCase() === 'input' && id?.length > 0 && !id.includes("radio")) {
       const input = new InputField();
       input.setName(id);
       input.setValue(val);
