@@ -68,7 +68,7 @@ export class AppComponent implements OnInit, OnDestroy {
   hostKeysEmitterSubscription: Subscription;
   screenInitializedSubscription: Subscription;
   hostConnectionSubscription: Subscription;
-  themeColors: string[] = GXUtils.themeColorsList;
+  // themeColors: string[] = GXUtils.themeColorsList;
   themecolorConfig: any = GXUtils.themecolorConfig;
   zoomDefault: number;
   zoomMinValue: number = GXUtils.zoomMinValue;
@@ -675,7 +675,7 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
     document.documentElement.style.setProperty('--table-header-border-color-left', this.themecolorConfig[color]['table-header-border-color-left']);
     document.documentElement.style.setProperty('--table-header-border-color-right', this.themecolorConfig[color]['table-header-border-color-right']);
     document.documentElement.style.setProperty('--table-header-border-color-top', this.themecolorConfig[color]['table-header-border-color-top']);
-    document.documentElement.style.setProperty('--table-header-border-color-botton', this.themecolorConfig[color]['table-header-border-color-botton']);
+    document.documentElement.style.setProperty('--table-header-border-color-botton', this.themecolorConfig[color]['table-header-border-color-bottom']);
     document.documentElement.style.setProperty('--table-header-text-color', this.themecolorConfig[color]['table-header-text-color']);
     document.documentElement.style.setProperty('--table-body-border-color', this.themecolorConfig[color]['table-body-border-color']);
     document.documentElement.style.setProperty('--table-body-alternating1', this.themecolorConfig[color]['table-body-alternating1']);

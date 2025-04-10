@@ -131,12 +131,12 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 
 
-#gx_screenArea button:hover {
-	background-color: var(--btn-hover-color-screen);
-	// color: var(--screen-btn-text-color);
-	outline: var(--btn-outline-color);
-	border-color: var(--btn-outline-color);
-}
+// #gx_screenArea button:hover {
+// 	background-color: var(--btn-hover-color-screen);
+// 	// color: var(--screen-btn-text-color);
+// 	outline: var(--btn-outline-color);
+// 	border-color: var(--btn-outline-color);
+// }
 
 .noGridItem {
 	min-width: 0;
@@ -379,8 +379,8 @@ tbody .gx_tbl_alternating1 {
 }
 
 .gx_errorMessage{
-	color: red
-  }
+    color: red
+}
 
 /* blinking caret */
 .gx_caret {
@@ -856,12 +856,6 @@ ol, ul {
 .cds--data-table--md.cds--data-table--sort th {
     block-size: 0rem !important;
 }
-.cds--dropdown {
-    height: 30px !important;
-}
-tbody, td, tfoot, th, thead, tr {
-    height: 35px !important;
-}
 .cds--header__action--active {
     background: transparent !important;
     border-block-end: 0px solid transparent !important;
@@ -935,12 +929,57 @@ tbody, td, tfoot, th, thead, tr {
 .cds--dropdown {
     border: 1px solid var(--cds-border-strong) !important;
 }
-.cds--list-box__field {
-    padding-inline: 1rem 1rem !important;
-}
+// .cds--list-box__field {
+//     padding-inline: 1rem 1rem !important;
+// }
 .cds--list-box__menu-icon > svg {
     fill: var(--table-body-select-color) !important;
 }
 .cds--text-input {
     font-size: inherit !important;
+}
+
+/* Start - Table header font size and line height override*/
+.cds--data-table thead {
+    font-size: calc(var(--text-font-size)) !important;
+    line-height: calc(var(--text-font-size)) !important;
+}
+.cds--data-table tbody {
+    font-size: calc(var(--text-font-size)) !important;
+    line-height: calc(var(--text-font-size)) !important;
+}
+/*End - Table header font size and line height override*/
+
+/*Start - Table dropdown font size and line height override*/
+.cds--list-box__label {
+    font-size: calc(var(--text-font-size)) !important;
+    line-height: calc(var(--text-font-size)) !important;
+}
+.cds--list-box__menu-item {
+    font-size: calc(var(--text-font-size)) !important;
+    line-height: calc(var(--text-font-size)) !important;
+}
+.cds--dropdown {
+    // height: calc(var(--text-font-size) + 4px) !important;
+    height: 30px !important;
+}
+/*End - Table dropdown font size and line height override*/
+
+// tbody, td, tfoot, th, thead, tr {
+//     height: calc(var(--text-font-size) + 4px) !important
+// }
+/*Removing padding lefta nd right from table coloumn dropdown.*/
+.cds--data-table td, .cds--data-table tbody th {
+    padding-inline: 1rem 1rem !important;
+    // padding-inline: 0rem 0rem !important;
+}
+
+/*Removing padding frpm text and caret icon from dropdown*/
+.cds--list-box__field {
+    padding-inline: 1rem 3rem !important;
+    // padding-inline: 1rem 2rem !important;
+}
+
+.flexField > span {
+    font-size: var(--text-font-size) !important;
 }
