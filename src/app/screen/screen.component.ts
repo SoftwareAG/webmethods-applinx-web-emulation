@@ -137,7 +137,10 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     }
 
     this.screenObjectUpdatedSubscription = this.navigationService.screenObjectUpdated.subscribe(newScreen => {
-      if (newScreen) {     
+      if (newScreen) {
+        if(newScreen.screenId !== this.m_screen.screenId){
+          this.postGetScreen (newScreen);
+        }
         this.navigationService.screenObjectUpdated.next(null);
             this.getRawScreenData()
       }
