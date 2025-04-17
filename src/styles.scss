@@ -970,8 +970,8 @@ ol, ul {
 // }
 /*Removing padding lefta nd right from table coloumn dropdown.*/
 .cds--data-table td, .cds--data-table tbody th {
-    padding-inline: 1rem 1rem !important;
-    // padding-inline: 0rem 0rem !important;
+   // padding-inline: 1rem 1rem !important;
+    padding-inline: 0rem 0rem !important;
 }
 
 /*Removing padding frpm text and caret icon from dropdown*/
