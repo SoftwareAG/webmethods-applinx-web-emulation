@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 import {  ElementRef, HostListener, OnDestroy, ViewChildren } from '@angular/core';
 import { QueryList } from '@angular/core';
 import {
@@ -58,7 +58,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     const ignore = ['app-multiple-options', 'app-input-field'];
     if (ignore.includes(event.path?.[1]?.tagName?.toLowerCase()) || ignore.includes(event.path?.[3]?.tagName?.toLowerCase())) {
       return;
-    } 
+    }
     const tag = event.target.tagName;
     const id = event.target.id;
     const val = event.target.value;
@@ -91,13 +91,13 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   intensifiedScr: boolean = false;
 
   constructor(private screenService: ScreenService, private navigationService: NavigationService,
-              private storageService: StorageService, private tabAndArrowsService: TabAndArrowsService,
-              private keyboardMappingService: KeyboardMappingService, private userExitsEventThrower: UserExitsEventThrowerService,
-              private ref: ElementRef, private router: Router, private screenHolderService: ScreenHolderService,
-              private logger: NGXLogger, private messages: MessagesService,         
-              private screenProcessorService: ScreenProcessorService, private screenLockerService: ScreenLockerService,
+    private storageService: StorageService, private tabAndArrowsService: TabAndArrowsService,
+    private keyboardMappingService: KeyboardMappingService, private userExitsEventThrower: UserExitsEventThrowerService,
+    private ref: ElementRef, private router: Router, private screenHolderService: ScreenHolderService,
+    private logger: NGXLogger, private messages: MessagesService,
+    private screenProcessorService: ScreenProcessorService, private screenLockerService: ScreenLockerService,
               private sharedService: SharedService,) {}
-              
+
   ngAfterViewInit(): void {
     if (!this.isChildWindow) {
       this.gridChangedCallback();
@@ -137,11 +137,9 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     }
 
     this.screenObjectUpdatedSubscription = this.navigationService.screenObjectUpdated.subscribe(newScreen => {
-      if (newScreen) {     
+      if (newScreen) {
         this.navigationService.screenObjectUpdated.next(null);
-        this.postGetScreen (newScreen);
-            //this.screenHolderService.setRawScreenData(newScreen)
-            this.getRawScreenData()
+        this.getRawScreenData()
       }
     });
 
@@ -156,27 +154,27 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     }
   }
 
-  getScreen(): void {    
+  getScreen(): void {
     const req = new GetScreenRequest();
     this.userExitsEventThrower.firePreGetScreen(req);
     this.getScreenSubscription = this.screenService
-    .getScreen(this.storageService.getAuthToken(), req)
-    .subscribe(
-      screen => {
-        this.postGetScreen(screen);
-        this.screenHolderService.setRawScreenData(screen)   
-      },    
-      error => {
-        this.logger.error(this.messages.get("FAILED_TO_GET_SCREEN_FROM_REST_API"));
-        this.userExitsEventThrower.fireOnGetScreenError(error);
-      });
+      .getScreen(this.storageService.getAuthToken(), req)
+      .subscribe(
+        screen => {
+          this.postGetScreen(screen);
+          this.screenHolderService.setRawScreenData(screen)
+        },
+        error => {
+          this.logger.error(this.messages.get("FAILED_TO_GET_SCREEN_FROM_REST_API"));
+          this.userExitsEventThrower.fireOnGetScreenError(error);
+        });
   }
 
-  getRawScreenData(): void {    
+  getRawScreenData(): void {
     const req = new GetScreenRequest();
     this.userExitsEventThrower.firePreGetScreen(req);
     this.getScreenSubscription = this.screenService.getScreen(this.storageService.getAuthToken(), req).subscribe(
-      screen => this.screenHolderService.setRawScreenData(screen),   
+      screen => this.screenHolderService.setRawScreenData(screen),
       error => {
         this.logger.error(this.messages.get("FAILED_TO_GET_SCREEN_FROM_REST_API"));
         this.userExitsEventThrower.fireOnGetScreenError(error);
@@ -206,12 +204,12 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
         element.visible = true
       }
     })
-    }
+  }
 
   private processScreen(screen: GetScreenResponse): void {
-      this.setVisibleLines(screen);
-      if (this.screenHolderService.isCurrentScreenWindow() && !this.isChildWindow && 
-           !(this.screenHolderService.getPreviousScreen().name == GXUtils.MENU && screen.name == GXUtils.UNKNOWN)) {
+    this.setVisibleLines(screen);
+    if (this.screenHolderService.isCurrentScreenWindow() && !this.isChildWindow &&
+      !(this.screenHolderService.getPreviousScreen().name == GXUtils.MENU && screen.name == GXUtils.UNKNOWN)) {
       this.shiftFieldsToMainWindow(screen);
       if (screen.windows.length === 1) {
         this.childWindows = [screen];
@@ -247,7 +245,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
                 const input = new InputField();
                 input.setName(inputFieldArray[inputfieldCount].name);
                 input.setValue(inputFieldArray[inputfieldCount].content);
-                this.navigationService.setSendableField(input);  
+                this.navigationService.setSendableField(input);
                 typeaheadCount++;
                 inputfieldCount++;
                 if (inputfieldCount == inputFieldArray.length){
@@ -261,20 +259,20 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
                 typeaheadCount++;
               }while (typeaheadCount < typeAheadEntries.length)
             }else if(inputFieldArray.length>0 && typeAheadEntries.length>0 && 
-                      typeAheadEntries.length < inputFieldArray.length) {
+              typeAheadEntries.length < inputFieldArray.length) {
               do {
                 while (typeaheadCount < typeAheadEntries.length) {
-                        inputFieldArray[inputfieldCount].content = this.checkDataType(inputFieldArray[inputfieldCount].datatype, typeAheadEntries[typeaheadCount].value);
-                        typeAheadEntries[typeaheadCount].active = false;
-                        const input = new InputField();
-                        input.setName(inputFieldArray[inputfieldCount].name);
-                        input.setValue(inputFieldArray[inputfieldCount].content);
-                        this.navigationService.setSendableField(input);
-                        inputfieldCount++;
-                        typeaheadCount++;
-                    } 
-                    inputfieldCount++;
-                } while (inputfieldCount < inputFieldArray.length) 
+                  inputFieldArray[inputfieldCount].content = this.checkDataType(inputFieldArray[inputfieldCount].datatype, typeAheadEntries[typeaheadCount].value);
+                  typeAheadEntries[typeaheadCount].active = false;
+                  const input = new InputField();
+                  input.setName(inputFieldArray[inputfieldCount].name);
+                  input.setValue(inputFieldArray[inputfieldCount].content);
+                  this.navigationService.setSendableField(input);
+                  inputfieldCount++;
+                  typeaheadCount++;
+                }
+                inputfieldCount++;
+              } while (inputfieldCount < inputFieldArray.length)
             }
             currentPage.visited = true;
             this.getCursorLocation(screen, inputFieldArray, typeAheadEntries);
@@ -286,7 +284,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
             } else if (!currentPage.nextPage && currentPage.funcKey) {
               //this.screenLockerService.setLocked(false);
               // this.screenLockerService.setScreenIdUpdated(true);
-               this.screenLockerService.setShowScreenSpinner(false);
+              this.screenLockerService.setShowScreenSpinner(false);
               // this.screenLockerService.setScreenSpinnerHandler(null);
               this.navigationService.sendKeys(currentPage.funcKey)
             }
@@ -296,8 +294,8 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
         if(this.navigationService.isScreenUpdated.value){
           this.navigationService.isScreenUpdated.next(true);
         }
-      } 
-     }
+      }
+    }
   }
 
   checkDataType(fieldDataType, data){
@@ -333,9 +331,9 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   }
 
   getCursorLocation(screen, inputFieldArray, typeAheadEntries){
-      let typeAheadArrayLength = typeAheadEntries.length;
-      let textboxArrayLength = inputFieldArray.length;
-      let focusIndex = 0;
+    let typeAheadArrayLength = typeAheadEntries.length;
+    let textboxArrayLength = inputFieldArray.length;
+    let focusIndex = 0;
       if (textboxArrayLength>typeAheadArrayLength){
         focusIndex = GXUtils.getImplicitFlag()?typeAheadArrayLength-1:typeAheadArrayLength;
       }else if(textboxArrayLength==typeAheadArrayLength){
@@ -343,11 +341,11 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       }else if (textboxArrayLength<typeAheadArrayLength){
         let totalFocusIndex = GXUtils.getImplicitFlag()?typeAheadArrayLength-1:typeAheadArrayLength;
         focusIndex = totalFocusIndex%textboxArrayLength;
-      }
+    }
       if(textboxArrayLength>0){
-        screen.cursor.fieldName = inputFieldArray[focusIndex].name;
-        screen.cursor.position = inputFieldArray[focusIndex].position;
-      }
+      screen.cursor.fieldName = inputFieldArray[focusIndex].name;
+      screen.cursor.position = inputFieldArray[focusIndex].position;
+    }
   }
 
   private checkForTypeAheadChars(){
@@ -359,7 +357,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     }
     let typeAheadStringArray = GXUtils.getTypeAheadStringArray();
     if (typeAheadStringArray.length > 0){
-      GXUtils.appendTypeAheadPageArray();  
+      GXUtils.appendTypeAheadPageArray();
     }
   }
 
@@ -368,7 +366,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       if(entry){
         return entry.protected == false ;
       }
-    }); 
+    });
   }
 
   private redirectToRoute(screenName: string): void {
@@ -377,15 +375,15 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
        * This is a workaround, when getting to generated page window we should send
        * another getScreen request with the 'GX_VAR_HOST_WINDOW_ENABLED' baseObjectConstant
        * set to 'true'.
-       */    
+       */
       const req = new GetScreenRequest();
       req.options.GX_VAR_HOST_WINDOW_ENABLED = 'true';
       this.screenService
-       .getScreen(this.storageService.getAuthToken(), req)
-       .subscribe(
-         screen => this.screenHolderService.setRuntimeScreen(screen),
-         error => this.logger.error(error),
-         () => this.redirect(screenName));
+        .getScreen(this.storageService.getAuthToken(), req)
+        .subscribe(
+          screen => this.screenHolderService.setRuntimeScreen(screen),
+          error => this.logger.error(error),
+          () => this.redirect(screenName));
     } else {
       this.redirect(screenName);
     }
@@ -405,7 +403,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     screen.transformations.forEach((transform) => {
       if (transform.type.startsWith('HostKey'))
         this.hostKeyTransforms.push(transform);
-      else if (transform.type.startsWith('Table')) 
+      else if (transform.type.startsWith('Table'))
         this.screenProcessorService.processTable(screen.fields, screen.transformations || [], transform);
     });
     this.screenWidthArray = new Array(screen.screenSize.columns);
@@ -425,27 +423,27 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
    * Get Index of Screen Type
    */
   addOrRemoveBorder(m_screen: any) {
-  let windowTitles = false;
-  m_screen.windows?.forEach(win => {
+    let windowTitles = false;
+    m_screen.windows?.forEach(win => {
     if(win?.title === 'ADDITIONAL OPTIONS' || win?.title === 'SECURITY NOTES' || win?.title === ' Help for SYSEXT Utility ') {
-      windowTitles = true;
-    }
-  })
+        windowTitles = true;
+      }
+    })
 
-  m_screen?.fields.forEach((field: any, i: number) => {
+    m_screen?.fields.forEach((field: any, i: number) => {
     if(field?.isIntensified === true || field?.background === 'LightRed') {
-      this.intensifiedScr = true;
+        this.intensifiedScr = true;
     } else if(windowTitles) {
-      this.intensifiedScr = false;
-    }
-  })
-}
+        this.intensifiedScr = false;
+      }
+    })
+  }
 
   /*
    * Find fields (like messageLine) which are out of child-window bounds. their position is in main screen.
    * Shift these fields to the main screen.
   */
-   private shiftFieldsToMainWindow(screen: GetScreenResponse): void {
+  private shiftFieldsToMainWindow(screen: GetScreenResponse): void {
     const lastWindowIndex = screen.windows.length - 1;
     const windowBounds = screen.windows[lastWindowIndex].bounds;
     const mainScreenFields = new Map<string, number>();
@@ -469,18 +467,18 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     // NEED TO FIX TABLE ITEMS POSITION AND MAYBE OTHER TRANSFORMATIONS
     screen.fields.forEach((field, i, fields) => {
       if (this.isFieldOutOfBounds(field, windowBounds)) {
-            const index = mainScreenFields.get(this.fieldToString(field));
-            if (!isNaN(index)) {
-              this.m_screen.fields[index] = null;
+        const index = mainScreenFields.get(this.fieldToString(field));
+        if (!isNaN(index)) {
+          this.m_screen.fields[index] = null;
               prevScreenFieldsArray.forEach((entry, prevIndex) =>{
-                let selectedIndex = currentScreenFieldsArray.map(e => e.key).indexOf(entry.key);
+            let selectedIndex = currentScreenFieldsArray.map(e => e.key).indexOf(entry.key);
                 if ( selectedIndex == -1){
-                  this.m_screen.fields[prevIndex] = null;
-                }
-              })
+              this.m_screen.fields[prevIndex] = null;
             }
-            this.m_screen.fields.push(field);
-            fields[i] = null;
+          })
+        }
+        this.m_screen.fields.push(field);
+        fields[i] = null;
       } else {
         const fld = fields[i];
         fld.positionInWindow = {row: fld.position.row - windowBounds.startRow + 1,  
@@ -488,26 +486,26 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       }
     });
     if (currentWindowName != GXUtils.nationalityWin) {
-          screen.transformations.forEach((transform) => {
+      screen.transformations.forEach((transform) => {
             if(transform.position){    
                 transform.position = {row: transform.position.row - windowBounds.startRow + 1, 
                                       column: transform.position.column - windowBounds.startCol +1};
-            }  
-            transform.regionsToHide?.forEach(region => {
-              region.topLeft.row = 0;
-              region.topLeft.column = 0;
-              region.bottomRight.row = 0;
-              region.bottomRight.column = 0;
-              transform.regionsToHide.push(region);
+        }
+        transform.regionsToHide?.forEach(region => {
+          region.topLeft.row = 0;
+          region.topLeft.column = 0;
+          region.bottomRight.row = 0;
+          region.bottomRight.column = 0;
+          transform.regionsToHide.push(region);
         });
-        });
-}
-   }
-  
+      });
+    }
+  }
+
   private isFieldOutOfBounds(field: Field, bounds: ScreenBounds): boolean {
-    return field.position.row < bounds.startRow || 
-            field.position.row > bounds.endRow || 
-            field.position.column < bounds.startCol ||  
+    return field.position.row < bounds.startRow ||
+      field.position.row > bounds.endRow ||
+      field.position.column < bounds.startCol ||
            (field.position.column+field.length > bounds.endCol+1)
   }
 
@@ -521,10 +519,10 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   hasChildWindows(): boolean {
     return (this.childWindows && this.childWindows.length > 0);
   }
-  
+
   get titlePosition() {
     const template = {
-      'grid-row': '1 / 1', 
+      'grid-row': '1 / 1',
     }
     template['grid-column-start'] = Math.round(this.m_screen.windows[this.index].bounds.cols/2 - this.m_screen.windows[this.index].title.length/2);
     template['grid-column-end'] = Math.round(this.m_screen.windows[this.index].bounds.cols/2 - this.m_screen.windows[this.index].title.length/2 + this.m_screen.windows[this.index].title.length);
