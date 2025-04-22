@@ -58,6 +58,9 @@
 	--gx-intf: 0 0.025em 0 black, 0.025em 0 0 black;
 	--text-shadow-gx-lrd-intf: 0 0.025em 0 #AF272F, 0.025em 0 0 #AF272F;
 	--text-shadow-gx-lwt-gx-intf: 0 0.025em 0 black, 0.025em 0 0 black;
+	--text-hyperlink-color: navy;
+	--text-hyperlink-hover-bgcolor: navy;
+	--text-hyperlink-hover-color: white;
 }
 
 html,
@@ -363,12 +366,12 @@ tbody .gx_tbl_alternating1 {
 
 /* menu*/
 .gx_menu {
-	color: navy;
+	color: var(--text-hyperlink-color);
 }
 
 .gx_menu:hover {
-	color: white;
-	background-color: navy;
+	color: var(--text-hyperlink-hover-color);
+	background-color: var(--text-hyperlink-hover-bgcolor);
 }
 
 /* title */

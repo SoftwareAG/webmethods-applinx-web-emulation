@@ -707,6 +707,9 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
     document.documentElement.style.setProperty('--gx-intf', this.themecolorConfig[color]['gx-intf']);
     document.documentElement.style.setProperty('--text-shadow-gx-lrd-intf', this.themecolorConfig[color]['text-shadow-gx-lrd-intf']);
     document.documentElement.style.setProperty('--text-shadow-gx-lwt-gx-intf', this.themecolorConfig[color]['text-shadow-gx-lwt-gx-intf']);
+    document.documentElement.style.setProperty('--text-hyperlink-color', this.themecolorConfig[color]['text-hyperlink-color']);
+    document.documentElement.style.setProperty('--text-hyperlink-hover-bgcolor', this.themecolorConfig[color]['text-hyperlink-hover-bgcolor']);
+    document.documentElement.style.setProperty('--text-hyperlink-hover-color', this.themecolorConfig[color]['text-hyperlink-hover-color']);
   }
 
   setDefaultZoom() {
