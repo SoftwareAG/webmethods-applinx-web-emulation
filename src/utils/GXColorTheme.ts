@@ -137,7 +137,7 @@ export enum WhiteTheme {
   'table-header-border-color-top' = '#d4f0f7',
   'table-header-border-color-bottom' = '#d4f0f7',
   'table-header-text-color' = 'white',
-  'table-body-border-color' = '#d4f0f7',
+  'table-body-border-color' = '#006d93',
   'table-body-alternating1' = 'white',
   'table-body-alternating2' = '#d4f0f7',
   'table-body-text-color' = '#006d93',

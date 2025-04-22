@@ -917,18 +917,7 @@ ol, ul {
     background-color: #1776bf !important;
     color: #ffffff !important;
 }
-.cds--data-table--zebra tbody tr:not(.cds--parent-row):not(.cds--data-table--selected) {
-    background-color: var(--table-body-alternating1) !important;
-    color: var(--table-body-text-color) !important;
-}
 
-.cds--data-table--zebra tbody tr:nth-child(even):not(.cds--parent-row):not(.cds--data-table--selected) {
-    background-color: var(--table-body-alternating2) !important; /* Ensure different alternating color */
-}
-
-.cds--data-table td, .cds--data-table tbody th {
-    color: var(--table-body-text-color) !important;
-}
 .cds--dropdown {
     border: 1px solid var(--cds-border-strong) !important;
 }
@@ -941,17 +930,6 @@ ol, ul {
 .cds--text-input {
     font-size: inherit !important;
 }
-
-/* Start - Table header font size and line height override*/
-.cds--data-table thead {
-    font-size: calc(var(--text-font-size)) !important;
-    line-height: calc(var(--text-font-size)) !important;
-}
-.cds--data-table tbody {
-    font-size: calc(var(--text-font-size)) !important;
-    line-height: calc(var(--text-font-size)) !important;
-}
-/*End - Table header font size and line height override*/
 
 /*Start - Table dropdown font size and line height override*/
 .cds--list-box__label {
@@ -968,15 +946,6 @@ ol, ul {
 }
 /*End - Table dropdown font size and line height override*/
 
-// tbody, td, tfoot, th, thead, tr {
-//     height: calc(var(--text-font-size) + 4px) !important
-// }
-/*Removing padding lefta nd right from table coloumn dropdown.*/
-.cds--data-table td, .cds--data-table tbody th {
-   // padding-inline: 1rem 1rem !important;
-    padding-inline: 0rem 0rem !important;
-}
-
 /*Removing padding frpm text and caret icon from dropdown*/
 .cds--list-box__field {
     padding-inline: 1rem 3rem !important;
@@ -986,3 +955,43 @@ ol, ul {
 .flexField > span {
     font-size: var(--text-font-size) !important;
 }
+
+
+/* Angular Carbon Design Custom setting - Start */
+
+//  Start - Table header font size and line height override
+// .cds--data-table thead {
+//     font-size: calc(var(--text-font-size)) !important;
+//     line-height: calc(var(--text-font-size)) !important;
+// }
+// .cds--data-table tbody {
+//     font-size: calc(var(--text-font-size)) !important;
+//     line-height: calc(var(--text-font-size)) !important;
+// }
+// // End - Table header font size and line height override
+// tbody, td, tfoot, th, thead, tr {
+//     height: calc(var(--text-font-size) + 4px) !important
+// }
+// // Removing padding lefta nd right from table coloumn dropdown.
+// .cds--data-table td, .cds--data-table tbody th {
+// 	// padding-inline: 1rem 1rem !important;
+// 	 padding-inline: 0rem 0rem !important;
+//  }
+//  .cds--data-table--zebra tbody tr:not(.cds--parent-row):not(.cds--data-table--selected) {
+//     background-color: var(--table-body-alternating1) !important;
+//     color: var(--table-body-text-color) !important;
+// }
+
+// .cds--data-table--zebra tbody tr:nth-child(even):not(.cds--parent-row):not(.cds--data-table--selected) {
+//     background-color: var(--table-body-alternating2) !important; /* Ensure different alternating color */
+// }
+
+// .cds--data-table td, .cds--data-table tbody th {
+//     color: var(--table-body-text-color) !important;
+// }
+// .cds--data-table tbody tr:hover td, .cds--data-table tbody tr:hover th {
+//     border-block-end: inherit !important;
+//     border-block-start: inherit !important;
+//     color: inherit !important;
+// }
+/* Angular Carbon Design Custom setting - End */
