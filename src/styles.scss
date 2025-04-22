@@ -941,8 +941,8 @@ ol, ul {
     line-height: calc(var(--text-font-size)) !important;
 }
 .cds--dropdown {
-    // height: calc(var(--text-font-size) + 4px) !important;
-    height: 30px !important;
+    height: calc(var(--text-font-size) + 13px) !important;
+    // height: 30px !important;
 }
 /*End - Table dropdown font size and line height override*/
 
