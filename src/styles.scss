@@ -948,14 +948,39 @@ ol, ul {
 
 /*Removing padding frpm text and caret icon from dropdown*/
 .cds--list-box__field {
-    padding-inline: 1rem 3rem !important;
-    // padding-inline: 1rem 2rem !important;
+    // padding-inline: 1rem 3rem !important;
+    padding-inline: 1rem 2rem !important;
 }
 
 .flexField > span {
     font-size: var(--text-font-size) !important;
 }
 
+// Datepicker - start
+//font
+.cds--date-picker__input {
+  font-size: calc(var(--text-font-size)) !important;
+}
+
+//width
+.cds--date-picker.cds--date-picker--single .cds--date-picker__input {
+    inline-size: 12rem; 
+}
+// inline padding
+.cds--date-picker__input--sm {
+    block-size: 1.3rem; 
+}
+// Datepicker  - end
+
+// Radio button - start
+.cds--radio-button-wrapper .cds--radio-button__label {
+    font-size: calc(var(--text-font-size));
+}
+.cds--radio-button__appearance {
+    block-size: calc(var(--text-font-size)) !important;
+    inline-size: calc(var(--text-font-size)) !important;
+}
+// Radio button - end
 
 /* Angular Carbon Design Custom setting - Start */
 
