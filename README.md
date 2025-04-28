@@ -289,7 +289,3 @@ Example two (using arrow function):
 
 **Note**: Additional information can be found in ApplinX documentation.
 From the top-level ApplinX User Guide screen, choose Reference > Web Application Development > API References > Client Side (JavaScript) > Keyboard Mapping.
-
-_________________
-
-These tools are provided as-is and without warranty or support. They do not constitute part of the Software AG product suite. Users are free to use, fork and modify them, subject to the license agreement. While Software AG welcomes contributions, we cannot guarantee to include every contribution in the master project.
