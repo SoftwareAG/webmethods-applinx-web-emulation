@@ -95,7 +95,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
               private keyboardMappingService: KeyboardMappingService, private userExitsEventThrower: UserExitsEventThrowerService,
               private ref: ElementRef, private router: Router, private screenHolderService: ScreenHolderService,
               private logger: NGXLogger, private messages: MessagesService,         
-              private screenProcessorService: ScreenProcessorService, private screenLockerService: ScreenLockerService,
+              private screenProcessorService: ScreenProcessorService, public screenLockerService: ScreenLockerService,
               private sharedService: SharedService,) {}
               
   ngAfterViewInit(): void {

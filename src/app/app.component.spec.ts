@@ -22,13 +22,14 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { ScreenLockerService } from 'src/app/services/screen-locker.service'
 import { DatePipe } from '@angular/common';
-import { LoggerConfig } from 'ngx-logger'
+import { INGXLoggerConfig, NGXLogger } from 'ngx-logger';
 import { MessagesService } from 'src/app/services/messages.service'
 import { IJSFunctionService } from 'src/common/js-functions/ijs-functions.service'
 import { JSFunctionsService } from 'src/common/js-functions/js-functions.service'
 import { StorageService } from 'src/app/services/storage.service';
 import { LifecycleUserExits } from 'src/app/user-exits/LifecycleUserExits';
 import { UserExitsEventThrowerService } from './services/user-exits-event-thrower.service';
+import { IconService, ModalService, PlaceholderService } from 'carbon-components-angular';
 
 describe('AppComponent', () => {
 	
@@ -52,7 +53,10 @@ describe('AppComponent', () => {
 		UserExitsEventThrowerService,
 		LifecycleUserExits,	
 		InfoService,
-    {provide: LoggerConfig, useClass: class {}},
+    ModalService,
+    PlaceholderService ,
+    IconService,
+    {provide: NGXLogger, useValue:  {getConfigSnapshot:()=>({})}},
 		{provide: 'IJSFunctionService', useClass: JSFunctionsService}
 		
 	  ]
