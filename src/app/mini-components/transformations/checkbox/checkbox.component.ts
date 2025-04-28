@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Software AG
+ * Copyright IBM Corp. 2024, 2025
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import {NavigationService} from '../../../services/navigation/navigation.service
 @Component({
   selector: 'app-checkbox',
   templateUrl: './checkbox.component.html',
-  styleUrls: ['./checkbox.component.css']
+  styleUrls: ['./checkbox.component.scss']
 })
 export class CheckboxComponent implements OnChanges {
 
@@ -39,7 +39,8 @@ export class CheckboxComponent implements OnChanges {
   }
 
   onSelect(event: any): void {
-    if (event.target.checked) {
+    console.log("@onSelect : ", event)
+    if (event) {
       this.inputField.setValue(this.transform.checkedValue);
     } else {
       this.inputField.setValue(this.transform.uncheckedValue);

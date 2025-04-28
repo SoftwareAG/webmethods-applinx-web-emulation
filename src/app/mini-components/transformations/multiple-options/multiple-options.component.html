@@ -1,20 +1,19 @@
-<select (focus)="onFocus()" *ngIf="transform.multipleOptionsType === 'Combobox'" (change)="onSelect($event.target.value)" [ngClass]="transform.style"
-        [ngStyle]="{'grid-row-start': transform.position.row, 'grid-column-start': transform.position.column,
+<cds-dropdown (focus)="onFocus()" *ngIf="transform.multipleOptionsType === 'Combobox'"
+  (selected)="onSelect($event.item.value)"
+  [ngStyle]="{'grid-row-start': transform.position.row, 'grid-column-start': transform.position.column,
                          'grid-column-end': (transform.position.column+getLongestString(getItemsKeys(transform.items))), 'position': 'relative'}">
-  <option *ngFor="let item of transform.items; index as i" value="{{item.value}}" [selected]="item.value.trim() === transform.field.content.trim()">{{item.key}}</option>
-</select>
+  <cds-dropdown-list [items]="entries"></cds-dropdown-list>
+</cds-dropdown>
 
-<div *ngIf="transform.multipleOptionsType === 'Radio Buttons'" class="dlt-radio-button-group sm-radio radioButtons" [ngStyle]="{'grid-row-start': transform.position.row, 'grid-column-start': transform.position.column, 'grid-column-end': transform.position.column+2}" [ngClass]="transform.style">
-  <div *ngFor="let item of transform.items; index as i" class="dlt-radio-button">
-    <input [ngStyle]="{'grid-row-start': transform.position.row, 'grid-column-start': transform.position.column+i}" 
-            type="radio" 
-            [id]="'radio-' + i" 
-            name="radio-small" 
-            value="{{item.value}}" 
-            (change)="onSelect($event.target.value)"
-            (focus)="onFocus($event.target)">
-    <label [for]="'radio-' + i">{{item.key}}</label>
-  </div>
+<div *ngIf="transform.multipleOptionsType === 'Radio Buttons'" class="sm-radio radioButtons"
+  [ngStyle]="{'grid-row-start': transform.position.row, 'grid-column-start': transform.position.column, 'grid-column-end': transform.position.column+2}"
+  [ngClass]="transform.style">
+  <cds-radio-group>
+    <cds-radio *ngFor="let item of transform.items; index as i" [value]="item.value"
+      [id]="'radio-' + transform.position.row +'-'+ item.value" (change)="onSelect($event.source.value)">
+      {{item.key}}
+    </cds-radio>
+  </cds-radio-group>
 </div>
 
 <app-text *ngIf="transform.leadingLabel" [transform]="transform.leadingLabel"></app-text>

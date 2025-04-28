@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Software AG
+ * Copyright IBM Corp. 2024, 2025
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ enum GXDataTypes {
 @Component({
   selector: 'app-input-field',
   templateUrl: './input-field.component.html',
-  styleUrls: ['./input-field.component.css']
+  styleUrls: ['./input-field.component.scss']
 })
 export class InputFieldComponent implements OnChanges, OnInit, OnDestroy {
 
@@ -116,9 +116,12 @@ export class InputFieldComponent implements OnChanges, OnInit, OnDestroy {
 
     if (this.field.foreground || field.fgColor) {
       this.fgClass = GXUtils.getFgCssClass(this.field.foreground ? this.field.foreground : field.fgColor, this.field.isIntensified ? this.field.isIntensified : field.highIntensified);
+      // console.log("@@@@@@@@@@@@@@ fgClass = ", this.fgClass);
     }
     if (this.field.background || field.bgColor) {
       this.bgClass = GXUtils.getBgCssClass(this.field.background ? this.field.background : field.bgColor);
+      // console.log("############## bgClass = ", this.bgClass);
+
     }
   }
 
@@ -190,6 +193,7 @@ export class InputFieldComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   getCss() {
+    // console.log("this.field.style : ", this.field.style)
     return this.doms.bypassSecurityTrustStyle(this.field.style ?? '');
   }
 

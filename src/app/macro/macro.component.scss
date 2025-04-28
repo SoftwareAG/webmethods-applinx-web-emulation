@@ -144,3 +144,77 @@ li {
   .mat-form-field {
     display: inherit !important;
   }
+
+  .macroPopUpSize{
+    width: 40em;
+    height: 20em;
+  }
+
+.custom-border{
+  border-style: groove;
+  border-width: 2px;
+  border-radius: 5px;
+  background-color: lightgrey;
+  padding: 10px;
+  margin-left: 4%;
+  margin-right: 4%;
+  margin-bottom: 4%;
+}
+
+.cds--modal-content{
+  padding-bottom: 45px;
+}
+
+.custom-margin{
+  padding-left: 4%;
+  padding-right: 4%;
+}
+
+.span-margin{
+  margin-top: 4%;
+}
+
+// button{
+//   display: flex;               /* Use flexbox for alignment */
+//     justify-content: center;     /* Center horizontally */
+//     align-items: center;         /* Center vertically */
+    // height: 60px;                /* Set a fixed height */
+    // width: 210px;                /* Set a fixed width */
+//     padding: 0;    
+// }
+
+.Macrobutton {
+	display: flex;                  /* Use flexbox for alignment */
+	justify-content: center;        /* Center horizontally */
+	align-items: center !important; /* Center vertically */
+	// height: 60px;                /* Set a fixed height */
+	width: 8rem;                    /* Set a fixed width */
+	padding: 0;
+	font-size: large;
+	font-style: oblique;
+	font-variant: normal;
+  padding-block: 0px !important;
+  }
+
+  .mandatory{
+    color: #393939;
+    padding: 0 0.05rem;
+    font-size: 14px;
+  }
+  .model-border{
+    background: rgba(95, 89, 89, 0.3882352941);
+    padding: 0px 0.75rem;
+    margin-block-end: 0rem;
+    padding-block-start: 0rem;
+    padding-inline: 0rem;
+  }
+  .cds--modal-header__heading{
+    font-weight: var(--cds-heading-03-font-weight, 700);
+  }
+  .label-size {
+    font-size: var(--cds-label-01-font-size, 0.95rem) !important;
+  }
+  .alert-msg {
+    color: red;
+    padding: 0 0.25rem;
+  }

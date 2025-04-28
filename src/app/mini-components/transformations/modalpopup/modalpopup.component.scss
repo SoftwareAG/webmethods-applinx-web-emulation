@@ -1,0 +1,31 @@
+// #pop-up-print-icon {
+// display: flex;
+// }
+
+div.modal-footer {
+    justify-content: space-between;
+}
+
+.mat-mdc-dialog-actions {
+    padding: 0;
+    min-height: 0;
+}
+
+.copyBtnSize {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    font-size: large !important;
+    font-style: oblique;
+    font-variant: normal;
+    margin: auto;
+}
+
+.modal-footer{
+    padding: 0px !important;
+}
+footer.cds--modal-footer{
+    display: block !important;
+}

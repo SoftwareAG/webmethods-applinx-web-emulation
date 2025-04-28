@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Software AG
+ * Copyright IBM Corp. 2024, 2025
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,15 +12,15 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
-import {Component, Input, OnInit} from '@angular/core';
-import {NavigationService} from '../../services/navigation/navigation.service';
-import {HostKeyTransformation} from '@softwareag/applinx-rest-apis';
+ */
+import { Component, Input, OnInit } from '@angular/core';
+import { NavigationService } from '../../services/navigation/navigation.service';
+import { HostKeyTransformation } from '@softwareag/applinx-rest-apis';
 
 @Component({
   selector: 'app-host-keys-template',
   templateUrl: './host-keys-template.component.html',
-  styleUrls: ['./host-keys-template.component.css']
+  styleUrls: ['./host-keys-template.component.scss']
 })
 export class HostKeysTemplateComponent implements OnInit {
 
@@ -29,7 +29,10 @@ export class HostKeysTemplateComponent implements OnInit {
   @Input() multipleHostKeys: boolean;
 
   constructor(public navigationService: NavigationService) { }
-
+  align: string = "left";
+  isOpen: boolean = false;
+  caret: boolean = true;
+  highContrast: boolean = false;
   ngOnInit(): void {
   }
 

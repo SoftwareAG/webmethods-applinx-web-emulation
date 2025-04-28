@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Software AG
+ * Copyright IBM Corp. 2024, 2025
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import {NavigationService} from '../../../services/navigation/navigation.service
 @Component({
   selector: 'app-clickable',
   templateUrl: './clickable.component.html',
-  styleUrls: ['./clickable.component.css']
+  styleUrls: ['./clickable.component.scss']
 })
 export class ClickableComponent implements OnInit {
 
@@ -30,6 +30,7 @@ export class ClickableComponent implements OnInit {
   constructor(private navigationService: NavigationService) { }
 
   ngOnInit(): void {
+    console.log(this.transform)
   }
 
   onClick(): void {

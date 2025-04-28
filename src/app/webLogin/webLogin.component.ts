@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Software AG
+ * Copyright IBM Corp. 2024, 2025
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ declare var $: any;
 @Component({
   selector: 'app-login',
   templateUrl: './webLogin.component.html',
-  styleUrls: ['./webLogin.component.css']
+  styleUrls: ['./webLogin.component.scss']
 })
 export class WebLoginComponent implements OnInit {
 
@@ -45,6 +45,7 @@ export class WebLoginComponent implements OnInit {
   errorMessage: string;
   version: string;
   autoLoginSubscription: Subscription;
+  theme = "light";
 
   constructor(private sessionService: SessionService, private infoService: InfoService, 
     private storageService: StorageService, private keyboardMappingService: KeyboardMappingService,

@@ -12,19 +12,10 @@
 
 .multiplehostKeysContainer {
   z-index: 0;
-  margin:0;
+  margin: 0;
   display: flex;
   flex-direction: column;
   height: 65vh;
-}
-
-/* .on-hover:hover, .on-hover:focus{
-  color: #1776bf;
-} */
-
-button.dlt-button {
-  margin-bottom: 10px;
-  border-radius: 7px;
 }
 
 .green_enter {
@@ -45,4 +36,25 @@ button.dlt-button {
   color: lime !important;
   border: unset !important;
   outline: unset !important;
+}
+
+button {
+  display: flex;                  /* Use flexbox for alignment */
+  justify-content: center; 
+  text-align: center;             /* Center horizontally */
+  align-items: center;            /* Center vertically */
+  // height: 60px;                /* Set a fixed height */
+  width: 8rem;                    /* Set a fixed width */
+  padding: 0;
+  font-size: smaller !important;
+  font-style: oblique;
+  font-variant: normal;
+}
+
+.overflowText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100px;
+  display: inline-block;
 }

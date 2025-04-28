@@ -1,4 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@use "@carbon/styles";
+
 :root {
 	--border-color: white;
 	--color-theme: white;
@@ -56,6 +58,9 @@
 	--gx-intf: 0 0.025em 0 black, 0.025em 0 0 black;
 	--text-shadow-gx-lrd-intf: 0 0.025em 0 #AF272F, 0.025em 0 0 #AF272F;
 	--text-shadow-gx-lwt-gx-intf: 0 0.025em 0 black, 0.025em 0 0 black;
+	--text-hyperlink-color: navy;
+	--text-hyperlink-hover-bgcolor: navy;
+	--text-hyperlink-hover-color: white;
 }
 
 html,
@@ -69,7 +74,6 @@ body {
 	background-color: white;
 }
 
-
 .datepicker-container {
 	min-width: 240px;
 }
@@ -78,10 +82,6 @@ body {
 	color: white !important;
 	border: 1px solid !important;
 	margin-left: 6px !important;
-}
-
-.dlt-button {
-	display: inline-block !important;
 }
 
 input[type="month"]::-webkit-calendar-picker-indicator:hover,
@@ -129,44 +129,17 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 #gx_screenArea button {
 	font-size: var(--text-font-size);
-	border-radius: 7px;
-}
-
-.dlt-button-secondary {
-	background-color: var(--btn-regular-color);
-	color: var(--primary-color);
-	outline: var(--btn-regular-color);
-	border-color: var(--btn-regular-color);
-}
-
-#gx_screenArea button:hover {
-	background-color: var(--btn-hover-color-screen);
-	color: var(--screen-btn-text-color);
-	outline: var(--btn-outline-color);
-	border-color: var(--btn-outline-color);
-}
-
-.hostKeysContainer #enter.dlt-button-primary:hover {
-	background-color: var(--enter-btn-hover-color);
-	color: var(--enter-btn-text-hover-color);
-	outline: var(--btn-outline-color);
-	border-color: var(--btn-outline-color);
-
+	// border-radius: 7px;
 }
 
 
-.dlt-button-primary:hover,
-.dlt-button-secondary:hover {
-	background-color: var(--btn-hover-color);
-}
 
-#gx_screenArea .dlt-button-primary {
-	background-color: var(--screen-btn-color);
-	color: var(--screen-btn-text-color);
-	outline: var(--screen-btn-color);
-	border-color: var(--screen-btn-color);
-}
-
+// #gx_screenArea button:hover {
+// 	background-color: var(--btn-hover-color-screen);
+// 	// color: var(--screen-btn-text-color);
+// 	outline: var(--btn-outline-color);
+// 	border-color: var(--btn-outline-color);
+// }
 
 .noGridItem {
 	min-width: 0;
@@ -327,7 +300,7 @@ a.gx_hky:hover {
 
 /* table */
 #gx_screenArea .gx_tbl {
-	border-bottom: var(--table-body-border-color)1px solid;
+	border-bottom: var(--table-body-border-color) 2px solid;
 	text-shadow: var(--table-text-shadow);
 }
 
@@ -345,7 +318,7 @@ a.gx_hky:hover {
 
 /* 2nd alternating table row */
 .gx_tbl_alternating2 {
-	background-color: var(--table-body-alternating2);
+	background-color: var(--table-body-alternating2) !important;
 }
 
 tbody .gx_tbl_alternating2 {
@@ -393,12 +366,12 @@ tbody .gx_tbl_alternating1 {
 
 /* menu*/
 .gx_menu {
-	color: navy;
+	color: var(--text-hyperlink-color);
 }
 
 .gx_menu:hover {
-	color: white;
-	background-color: navy;
+	color: var(--text-hyperlink-hover-color);
+	background-color: var(--text-hyperlink-hover-bgcolor);
 }
 
 /* title */
@@ -406,6 +379,10 @@ tbody .gx_tbl_alternating1 {
 	color: gray;
 	font-weight: bold;
 	font-size: large;
+}
+
+.gx_errorMessage{
+    color: red
 }
 
 /* blinking caret */
@@ -576,12 +553,6 @@ div[name='Login']#gx_screenArea input.gx_intf {
 	text-shadow: var(--text-shadow-gx-lrd-intf);
 }
 
-input.dlt-date-picker {
-	color: #CE5F68 !important;
-	border-bottom-color: #CE5F68 !important;
-
-}
-
 /* light purple */
 .gx_lppl,
 a.gx_lppl:link,
@@ -741,18 +712,6 @@ input.gx_usr {}
 	margin-bottom: 10px;
 }
 
-.hostKeysContainer #on-hover.dlt-button-secondary:hover {
-	background-color: var(--btn-hover-color);
-	outline: var(--btn-outline-color);
-	border-color: var(--btn-outline-color);
-}
-
-.multiplehostKeysContainer #on-hover.dlt-button-secondary:hover {
-	background-color: var(--btn-hover-color);
-	outline: var(--btn-outline-color);
-	border-color: var(--btn-outline-color);
-}
-
 app-host-keys-btns app-host-keys-template .hostKeysContainer {
 	width: auto;
 }
@@ -778,9 +737,6 @@ div[name="Menu"]#gx_screenArea input.gx_intf {
 	color: var(--input-table-text-pw);
 }
 
-/* div[name="Menu"]#gx_screenArea .flexField.gx_intf {
-	padding-top: 5px;
-} */
 .copyTextCss {
 	font-family: "Courier New" !important;
 	font-size: 18px !important;
@@ -796,8 +752,8 @@ div[name="Menu"]#gx_screenArea input.gx_intf {
 
 .copyWrapper {
 	position: relative;
-	height: 90% !important;
-	width: 95% !important;
+	// height: 90% !important;
+	// width: 95% !important;
 	margin: 1.5rem;
 	border: 1px solid grey;
 	padding: 1rem;
@@ -812,10 +768,6 @@ div[name="Menu"]#gx_screenArea input.gx_intf {
 	font-size: small;
 	font-style: italic;
 	text-align: center;
-}
-
-.sm-radio .dlt-radio-button label {
-	color: var(--primary-text-color);
 }
 
 .crosshair {
@@ -842,22 +794,252 @@ div[name="Menu"]#gx_screenArea input.gx_intf {
 	padding-right: .65px;
 }
 
-/* .mat-mdc-slider .mdc-slider__track--active_fill {
-    border-color: white !important;
-    background-color: white !important;
-}
-
-.mat-mdc-slider .mdc-slider__thumb-knob {
-	border-color: white !important;
-    background-color: white !important;
-}
-
-.mat-mdc-menu-content{
-	padding: 0px !important;
-} */
-
-
 .mat-mdc-dialog-container .mdc-dialog__surface {
     width: auto !important;
     height: auto !important;
 }
+
+.button-corner{
+	margin-top: 7%;
+	width: auto;
+	border-radius: 7px;
+}
+.cds--overflow-menu, .cds--overflow-menu__trigger {
+    block-size: 3rem !important;
+    inline-size: 3rem !important;
+}
+.cds--overflow-menu-options--open {
+    width: max-content;
+	margin-left: -3px;
+	margin-top: 0.15rem;
+}
+.cds--overflow-menu-options::after {
+    background-color: transparent !important;
+}
+
+.cds--toast-notification {
+    position: absolute;
+    top: 5rem;
+    right: 1rem;
+}
+.cds--modal-footer .cds--btn {
+    flex: 0 1 50%;
+    align-items: baseline;
+    margin: 0;
+    block-size: 4rem;
+    max-inline-size: none;
+}
+[type=button], [type=reset], [type=submit], button {
+    -webkit-appearance: button;
+}
+.customButton {
+    display: flex;
+    justify-content: center;
+    width: 8rem;
+    padding: 0;
+    font-size: large !important;
+    font-style: oblique;
+    font-variant: normal;
+}
+.cds--toast-notification__details {
+    margin-inline-end: 0rem !important;
+}
+.cds--btn.cds--btn--icon-only.cds--header__action svg {
+    fill: var(--cds-icon-on-color, #525252) !important;
+}
+
+
+/* changes for customization css */
+ol, ul {
+    padding-left: 0px !important;
+}
+.cds--data-table--md td, .cds--data-table--md tbody tr th {
+    padding-block: 0 !important;
+}
+.cds--data-table--md.cds--data-table--sort th {
+    block-size: 0rem !important;
+}
+.cds--header__action--active {
+    background: transparent !important;
+    border-block-end: 0px solid transparent !important;
+    border-inline-end: 0px solid var(--cds-border-subtle) !important;
+    border-inline-start: 0px solid var(--cds-border-subtle) !important;
+}
+.cds--header__action:active, a.cds--header__menu-item:active {
+    background-color: transparent !important;
+}
+// .cds--btn--primary:focus {
+//     box-shadow: inset 0 0 0 0px var(--cds-button-focus-color, var(--cds-focus, #0f62fe)), inset 0 0 0 0px var(--cds-background, #ffffff) !important;
+// 	border-top: 2px;
+// }
+
+.cds--modal-container {
+    display: inline-table !important;
+}
+.custom-btn {
+    width: 100%;
+    border-radius: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    font-size: large !important;
+    font-style: oblique;
+    font-variant: normal;
+}
+
+.cds--tooltip {
+    --cds-popover-offset: 20px !important;
+}
+
+.cds--popover--open > .cds--popover > .cds--popover-content {
+    padding: 0.35rem 1rem;
+    border-radius: 5px;
+	color: black ;
+}
+.cds--list-box {
+	border-color: var(--table-body-select-border-color) !important;
+    background-color: var(--table-body-select-background-color) !important;
+}
+
+.cds--list-box__label {
+    color: var(--table-body-select-color) !important;
+}
+.cds--list-box__menu-item {
+    border-color: var(--table-body-select-border-color);
+    background-color: var(--table-body-select-background-color);
+    color: var(--table-body-select-color) !important;
+}
+.cds--list-box__menu-item__option {
+    color: inherit !important;
+}
+.cds--list-box__menu-item:hover {
+    background-color: #1776bf !important;
+    color: #ffffff !important;
+}
+
+.cds--dropdown {
+    border: 1px solid var(--cds-border-strong) !important;
+}
+// .cds--list-box__field {
+//     padding-inline: 1rem 1rem !important;
+// }
+.cds--list-box__menu-icon > svg {
+    fill: var(--table-body-select-color) !important;
+}
+.cds--text-input {
+    font-size: inherit !important;
+}
+
+/*Start - Table dropdown font size and line height override*/
+.cds--list-box__label {
+    font-size: calc(var(--text-font-size)) !important;
+    line-height: calc(var(--text-font-size)) !important;
+}
+.cds--list-box__menu-item {
+    font-size: calc(var(--text-font-size)) !important;
+    line-height: calc(var(--text-font-size)) !important;
+}
+.cds--dropdown {
+    height: calc(var(--text-font-size) + 13px) !important;
+    // height: 30px !important;
+}
+/*End - Table dropdown font size and line height override*/
+
+/*Removing padding frpm text and caret icon from dropdown*/
+.cds--list-box__field {
+    // padding-inline: 1rem 3rem !important;
+    padding-inline: 1rem 2rem !important;
+}
+
+.flexField > span {
+    font-size: var(--text-font-size) !important;
+}
+
+// Datepicker - start
+//font
+.cds--date-picker__input {
+  font-size: calc(var(--text-font-size)) !important;
+}
+
+//width
+.cds--date-picker.cds--date-picker--single .cds--date-picker__input {
+    inline-size: 12rem; 
+}
+// inline padding
+.cds--date-picker__input--sm {
+    block-size: 1.3rem; 
+}
+// Datepicker  - end
+
+// Radio button - start
+.cds--radio-button-wrapper .cds--radio-button__label {
+    font-size: calc(var(--text-font-size));
+}
+.cds--radio-button__appearance {
+    block-size: calc(var(--text-font-size)) !important;
+    inline-size: calc(var(--text-font-size)) !important;
+}
+// Radio button - end
+
+//check box - start
+// .cds--checkbox-label::before {
+//     block-size: calc(var(--text-font-size))!important;
+//     inline-size: calc(var(--text-font-size))!important;
+// 	background-color: white;
+// }
+// .cds--checkbox:checked + .cds--checkbox-label::after, .cds--checkbox-label[data-contained-checkbox-state=true]::after {
+//     transform: scale(1.3) rotate(-45deg) !important;
+// }
+
+// .cds--checkbox-label::after {
+//     inline-size: calc(var(--text-font-size)) !important;
+// 	color: white !important;
+// }
+.custom-checkbox{
+	width: calc(var(--text-font-size));
+    height: calc(var(--text-font-size));
+}
+// .cds--checkbox{
+// 	background-color: white !important;
+// }
+//check box - End
+
+/* Angular Carbon Design Custom setting - Start */
+
+//  Start - Table header font size and line height override
+// .cds--data-table thead {
+//     font-size: calc(var(--text-font-size)) !important;
+//     line-height: calc(var(--text-font-size)) !important;
+// }
+// .cds--data-table tbody {
+//     font-size: calc(var(--text-font-size)) !important;
+//     line-height: calc(var(--text-font-size)) !important;
+// }
+// // End - Table header font size and line height override
+// tbody, td, tfoot, th, thead, tr {
+//     height: calc(var(--text-font-size) + 4px) !important
+// }
+// // Removing padding lefta nd right from table coloumn dropdown.
+// .cds--data-table td, .cds--data-table tbody th {
+// 	// padding-inline: 1rem 1rem !important;
+// 	 padding-inline: 0rem 0rem !important;
+//  }
+//  .cds--data-table--zebra tbody tr:not(.cds--parent-row):not(.cds--data-table--selected) {
+//     background-color: var(--table-body-alternating1) !important;
+//     color: var(--table-body-text-color) !important;
+// }
+
+// .cds--data-table--zebra tbody tr:nth-child(even):not(.cds--parent-row):not(.cds--data-table--selected) {
+//     background-color: var(--table-body-alternating2) !important; /* Ensure different alternating color */
+// }
+
+// .cds--data-table td, .cds--data-table tbody th {
+//     color: var(--table-body-text-color) !important;
+// }
+// .cds--data-table tbody tr:hover td, .cds--data-table tbody tr:hover th {
+//     border-block-end: inherit !important;
+//     border-block-start: inherit !important;
+//     color: inherit !important;
+// }
+/* Angular Carbon Design Custom setting - End */
