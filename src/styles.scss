@@ -982,6 +982,29 @@ ol, ul {
 }
 // Radio button - end
 
+//check box - start
+// .cds--checkbox-label::before {
+//     block-size: calc(var(--text-font-size))!important;
+//     inline-size: calc(var(--text-font-size))!important;
+// 	background-color: white;
+// }
+// .cds--checkbox:checked + .cds--checkbox-label::after, .cds--checkbox-label[data-contained-checkbox-state=true]::after {
+//     transform: scale(1.3) rotate(-45deg) !important;
+// }
+
+// .cds--checkbox-label::after {
+//     inline-size: calc(var(--text-font-size)) !important;
+// 	color: white !important;
+// }
+.custom-checkbox{
+	width: calc(var(--text-font-size));
+    height: calc(var(--text-font-size));
+}
+// .cds--checkbox{
+// 	background-color: white !important;
+// }
+//check box - End
+
 /* Angular Carbon Design Custom setting - Start */
 
 //  Start - Table header font size and line height override
