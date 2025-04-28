@@ -20,7 +20,7 @@ import { WebLoginComponent } from './webLogin.component';
 import { ApiModule,SessionService } from '@softwareag/applinx-rest-apis';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
-import { LoggerConfig , NGXLogger } from 'ngx-logger';
+import { INGXLoggerConfig , NGXLogger } from 'ngx-logger';
 import { ScreenLockerService } from 'src/app/services/screen-locker.service'
 import { DatePipe } from '@angular/common';
 import { MessagesService } from 'src/app/services/messages.service'
@@ -43,7 +43,6 @@ describe('LoginComponent', () => {
 	  providers: [
 		SessionService,
 		NavigationService,
-		LoggerConfig,
 		NGXLogger,
 		ScreenLockerService,
 		DatePipe,

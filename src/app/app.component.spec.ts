@@ -22,7 +22,7 @@ import { NavigationService } from 'src/app/services/navigation/navigation.servic
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { ScreenLockerService } from 'src/app/services/screen-locker.service'
 import { DatePipe } from '@angular/common';
-import { LoggerConfig } from 'ngx-logger'
+import { INGXLoggerConfig, NGXLogger } from 'ngx-logger'
 import { MessagesService } from 'src/app/services/messages.service'
 import { IJSFunctionService } from 'src/common/js-functions/ijs-functions.service'
 import { JSFunctionsService } from 'src/common/js-functions/js-functions.service'
@@ -52,7 +52,7 @@ describe('AppComponent', () => {
 		UserExitsEventThrowerService,
 		LifecycleUserExits,	
 		InfoService,
-    {provide: LoggerConfig, useClass: class {}},
+    {provide: NGXLogger, useClass: class {}},
 		{provide: 'IJSFunctionService', useClass: JSFunctionsService}
 		
 	  ]
