@@ -24,10 +24,10 @@ import { NGXLogger } from 'ngx-logger';
 import { HttpErrorResponse } from '@angular/common/http';
 import { StorageService } from '../storage.service';
 import { MessagesService } from '../messages.service';
-import { Position, Size, InputField, Cursor, ScreenService, InfoService, SendKeysRequest, GetInfoResponse, GetScreenResponse, ReturnScreen, GetScreenRequest } from '@softwareag/applinx-rest-apis';
+import { Position, Size, InputField, Cursor, ScreenService, InfoService, SendKeysRequest, GetInfoResponse, GetScreenResponse, ReturnScreen, GetScreenRequest } from '@ibm/applinx-rest-apis';
 import { TabAndArrowsService } from './tab-and-arrows.service';
 import { StatusCodes } from 'http-status-codes';
-import { GetScreenNumberResponse } from '@softwareag/applinx-rest-apis/lib/model/getScreenNumberResponse';
+import { GetScreenNumberResponse } from '@ibm/applinx-rest-apis/lib/model/getScreenNumberResponse';
 import { GXConst } from '../enum.service';
 import { SharedService } from '../shared.service';
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */ 
 import {Component, Input, OnInit} from '@angular/core';
-import { ClickableTransformation, SendKeysEvent, UrlEvent } from '@softwareag/applinx-rest-apis';
+import { ClickableTransformation, SendKeysEvent, UrlEvent } from '@ibm/applinx-rest-apis';
 
 import {NavigationService} from '../../../services/navigation/navigation.service';
 

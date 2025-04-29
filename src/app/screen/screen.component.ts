@@ -35,7 +35,7 @@ import {GXUtils} from 'src/utils/GXUtils'
 import { Field, GetScreenRequest,
   GetScreenResponse,
   HostKeyTransformation,
-  ScreenService, InputField, ScreenBounds } from '@softwareag/applinx-rest-apis';
+  ScreenService, InputField, ScreenBounds } from '@ibm/applinx-rest-apis';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { ScreenHolderService } from '../services/screen-holder.service';

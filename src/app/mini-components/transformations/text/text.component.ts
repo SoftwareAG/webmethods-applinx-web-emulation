@@ -15,7 +15,7 @@
  */ 
  
 import {Component, Input, OnInit} from '@angular/core';
-import {TextTransformation} from '@softwareag/applinx-rest-apis';
+import {TextTransformation} from '@ibm/applinx-rest-apis';
 
 @Component({
   selector: 'app-text',

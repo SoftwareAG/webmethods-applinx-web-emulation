@@ -30,7 +30,7 @@ import { LifecycleUserExits } from './user-exits/LifecycleUserExits';
 import { UserExitsEventThrowerService } from './services/user-exits-event-thrower.service';
 import { OAuth2HandlerService } from './services/oauth2-handler.service';
 import { MessagesService } from './services/messages.service';
-import { HostKeyTransformation, Cursor, SessionService, InfoService, MacroService } from '@softwareag/applinx-rest-apis';
+import { HostKeyTransformation, Cursor, SessionService, InfoService, MacroService } from '@ibm/applinx-rest-apis';
 import { ModalpopupComponent } from './mini-components/transformations/modalpopup/modalpopup.component';
 import { GXUtils } from 'src/utils/GXUtils';
 import { MacroComponent } from './macro/macro.component';
@@ -707,6 +707,9 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
     document.documentElement.style.setProperty('--gx-intf', this.themecolorConfig[color]['gx-intf']);
     document.documentElement.style.setProperty('--text-shadow-gx-lrd-intf', this.themecolorConfig[color]['text-shadow-gx-lrd-intf']);
     document.documentElement.style.setProperty('--text-shadow-gx-lwt-gx-intf', this.themecolorConfig[color]['text-shadow-gx-lwt-gx-intf']);
+    document.documentElement.style.setProperty('--text-hyperlink-color', this.themecolorConfig[color]['text-hyperlink-color']);
+    document.documentElement.style.setProperty('--text-hyperlink-hover-bgcolor', this.themecolorConfig[color]['text-hyperlink-hover-bgcolor']);
+    document.documentElement.style.setProperty('--text-hyperlink-hover-color', this.themecolorConfig[color]['text-hyperlink-hover-color']);
   }
 
   setDefaultZoom() {

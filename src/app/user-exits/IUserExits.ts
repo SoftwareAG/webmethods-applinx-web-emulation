@@ -14,7 +14,7 @@
  * limitations under the License.
  */ 
 import { HttpErrorResponse } from "@angular/common/http";
-import { GetScreenRequest, GetScreenResponse, CreateSessionRequest, SendKeysRequest, CreateSessionResponse } from "@softwareag/applinx-rest-apis";
+import { GetScreenRequest, GetScreenResponse, CreateSessionRequest, SendKeysRequest, CreateSessionResponse } from "@ibm/applinx-rest-apis";
 
 export interface IUserExits {
     

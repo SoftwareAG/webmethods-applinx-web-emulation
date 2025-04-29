@@ -24,7 +24,7 @@ import { ConfigurationService } from '../services/configuration.service';
 import { OAuth2HandlerService } from '../services/oauth2-handler.service';
 import { GXConst } from '../services/enum.service';
 import { CreateSessionResponse,GetInfoResponse,
-  CreateSessionRequest, InfoService, SessionService  } from '@softwareag/applinx-rest-apis';
+  CreateSessionRequest, InfoService, SessionService  } from '@ibm/applinx-rest-apis';
 import { UserExitsEventThrowerService } from '../services/user-exits-event-thrower.service';
 import { NGXLogger } from 'ngx-logger';
 import { MessagesService } from '../services/messages.service';

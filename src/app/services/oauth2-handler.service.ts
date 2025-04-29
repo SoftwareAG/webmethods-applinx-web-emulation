@@ -20,7 +20,7 @@ import { ConfigurationService } from './configuration.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 import { MessagesService } from './messages.service';
-import { SessionService, CreateSessionResponse, CreateSessionRequest } from '@softwareag/applinx-rest-apis';
+import { SessionService, CreateSessionResponse, CreateSessionRequest } from '@ibm/applinx-rest-apis';
 @Injectable({
   providedIn: 'root'
 })

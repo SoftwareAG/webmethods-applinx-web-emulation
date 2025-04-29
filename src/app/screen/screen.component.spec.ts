@@ -18,8 +18,18 @@ import { ModalService, PlaceholderService } from 'carbon-components-angular';
 import { IJSFunctionService } from 'src/common/js-functions/ijs-functions.service';
 import { JSMethodsService } from 'src/common/js-functions/js-methods.service';
 import { KeyboardMappingService } from '../services/keyboard-mapping.service';
- 
- 
+import { ApiModule,SessionService } from '@ibm/applinx-rest-apis';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { NavigationService } from 'src/app/services/navigation/navigation.service';
+import { LoggerConfig, NGXLogger } from 'ngx-logger';
+import { ScreenLockerService } from 'src/app/services/screen-locker.service'
+import { DatePipe } from '@angular/common';
+import { MessagesService } from 'src/app/services/messages.service'
+import { RouterTestingModule } from '@angular/router/testing';
+import { IJSFunctionService } from 'src/common/js-functions/ijs-functions.service'
+import { JSFunctionsService } from 'src/common/js-functions/js-functions.service'
+
+
 describe('ScreenComponent', () => {
   let component: ScreenComponent;
   let fixture: ComponentFixture<ScreenComponent>;

@@ -21,7 +21,7 @@ import {
   Position,
   CalendarTransformation,
   TableTransformation
-} from '@softwareag/applinx-rest-apis';
+} from '@ibm/applinx-rest-apis';
 import { GXUtils } from 'src/utils/GXUtils';
 import RBush from 'rbush';
 
