@@ -21,9 +21,9 @@ module.exports = function (config) {
     browsers: ['ChromeHeadless'],
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
-    import: [
+	import: [
       "@ibm/applinx-rest-apis"
-    ],
+	],	
     plugins: [
       require('karma-jasmine'),
       require('karma-chrome-launcher'),

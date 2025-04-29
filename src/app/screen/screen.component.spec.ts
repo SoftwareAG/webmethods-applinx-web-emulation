@@ -33,8 +33,8 @@ import { ModalService, PlaceholderService } from 'carbon-components-angular';
 import { IJSFunctionService } from 'src/common/js-functions/ijs-functions.service';
 import { JSMethodsService } from 'src/common/js-functions/js-methods.service';
 import { KeyboardMappingService } from '../services/keyboard-mapping.service';
-
-
+ 
+ 
 describe('ScreenComponent', () => {
   let component: ScreenComponent;
   let fixture: ComponentFixture<ScreenComponent>;
