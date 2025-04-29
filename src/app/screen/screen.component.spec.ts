@@ -100,8 +100,8 @@ beforeEach(async () => {
  
  
   it('should call postGetScreen when screenId is different from current screenId & newScreenId', () => {
-    const newScreen: GetScreenResponse = {
-      screenId: 2, // different ID
+    const incomingScreen: GetScreenResponse = {
+      screenId: 2, 
       name: 'newScreen',
       screenSize: {},
       cursor: { position: { row: 1, column: 1 } },
@@ -115,9 +115,9 @@ beforeEach(async () => {
     // Manually trigger the BehaviorSubject
     navigationService.screenObjectUpdated = new BehaviorSubject<GetScreenResponse>(null);
     component.ngOnInit(); 
-    navigationService.screenObjectUpdated.next(newScreen); 
+    navigationService.screenObjectUpdated.next(incomingScreen); 
  
-    expect((component as any).postGetScreen).toHaveBeenCalledWith(newScreen);
+    expect((component as any).postGetScreen).toHaveBeenCalledWith(incomingScreen);
   });
 });
  
