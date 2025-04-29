@@ -29,6 +29,7 @@ export class MultipleOptionsComponent implements OnChanges {
   @Input() transform: MultipleOptionsTransformation;
   inputField: InputField;
   manyRadios = ["one", "two", "three", "four", "five", "six"];
+  radioValue :string| null = null;
   entries : any = []; // [{"content":"MODIFY"},{"content":"DELETE"},{"content":"DISPLAY"}]
   constructor(private navigationService: NavigationService) {
   }
@@ -46,6 +47,9 @@ export class MultipleOptionsComponent implements OnChanges {
           this.entries.push(entry)
         });
       }
+    }
+    if(this.transform.type == "MultipleOptionsTransformation" && this.transform.multipleOptionsType === 'Radio Buttons'){
+        this.radioValue = this.transform.field?.content?.trim();
     }
   }
 

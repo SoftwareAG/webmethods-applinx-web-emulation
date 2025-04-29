@@ -10,7 +10,8 @@
   [ngClass]="transform.style">
   <cds-radio-group>
     <cds-radio *ngFor="let item of transform.items; index as i" [value]="item.value"
-      [id]="'radio-' + transform.position.row +'-'+ item.value" (change)="onSelect($event.source.value)">
+      [checked]="radioValue !==null && item.value === radioValue" [id]="'radio-' + transform.position.row +'-'+ item.value"
+      (change)="onSelect($event.source.value)">
       {{item.key}}
     </cds-radio>
   </cds-radio-group>

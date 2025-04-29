@@ -62,7 +62,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     const tag = event.target.tagName;
     const id = event.target.id;
     const val = event.target.value;
-    if (tag?.toLowerCase() === 'input' && id?.length > 0) {
+    if (tag?.toLowerCase() === 'input' && id?.length > 0 && !id.includes("radio")) {
       const input = new InputField();
       input.setName(id);
       input.setValue(val);
@@ -95,7 +95,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
               private keyboardMappingService: KeyboardMappingService, private userExitsEventThrower: UserExitsEventThrowerService,
               private ref: ElementRef, private router: Router, private screenHolderService: ScreenHolderService,
               private logger: NGXLogger, private messages: MessagesService,         
-              private screenProcessorService: ScreenProcessorService, private screenLockerService: ScreenLockerService,
+              private screenProcessorService: ScreenProcessorService, public screenLockerService: ScreenLockerService,
               private sharedService: SharedService,) {}
               
   ngAfterViewInit(): void {
