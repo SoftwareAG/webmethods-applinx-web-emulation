@@ -14,7 +14,7 @@
  * limitations under the License.
  */ 
 import { Injectable } from '@angular/core';
-import { Position, Size } from '@softwareag/applinx-rest-apis';
+import { Position, Size } from '@ibm/applinx-rest-apis';
 import { StorageService } from '../storage.service';
 import { NavigationService } from './navigation.service';
 

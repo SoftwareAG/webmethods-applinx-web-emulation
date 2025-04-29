@@ -15,8 +15,8 @@
  */ 
 import { HttpErrorResponse } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
-import { InfoService } from '@softwareag/applinx-rest-apis'
-import { CreateSessionRequest, CreateSessionResponse, GetScreenRequest, SendKeysRequest, GetScreenResponse } from '@softwareag/applinx-rest-apis';
+import { InfoService } from '@ibm/applinx-rest-apis'
+import { CreateSessionRequest, CreateSessionResponse, GetScreenRequest, SendKeysRequest, GetScreenResponse } from '@ibm/applinx-rest-apis';
 import { KeyboardMappingService } from 'src/app/services/keyboard-mapping.service';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { StorageService } from 'src/app/services/storage.service';

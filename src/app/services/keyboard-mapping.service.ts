@@ -14,7 +14,7 @@
  * limitations under the License.
  */ 
 import { Injectable } from '@angular/core';
-import { GXKeyboardMapping } from '@softwareag/applinx-rest-apis';
+import { GXKeyboardMapping } from '@ibm/applinx-rest-apis';
 import { MessagesService } from './messages.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
