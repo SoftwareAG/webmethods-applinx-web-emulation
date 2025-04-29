@@ -14,7 +14,7 @@
  * limitations under the License.
  */ 
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import { MenuTransformation, Field, Position, InputField } from '@softwareag/applinx-rest-apis';
+import { MenuTransformation, Field, Position, InputField } from '@ibm/applinx-rest-apis';
 
 import {NavigationService} from '../../../services/navigation/navigation.service';
 

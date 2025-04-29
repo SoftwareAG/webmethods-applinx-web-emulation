@@ -14,7 +14,7 @@
  * limitations under the License.
  */ 
 import { AfterViewInit, Directive, EventEmitter, OnInit, Output } from "@angular/core";
-import { GetScreenResponse,HostKeyTransformation } from "@softwareag/applinx-rest-apis";
+import { GetScreenResponse,HostKeyTransformation } from "@ibm/applinx-rest-apis";
 import { GXGeneratedPagesUtils } from 'src/utils/GXGeneratedPagesUtils'
 import { ScreenHolderService } from "../services/screen-holder.service";
 import { StorageService } from "../services/storage.service";

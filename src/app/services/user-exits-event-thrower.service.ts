@@ -15,7 +15,7 @@
  */ 
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core'; 
-import { CreateSessionRequest, CreateSessionResponse, GetScreenRequest, GetScreenResponse, SendKeysRequest } from '@softwareag/applinx-rest-apis';
+import { CreateSessionRequest, CreateSessionResponse, GetScreenRequest, GetScreenResponse, SendKeysRequest } from '@ibm/applinx-rest-apis';
 import { IUserExits } from '../user-exits/IUserExits';
 
 @Injectable({

@@ -16,7 +16,7 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
-import { ApiModule,SessionService,InfoService } from '@softwareag/applinx-rest-apis';
+import { ApiModule,SessionService,InfoService } from '@ibm/applinx-rest-apis';
 import { HttpClientModule } from '@angular/common/http';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { LoggerTestingModule } from 'ngx-logger/testing';

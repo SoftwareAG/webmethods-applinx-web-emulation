@@ -14,7 +14,7 @@
  * limitations under the License.
  */ 
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import { CheckboxTransformation, InputField, Cursor } from '@softwareag/applinx-rest-apis';
+import { CheckboxTransformation, InputField, Cursor } from '@ibm/applinx-rest-apis';
 import {NavigationService} from '../../../services/navigation/navigation.service';
 
 @Component({

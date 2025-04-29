@@ -17,7 +17,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WebLoginComponent } from './webLogin.component';
-import { ApiModule,SessionService } from '@softwareag/applinx-rest-apis';
+import { ApiModule,SessionService } from '@ibm/applinx-rest-apis';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { INGXLoggerConfig , NGXLogger, TOKEN_LOGGER_CONFIG, TOKEN_LOGGER_CONFIG_ENGINE_FACTORY, TOKEN_LOGGER_MAPPER_SERVICE, TOKEN_LOGGER_METADATA_SERVICE, TOKEN_LOGGER_RULES_SERVICE, TOKEN_LOGGER_SERVER_SERVICE, TOKEN_LOGGER_WRITER_SERVICE } from 'ngx-logger';

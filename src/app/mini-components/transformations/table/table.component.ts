@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Component, Input, OnChanges, SimpleChanges, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { TableTransformation, InputField } from '@softwareag/applinx-rest-apis';
+import { TableTransformation, InputField } from '@ibm/applinx-rest-apis';
 import { NavigationService } from '../../../services/navigation/navigation.service';
 import { TableModel, TableHeaderItem, TableItem } from 'carbon-components-angular';
 

@@ -25,7 +25,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Field, InputField, Cursor, Position } from '@softwareag/applinx-rest-apis';
+import { Field, InputField, Cursor, Position } from '@ibm/applinx-rest-apis';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { TabAndArrowsService } from 'src/app/services/navigation/tab-and-arrows.service';
 import { ScreenHolderService } from 'src/app/services/screen-holder.service';
