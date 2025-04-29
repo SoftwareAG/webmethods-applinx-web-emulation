@@ -2,6 +2,7 @@ import { Component, OnInit, Inject, ViewChild, ElementRef, Input, HostListener }
 import { Clipboard } from '@angular/cdk/clipboard';
 import { GXUtils } from 'src/utils/GXUtils';
 import { DialogService } from 'carbon-components-angular';
+import { SharedService } from '../../../services/shared.service';
 
 @Component({
   selector: 'app-modalpopup',
@@ -12,7 +13,7 @@ import { DialogService } from 'carbon-components-angular';
 export class ModalpopupComponent implements OnInit {
 
   constructor(
-    private clipboard: Clipboard) { }
+    private clipboard: Clipboard, private sharedService: SharedService) { }
   @Input() copyData: string;
   @Input() typeFlag: boolean;
   @HostListener('document:keydown.escape', ['$event'])
@@ -22,10 +23,6 @@ export class ModalpopupComponent implements OnInit {
     }
   }
  
-  closeModal() {
-    this.copyModalFlag = false; // Force modal to close
-    console.log("Modal closed by Esc");
-  }
   printFlag: boolean = false;
   copyInstructionLineOne: string = GXUtils.copyInstructionLineOne;
   copyInstructionLineTwo: string = GXUtils.copyInstructionLineTwo;
@@ -150,6 +147,12 @@ export class ModalpopupComponent implements OnInit {
     }
     this.changeTextBGcolor();
     this.clipboard.copy(this.displayString)
+  }
+
+  closeModal() {
+    this.copyModalFlag = false; // Force modal to close
+    this.sharedService.setPopUpFlag(false);
+    console.log("Modal closed by Esc");
   }
 }
 

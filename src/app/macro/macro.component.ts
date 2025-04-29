@@ -93,14 +93,10 @@ export class MacroComponent {
     
   }
 
-
   getMacroListDetails() {
     this.tempMacroList = sessionStorage.getItem("macroFileList");
     if(this.tempMacroList){
-      let tempMacroListArray = this.tempMacroList.split(",");
-      tempMacroListArray.forEach(element => {
-        this.macroList.push({ "content": element })
-      });
+      this.macroList = this.tempMacroList.split(",");
     }
   }
 
@@ -121,6 +117,7 @@ export class MacroComponent {
         });
       }, error => {
       })
+      this.delMacro = false
       this.dataService.setPopUpFlag(false);
   }
 
@@ -134,7 +131,6 @@ export class MacroComponent {
         this.selectedMacroObj["steps"] = this.selViewMacroContent.steps;
         this.viewMacroFlag = true;
       })
-      this.dataService.setPopUpFlag(false);
   }
 
   setPasswordMask(stepsArray) {
@@ -180,6 +176,7 @@ export class MacroComponent {
           })
       });
       this.dataService.setPopUpFlag(false);
+      this.setOperationTypeFlag(GXUtils.PlayMacro)
   }
 
   decryptBeforePlay(steps: any) {
@@ -223,7 +220,7 @@ export class MacroComponent {
           this.validationFlag = true;
         }
       });
-     
+      this.dataService.setPopUpFlag(false);
   }
 
   onStopRecordMacro() { // Save Macro End - Saves the Macro & its steps in a .json file.
@@ -258,7 +255,7 @@ export class MacroComponent {
   }
 
   selected(event: Event) {
-    this.selectedMacro = event["item"].content + ".json";
+    this.selectedMacro = event + ".json";
   }
 
   onCancel(){

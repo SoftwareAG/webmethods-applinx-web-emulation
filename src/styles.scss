@@ -58,6 +58,9 @@
 	--gx-intf: 0 0.025em 0 black, 0.025em 0 0 black;
 	--text-shadow-gx-lrd-intf: 0 0.025em 0 #AF272F, 0.025em 0 0 #AF272F;
 	--text-shadow-gx-lwt-gx-intf: 0 0.025em 0 black, 0.025em 0 0 black;
+	--text-hyperlink-color: navy;
+	--text-hyperlink-hover-bgcolor: navy;
+	--text-hyperlink-hover-color: white;
 }
 
 html,
@@ -131,12 +134,12 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 
 
-#gx_screenArea button:hover {
-	background-color: var(--btn-hover-color-screen);
-	// color: var(--screen-btn-text-color);
-	outline: var(--btn-outline-color);
-	border-color: var(--btn-outline-color);
-}
+// #gx_screenArea button:hover {
+// 	background-color: var(--btn-hover-color-screen);
+// 	// color: var(--screen-btn-text-color);
+// 	outline: var(--btn-outline-color);
+// 	border-color: var(--btn-outline-color);
+// }
 
 .noGridItem {
 	min-width: 0;
@@ -363,12 +366,12 @@ tbody .gx_tbl_alternating1 {
 
 /* menu*/
 .gx_menu {
-	color: navy;
+	color: var(--text-hyperlink-color);
 }
 
 .gx_menu:hover {
-	color: white;
-	background-color: navy;
+	color: var(--text-hyperlink-hover-color);
+	background-color: var(--text-hyperlink-hover-bgcolor);
 }
 
 /* title */
@@ -376,6 +379,10 @@ tbody .gx_tbl_alternating1 {
 	color: gray;
 	font-weight: bold;
 	font-size: large;
+}
+
+.gx_errorMessage{
+    color: red
 }
 
 /* blinking caret */
@@ -852,12 +859,6 @@ ol, ul {
 .cds--data-table--md.cds--data-table--sort th {
     block-size: 0rem !important;
 }
-.cds--dropdown {
-    height: 30px !important;
-}
-tbody, td, tfoot, th, thead, tr {
-    height: 35px !important;
-}
 .cds--header__action--active {
     background: transparent !important;
     border-block-end: 0px solid transparent !important;
@@ -867,10 +868,10 @@ tbody, td, tfoot, th, thead, tr {
 .cds--header__action:active, a.cds--header__menu-item:active {
     background-color: transparent !important;
 }
-.cds--btn--primary:focus {
-    box-shadow: inset 0 0 0 0px var(--cds-button-focus-color, var(--cds-focus, #0f62fe)), inset 0 0 0 0px var(--cds-background, #ffffff) !important;
-	border-top: 0px;
-}
+// .cds--btn--primary:focus {
+//     box-shadow: inset 0 0 0 0px var(--cds-button-focus-color, var(--cds-focus, #0f62fe)), inset 0 0 0 0px var(--cds-background, #ffffff) !important;
+// 	border-top: 2px;
+// }
 
 .cds--modal-container {
     display: inline-table !important;
@@ -916,24 +917,129 @@ tbody, td, tfoot, th, thead, tr {
     background-color: #1776bf !important;
     color: #ffffff !important;
 }
-.cds--data-table--zebra tbody tr:not(.cds--parent-row):not(.cds--data-table--selected) {
-    background-color: var(--table-body-alternating1) !important;
-    color: var(--table-body-text-color) !important;
-}
 
-.cds--data-table--zebra tbody tr:nth-child(even):not(.cds--parent-row):not(.cds--data-table--selected) {
-    background-color: var(--table-body-alternating2) !important; /* Ensure different alternating color */
-}
-
-.cds--data-table td, .cds--data-table tbody th {
-    color: var(--table-body-text-color) !important;
-}
 .cds--dropdown {
     border: 1px solid var(--cds-border-strong) !important;
 }
-.cds--list-box__field {
-    padding-inline: 1rem 1rem !important;
-}
+// .cds--list-box__field {
+//     padding-inline: 1rem 1rem !important;
+// }
 .cds--list-box__menu-icon > svg {
     fill: var(--table-body-select-color) !important;
 }
+.cds--text-input {
+    font-size: inherit !important;
+}
+
+/*Start - Table dropdown font size and line height override*/
+.cds--list-box__label {
+    font-size: calc(var(--text-font-size)) !important;
+    line-height: calc(var(--text-font-size)) !important;
+}
+.cds--list-box__menu-item {
+    font-size: calc(var(--text-font-size)) !important;
+    line-height: calc(var(--text-font-size)) !important;
+}
+.cds--dropdown {
+    height: calc(var(--text-font-size) + 13px) !important;
+    // height: 30px !important;
+}
+/*End - Table dropdown font size and line height override*/
+
+/*Removing padding frpm text and caret icon from dropdown*/
+.cds--list-box__field {
+    // padding-inline: 1rem 3rem !important;
+    padding-inline: 1rem 2rem !important;
+}
+
+.flexField > span {
+    font-size: var(--text-font-size) !important;
+}
+
+// Datepicker - start
+//font
+.cds--date-picker__input {
+  font-size: calc(var(--text-font-size)) !important;
+}
+
+//width
+.cds--date-picker.cds--date-picker--single .cds--date-picker__input {
+    inline-size: 12rem; 
+}
+// inline padding
+.cds--date-picker__input--sm {
+    block-size: 1.3rem; 
+}
+// Datepicker  - end
+
+// Radio button - start
+.cds--radio-button-wrapper .cds--radio-button__label {
+    font-size: calc(var(--text-font-size));
+}
+.cds--radio-button__appearance {
+    block-size: calc(var(--text-font-size)) !important;
+    inline-size: calc(var(--text-font-size)) !important;
+}
+// Radio button - end
+
+//check box - start
+// .cds--checkbox-label::before {
+//     block-size: calc(var(--text-font-size))!important;
+//     inline-size: calc(var(--text-font-size))!important;
+// 	background-color: white;
+// }
+// .cds--checkbox:checked + .cds--checkbox-label::after, .cds--checkbox-label[data-contained-checkbox-state=true]::after {
+//     transform: scale(1.3) rotate(-45deg) !important;
+// }
+
+// .cds--checkbox-label::after {
+//     inline-size: calc(var(--text-font-size)) !important;
+// 	color: white !important;
+// }
+.custom-checkbox{
+	width: calc(var(--text-font-size));
+    height: calc(var(--text-font-size));
+}
+// .cds--checkbox{
+// 	background-color: white !important;
+// }
+//check box - End
+
+/* Angular Carbon Design Custom setting - Start */
+
+//  Start - Table header font size and line height override
+// .cds--data-table thead {
+//     font-size: calc(var(--text-font-size)) !important;
+//     line-height: calc(var(--text-font-size)) !important;
+// }
+// .cds--data-table tbody {
+//     font-size: calc(var(--text-font-size)) !important;
+//     line-height: calc(var(--text-font-size)) !important;
+// }
+// // End - Table header font size and line height override
+// tbody, td, tfoot, th, thead, tr {
+//     height: calc(var(--text-font-size) + 4px) !important
+// }
+// // Removing padding lefta nd right from table coloumn dropdown.
+// .cds--data-table td, .cds--data-table tbody th {
+// 	// padding-inline: 1rem 1rem !important;
+// 	 padding-inline: 0rem 0rem !important;
+//  }
+//  .cds--data-table--zebra tbody tr:not(.cds--parent-row):not(.cds--data-table--selected) {
+//     background-color: var(--table-body-alternating1) !important;
+//     color: var(--table-body-text-color) !important;
+// }
+
+// .cds--data-table--zebra tbody tr:nth-child(even):not(.cds--parent-row):not(.cds--data-table--selected) {
+//     background-color: var(--table-body-alternating2) !important; /* Ensure different alternating color */
+// }
+
+// .cds--data-table td, .cds--data-table tbody th {
+//     color: var(--table-body-text-color) !important;
+// }
+// .cds--data-table tbody tr:hover td, .cds--data-table tbody tr:hover th {
+//     border-block-end: inherit !important;
+//     border-block-start: inherit !important;
+//     color: inherit !important;
+// }
+/* Angular Carbon Design Custom setting - End */

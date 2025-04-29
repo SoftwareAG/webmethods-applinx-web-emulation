@@ -51,6 +51,9 @@ export declare class ColorThemeProperties {
   'gx-intf': string;
   'text-shadow-gx-lrd-intf': string
   'text-shadow-gx-lwt-gx-intf': string;
+  'text-hyperlink-color':string;
+  'text-hyperlink-hover-bgcolor': string;
+  'text-hyperlink-hover-color': string;
 }
 
 export enum BlackTheme {
@@ -105,7 +108,10 @@ export enum BlackTheme {
   'gx-bylw-text-color' = 'black',
   'gx-intf' = ' 0 0.025em 0 black, 0.025em 0 0 black',
   'text-shadow-gx-lrd-intf' = 'rgba(255, 100, 100, 0.9) 0px 0px 15px',
-  'text-shadow-gx-lwt-gx-intf' = '0 0 15px rgba(255,255,255,0.9)'
+  'text-shadow-gx-lwt-gx-intf' = '0 0 15px rgba(255,255,255,0.9)',
+  'text-hyperlink-color'='navy',
+  'text-hyperlink-hover-bgcolor'='navy',
+  'text-hyperlink-hover-color'='white'
 }
 
 export enum WhiteTheme {
@@ -126,12 +132,12 @@ export enum WhiteTheme {
   'login-screen-color' = '#006992',
   'menu-content-color' = 'black',
   'table-header-background' = '#093655',
-  'table-header-border-color-left' = '#006D93',
-  'table-header-border-color-right' = '#006D93',
-  'table-header-border-color-top' = '#006D93',
-  'table-header-border-color-bottom' = '#006D93',
+  'table-header-border-color-left' = '#d4f0f7',
+  'table-header-border-color-right' = '#d4f0f7',
+  'table-header-border-color-top' = '#d4f0f7',
+  'table-header-border-color-bottom' = '#d4f0f7',
   'table-header-text-color' = 'white',
-  'table-body-border-color' = '#006D93',
+  'table-body-border-color' = '#006d93',
   'table-body-alternating1' = 'white',
   'table-body-alternating2' = '#d4f0f7',
   'table-body-text-color' = '#006d93',
@@ -160,8 +166,10 @@ export enum WhiteTheme {
   'gx-bylw-text-color' = 'black',
   'gx-intf' = ' 0 0.025em 0 black, 0.025em 0 0 black',
   'text-shadow-gx-lrd-intf' = '0 0.025em 0 #AF272F, 0.025em 0 0 #AF272F',
-  'text-shadow-gx-lwt-gx-intf' = '0 0.025em 0 black, 0.025em 0 0 black'
-
+  'text-shadow-gx-lwt-gx-intf' = '0 0.025em 0 black, 0.025em 0 0 black',
+  'text-hyperlink-color'='navy',
+  'text-hyperlink-hover-bgcolor'='navy',
+  'text-hyperlink-hover-color'='white'
 }
 
 export enum GreenTheme {
@@ -185,7 +193,7 @@ export enum GreenTheme {
   'table-header-border-color-left' = 'lime',
   'table-header-border-color-right' = 'lime',
   'table-header-border-color-top' = 'lime',
-  'table-header-border-color-botton' = 'lime',
+  'table-header-border-color-bottom' = 'lime',
   'table-header-text-color' = 'lime',
   'table-body-border-color' = 'lime',
   'table-body-alternating1' = 'rgb(0, 64, 0)',
@@ -216,6 +224,8 @@ export enum GreenTheme {
   'gx-bylw-text-color' = 'black',
   'gx-intf' = '0.01em 0.01em lime',
   'text-shadow-gx-lrd-intf' = '0.01em 0.01em lime',
-  'text-shadow-gx-lwt-gx-intf' = '0.01em 0.01em lime'
-
+  'text-shadow-gx-lwt-gx-intf' = '0.01em 0.01em lime',
+  'text-hyperlink-color'='lime',
+  'text-hyperlink-hover-bgcolor'='lime',
+  'text-hyperlink-hover-color'='black'
 }

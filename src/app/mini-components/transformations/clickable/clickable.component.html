@@ -3,7 +3,7 @@
   {{transform.triggerText}}
 </button>
 
-<a [ngClass]="transform.style" *ngIf="transform.triggerType === 'Link'" (click)="onClick()" class="dlt-links"
+<a [ngClass]="transform.style" *ngIf="transform.triggerType === 'Link'" (click)="onClick()"
    [ngStyle]="{'grid-row-start': transform.position.row, 'grid-column-start': transform.position.column, 'grid-column-end': (transform.position.column+transform.triggerText.length+1)}">
   {{transform.triggerText}}
 </a>
