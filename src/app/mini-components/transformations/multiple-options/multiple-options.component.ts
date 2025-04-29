@@ -14,7 +14,7 @@
  * limitations under the License.
  */ 
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import { Position, MultipleOptionsTransformation, InputField, Field, Cursor } from '@softwareag/applinx-rest-apis';
+import { Position, MultipleOptionsTransformation, InputField, Field, Cursor } from '@ibm/applinx-rest-apis';
 import { GridPosition } from 'src/app/services/navigation/tab-and-arrows.service';
 
 import {NavigationService} from '../../../services/navigation/navigation.service';

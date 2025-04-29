@@ -30,7 +30,7 @@ import { LifecycleUserExits } from './user-exits/LifecycleUserExits';
 import { UserExitsEventThrowerService } from './services/user-exits-event-thrower.service';
 import { OAuth2HandlerService } from './services/oauth2-handler.service';
 import { MessagesService } from './services/messages.service';
-import { HostKeyTransformation, Cursor, SessionService, InfoService, MacroService } from '@softwareag/applinx-rest-apis';
+import { HostKeyTransformation, Cursor, SessionService, InfoService, MacroService } from '@ibm/applinx-rest-apis';
 import { ModalpopupComponent } from './mini-components/transformations/modalpopup/modalpopup.component';
 import { GXUtils } from 'src/utils/GXUtils';
 import { MacroComponent } from './macro/macro.component';

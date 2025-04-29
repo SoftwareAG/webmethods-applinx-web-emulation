@@ -17,7 +17,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
-import { Language } from '@softwareag/applinx-rest-apis';
+import { Language } from '@ibm/applinx-rest-apis';
 import { MessagesService } from './messages.service';
 import { ScreenHolderService } from './screen-holder.service';
 

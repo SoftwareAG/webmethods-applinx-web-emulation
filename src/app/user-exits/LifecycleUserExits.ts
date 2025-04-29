@@ -14,7 +14,7 @@
  * limitations under the License.
  */ 
 import { HttpErrorResponse } from '@angular/common/http';
-import { CreateSessionResponse, CreateSessionRequest, GetScreenRequest, SendKeysRequest, GetScreenResponse } from '@softwareag/applinx-rest-apis';
+import { CreateSessionResponse, CreateSessionRequest, GetScreenRequest, SendKeysRequest, GetScreenResponse } from '@ibm/applinx-rest-apis';
 //import { GXAdditionalKey, GXKeyCodes } from '../services/enum.service';
 import { AbstractUserExits } from './AbstractUserExits';
 

@@ -15,7 +15,7 @@
  */ 
 import { GXAdditionalKey } from '../app/services/enum.service';
 import { KeyboardMappingService } from 'src/app/services/keyboard-mapping.service';
-import { Position } from "@softwareag/applinx-rest-apis";
+import { Position } from "@ibm/applinx-rest-apis";
 import {BlackTheme, WhiteTheme, GreenTheme} from "./GXColorTheme"
 
 enum FOREGROUND_COLOR {

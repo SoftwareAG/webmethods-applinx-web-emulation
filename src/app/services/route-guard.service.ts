@@ -20,7 +20,7 @@ import { NGXLogger } from 'ngx-logger';
 import { Observable, of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { GXUtils } from 'src/utils/GXUtils';
-import { CreateSessionResponse } from '@softwareag/applinx-rest-apis';
+import { CreateSessionResponse } from '@ibm/applinx-rest-apis';
 import { ConfigurationService } from './configuration.service';
 import { KeyboardMappingService } from './keyboard-mapping.service';
 import { MessagesService } from './messages.service';

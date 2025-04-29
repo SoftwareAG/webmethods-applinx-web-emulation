@@ -23,7 +23,7 @@ module.exports = function (config) {
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
 	import: [
-      "@softwareag/applinx-rest-apis"
+      "@ibm/applinx-rest-apis"
 	],	
     plugins: [
       require('karma-jasmine'),
