@@ -3,7 +3,7 @@ import { GXUtils } from 'src/utils/GXUtils';
 import { ConfigurationService } from '../services/configuration.service';
 import { SharedService } from '../services/shared.service'
 import { StorageService } from '../services/storage.service';
-import { MacroService } from '@softwareag/applinx-rest-apis';
+import { MacroService } from '@ibm/applinx-rest-apis';
 import { Subscription } from 'rxjs';
 import { NotificationService } from 'carbon-components-angular';
 import { HttpClient, HttpHeaders } from '@angular/common/http';

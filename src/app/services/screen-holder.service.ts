@@ -15,7 +15,7 @@
  */ 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { GetScreenResponse } from '@softwareag/applinx-rest-apis'
+import { GetScreenResponse } from '@ibm/applinx-rest-apis'
 @Injectable({
   providedIn: 'root'
 })

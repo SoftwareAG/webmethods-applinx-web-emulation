@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
  
 module.exports = function (config) {
   config.set({
-  browsers: ['ChromeHeadless'],
+    browsers: ['ChromeHeadless'],
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
-  import: [
-      "@softwareag/applinx-rest-apis"
-  ],  
+    import: [
+      "@ibm/applinx-rest-apis"
+    ],
     plugins: [
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
@@ -34,7 +33,8 @@ module.exports = function (config) {
     ],
     client: {
       clearContext: false, // leave Jasmine Spec Runner output visible in browser
-      args:process.argv   },
+      args: process.argv
+    },
     coverageIstanbulReporter: {
       dir: require('path').join(__dirname, './coverage/applinx-web-emulation'),
       reports: ['html', 'lcovonly', 'text-summary'],

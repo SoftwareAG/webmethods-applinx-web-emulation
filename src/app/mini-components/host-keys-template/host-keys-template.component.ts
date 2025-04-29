@@ -15,7 +15,7 @@
  */
 import { Component, Input, OnInit } from '@angular/core';
 import { NavigationService } from '../../services/navigation/navigation.service';
-import { HostKeyTransformation } from '@softwareag/applinx-rest-apis';
+import { HostKeyTransformation } from '@ibm/applinx-rest-apis';
 
 @Component({
   selector: 'app-host-keys-template',

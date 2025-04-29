@@ -1,9 +1,11 @@
- <table cdsTable [striped]="true" [id]="transform.table.name" [ngClass]="transform.style" class="gx_tbl" 
+ <!-- <table cdsTable [striped]="true" [id]="transform.table.name" [ngClass]="transform.style" class="gx_tbl"  -->
+ <table [id]="transform.table.name" [ngClass]="transform.style" class="gx_tbl" 
     [ngStyle]="{'grid-row-start': transform.table.headerCoordinates ? transform.table.headerCoordinates.topLeft.row : transform.table.cornersCoordinates.topLeft.row,
       'grid-column-start': transform.table.headerCoordinates ? transform.table.headerCoordinates.topLeft.column : transform.table.cornersCoordinates.topLeft.column,
       'grid-row-end': transform.table.cornersCoordinates.bottomRight.row,
       'grid-column-end': transform.table.cornersCoordinates.bottomRight.column}">
-  <thead cdsTableHead class="tableHeader" [ngStyle]="{'border-style': 'solid', 'border-width': 'thin'}">
+  <!-- <thead cdsTableHead class="tableHeader" [ngStyle]="{'border-style': 'solid', 'border-width': 'thin'}"> -->
+    <thead class="tableHeader" [ngStyle]="{'border-style': 'solid', 'border-width': 'thin'}">
   <tr>
     <th title="{{col.tooltip}}" *ngFor="let col of transform.table.cols" name="{{col.name}}">
       {{col.caption}}
@@ -11,8 +13,10 @@
   </tr>
   </thead>
 
-  <tbody cdsTableBody class="tableBody" [ngStyle]="{'border-style': 'solid', 'border-width': 'thin'}">
-  <tr cdsTableRow *ngFor="let row of transform.table.rows; index as i" [ngClass]="(i%2==0) ? 'gx_tbl_alternating1' : 'gx_tbl_alternating2'">
+  <!-- <tbody cdsTableBody class="tableBody" [ngStyle]="{'border-style': 'solid', 'border-width': 'thin'}"> -->
+    <tbody class="tableBody" [ngStyle]="{'border-style': 'solid', 'border-width': 'thin'}">
+  <!-- <tr cdsTableRow *ngFor="let row of transform.table.rows; index as i" [ngClass]="(i%2==0) ? 'gx_tbl_alternating1' : 'gx_tbl_alternating2'"> -->
+    <tr *ngFor="let row of transform.table.rows; index as i" [ngClass]="(i%2==0) ? 'gx_tbl_alternating1' : 'gx_tbl_alternating2'">
     <td *ngFor="let item of row.items; index as j" style="border-style: solid; border-width: thin">
       
       <ng-container *ngIf="item.type && item.inTableCell">
