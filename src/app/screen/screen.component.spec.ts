@@ -33,8 +33,8 @@ import { ModalService, PlaceholderService } from 'carbon-components-angular';
 import { IJSFunctionService } from 'src/common/js-functions/ijs-functions.service';
 import { JSMethodsService } from 'src/common/js-functions/js-methods.service';
 import { KeyboardMappingService } from '../services/keyboard-mapping.service';
-
-
+ 
+ 
 describe('ScreenComponent', () => {
   let component: ScreenComponent;
   let fixture: ComponentFixture<ScreenComponent>;
@@ -99,13 +99,39 @@ beforeEach(async () => {
     screenProcessorService = TestBed.inject(ScreenProcessorService);
     screenLockerService = TestBed.inject(ScreenLockerService);
     logger = TestBed.inject(NGXLogger);
-
     spyOn(navigationService, 'setSendableField').and.callThrough();
     spyOn(screenService, 'getScreen').and.returnValue(of());
     spyOn(screenHolderService, 'setRuntimeScreen').and.callThrough();
     spyOn(screenHolderService, 'setRawScreenData').and.callThrough();
     spyOn(screenProcessorService, 'processTable').and.callThrough();
     spyOn(screenLockerService, 'setLocked').and.callThrough();
+  });
+ 
+  it('should call getScreen when ngOnInit is called', () => {
+    component.ngOnInit();
+    expect(screenService.getScreen).toHaveBeenCalled();
+  });
+ 
+ 
+  it('should call postGetScreen when screenId is different from current screenId & newScreenId', () => {
+    const incomingScreen: GetScreenResponse = {
+      screenId: 2, 
+      name: 'newScreen',
+      screenSize: {},
+      cursor: { position: { row: 1, column: 1 } },
+      fields: [],
+      transformations: []
+    };
+ 
+    component.m_screen = { screenId: 1 } as GetScreenResponse;
+    spyOn(component as any, 'postGetScreen');
+ 
+    // Manually trigger the BehaviorSubject
+    navigationService.screenObjectUpdated = new BehaviorSubject<GetScreenResponse>(null);
+    component.ngOnInit(); 
+    navigationService.screenObjectUpdated.next(incomingScreen); 
+ 
+    expect((component as any).postGetScreen).toHaveBeenCalledWith(incomingScreen);
   });
   
    it('should not call setSendableField when ignored elements are processed', () => {
@@ -229,3 +255,4 @@ beforeEach(async () => {
   });
 
 });
+ 

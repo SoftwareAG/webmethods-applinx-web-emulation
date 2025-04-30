@@ -137,10 +137,11 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     }
 
     this.screenObjectUpdatedSubscription = this.navigationService.screenObjectUpdated.subscribe(newScreen => {
-      if (newScreen) {     
+      if (newScreen) {
+        if(newScreen.screenId !== this.m_screen.screenId){
+          this.postGetScreen (newScreen);
+        }
         this.navigationService.screenObjectUpdated.next(null);
-        this.postGetScreen (newScreen);
-            //this.screenHolderService.setRawScreenData(newScreen)
             this.getRawScreenData()
       }
     });
@@ -172,7 +173,7 @@ export class ScreenComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       });
   }
 
-  getRawScreenData(): void {    
+  public getRawScreenData(): void {    
     const req = new GetScreenRequest();
     this.userExitsEventThrower.firePreGetScreen(req);
     this.getScreenSubscription = this.screenService.getScreen(this.storageService.getAuthToken(), req).subscribe(
