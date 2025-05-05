@@ -18,7 +18,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { Injector, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import { ApiModule, Configuration, ConfigurationParameters } from '@softwareag/applinx-rest-apis'
+import { ApiModule, Configuration, ConfigurationParameters } from '@ibm/applinx-rest-apis'
 import { ScreenComponent } from './screen/screen.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { WebLoginComponent } from './webLogin/webLogin.component';

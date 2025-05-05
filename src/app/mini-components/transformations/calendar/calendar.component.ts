@@ -14,7 +14,7 @@
  * limitations under the License.
  */ 
 import {AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {CalendarTransformation, Cursor, Field, InputField } from '@softwareag/applinx-rest-apis';
+import {CalendarTransformation, Cursor, Field, InputField } from '@ibm/applinx-rest-apis';
 import {NavigationService} from '../../../services/navigation/navigation.service';
 import { GXUtils } from 'src/utils/GXUtils';
 declare var $: any;

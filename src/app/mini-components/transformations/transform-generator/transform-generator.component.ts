@@ -14,7 +14,7 @@
  * limitations under the License.
  */ 
 import {Component, Input} from '@angular/core';
-import {AbstractTransformation} from '@softwareag/applinx-rest-apis';
+import {AbstractTransformation} from '@ibm/applinx-rest-apis';
 
 @Component({
   selector: 'app-transform-generator',

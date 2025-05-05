@@ -14,7 +14,7 @@
  * limitations under the License.
  */ 
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import { LineTransformation, Field, Position } from '@softwareag/applinx-rest-apis';
+import { LineTransformation, Field, Position } from '@ibm/applinx-rest-apis';
 
 @Component({
   selector: 'app-line',

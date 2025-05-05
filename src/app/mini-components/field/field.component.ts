@@ -17,7 +17,7 @@ import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { StorageService } from 'src/app/services/storage.service';
 import { GXUtils } from 'src/utils/GXUtils';
-import {Field} from '@softwareag/applinx-rest-apis';
+import {Field} from '@ibm/applinx-rest-apis';
 
 @Component({
   selector: 'app-field',

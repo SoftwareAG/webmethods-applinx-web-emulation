@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MacroComponent } from './macro.component';
 import { HttpClient, HttpHandler } from '@angular/common/http';
-import { InfoService, MacroService, ScreenService } from '@softwareag/applinx-rest-apis';
+import { InfoService, MacroService, ScreenService } from '@ibm/applinx-rest-apis';
 import { MessagesService } from '../services/messages.service';
 import { SharedService } from '../services/shared.service';
 import { ScreenHolderService } from '../services/screen-holder.service';
