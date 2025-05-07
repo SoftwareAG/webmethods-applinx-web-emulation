@@ -86,15 +86,19 @@ describe('AppComponent', () => {
     const div = document.createElement('div');
     document.body.appendChild(div);
   
+    // Create and dispatch a double-click event on the div
     const event = new MouseEvent('dblclick', { bubbles: true });
     Object.defineProperty(event, 'target', { value: div });
   
-    // Ensure feature flags are off
-    (GXUtils as any).ENABLETYPEAHEADFLAG = false;
-    app.macroMode = '';
+    // Set the flags
+    (GXUtils as any).ENABLETYPEAHEADFLAG = false;  // Set to false to ensure it's not interfering
+    app.macroMode = '';  // Set macroMode to an empty string
+    (GXUtils as any).enableDoubleClickFlag = true;  // Set the flag to true so the logic for double-click is enabled
   
+    // Trigger the double-click event handler
     app.onGlobalDoubleClick(event);
   
+    // Check if sendKeys('[enter]') was called
     expect(navigationService.sendKeys).toHaveBeenCalledWith('[enter]');
   });
 
@@ -166,5 +170,5 @@ describe('AppComponent', () => {
     app.onGlobalDoubleClick(event);
     expect(navigationService.sendKeys).not.toHaveBeenCalled();
   });
-  
+
 });

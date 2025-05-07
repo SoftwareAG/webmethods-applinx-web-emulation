@@ -293,6 +293,7 @@ export class GXUtils {
   public static PAGEDOWN = "PageDown";
   public static DELETE = "Delete";
   public static ENABLETYPEAHEADFLAG = false; // Variable to enable/disable type ahead
+  public static enableDoubleClickFlag: boolean = true; // Variable to enable/disable DoubleClick Feature
   public static fieldOrder = 0;
   public static typeAheadCharacterArray: any = [];
   public static typeAheadStringArray: any = [];

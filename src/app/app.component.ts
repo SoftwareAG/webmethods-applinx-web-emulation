@@ -210,6 +210,7 @@ export class AppComponent implements OnInit, OnDestroy {
     ) {
       return;
     }
+    if(GXUtils.enableDoubleClickFlag)
     this.navigationService.sendKeys('[enter]');
   }
 
