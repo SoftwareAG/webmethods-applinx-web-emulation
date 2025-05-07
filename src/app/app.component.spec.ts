@@ -30,6 +30,7 @@ import { StorageService } from 'src/app/services/storage.service';
 import { LifecycleUserExits } from 'src/app/user-exits/LifecycleUserExits';
 import { UserExitsEventThrowerService } from './services/user-exits-event-thrower.service';
 import { IconService, ModalService, PlaceholderService } from 'carbon-components-angular';
+import { GXUtils } from 'src/utils/GXUtils';
 
 describe('AppComponent', () => {
 	
@@ -75,4 +76,95 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('ApplinX-Framework');
   });
 
+  it('should call sendKeys("[enter]") on double click when conditions are met', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    const navigationService = TestBed.inject(NavigationService);
+    spyOn(navigationService, 'sendKeys');
+  
+    // Create a dummy <div> element (not excluded)
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+  
+    const event = new MouseEvent('dblclick', { bubbles: true });
+    Object.defineProperty(event, 'target', { value: div });
+  
+    // Ensure feature flags are off
+    (GXUtils as any).ENABLETYPEAHEADFLAG = false;
+    app.macroMode = '';
+  
+    app.onGlobalDoubleClick(event);
+  
+    expect(navigationService.sendKeys).toHaveBeenCalledWith('[enter]');
+  });
+
+  it('should NOT call sendKeys("[enter]") when double-clicked inside a calendar', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    const navigationService = TestBed.inject(NavigationService);
+    spyOn(navigationService, 'sendKeys');
+  
+    const calendarEl = document.createElement('div');
+    calendarEl.classList.add('flatpickr-calendar');
+    document.body.appendChild(calendarEl);
+  
+    const event = new MouseEvent('dblclick', { bubbles: true });
+    Object.defineProperty(event, 'target', { value: calendarEl });
+  
+    app.onGlobalDoubleClick(event);
+    expect(navigationService.sendKeys).not.toHaveBeenCalled();
+  });
+
+  it('should NOT call sendKeys("[enter]") when double-clicked on a contentEditable element', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    const navigationService = TestBed.inject(NavigationService);
+    spyOn(navigationService, 'sendKeys');
+  
+    const editableDiv = document.createElement('div');
+    editableDiv.contentEditable = 'true';
+    document.body.appendChild(editableDiv);
+  
+    const event = new MouseEvent('dblclick', { bubbles: true });
+    Object.defineProperty(event, 'target', { value: editableDiv });
+  
+    app.onGlobalDoubleClick(event);
+    expect(navigationService.sendKeys).not.toHaveBeenCalled();
+  });
+
+  it('should NOT call sendKeys("[enter]") if macro mode is "record"', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    const navigationService = TestBed.inject(NavigationService);
+    spyOn(navigationService, 'sendKeys');
+  
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+  
+    const event = new MouseEvent('dblclick', { bubbles: true });
+    Object.defineProperty(event, 'target', { value: div });
+  
+    app.macroMode = 'record';
+    app.onGlobalDoubleClick(event);
+  
+    expect(navigationService.sendKeys).not.toHaveBeenCalled();
+  });
+
+  it('should NOT call sendKeys("[enter]") if double-clicked on a checkbox input', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    const navigationService = TestBed.inject(NavigationService);
+    spyOn(navigationService, 'sendKeys');
+  
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    document.body.appendChild(checkbox);
+  
+    const event = new MouseEvent('dblclick', { bubbles: true });
+    Object.defineProperty(event, 'target', { value: checkbox });
+  
+    app.onGlobalDoubleClick(event);
+    expect(navigationService.sendKeys).not.toHaveBeenCalled();
+  });
+  
 });
