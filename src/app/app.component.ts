@@ -178,6 +178,7 @@ export class AppComponent implements OnInit, OnDestroy {
   @HostListener('window:dblclick', ['$event'])
   onGlobalDoubleClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
+  
     const isInCalendar = target.closest('.flatpickr-calendar') ||
       target.closest('.numInputWrapper') ||
       target.closest('.cur-year') ||
@@ -185,33 +186,51 @@ export class AppComponent implements OnInit, OnDestroy {
       target.closest('[class*="date-picker"]') ||
       target.classList.contains('arrowUp') ||
       target.classList.contains('arrowDown');
-
+  
     const isInCarbonDropdown = target.closest('.cds--list-box') ||
       target.closest('.cds--list-box__field') ||
       target.classList.contains('cds--list-box__label');
-
+  
     const isInCarbonRadio = target.classList.contains('cds--radio-button__appearance') ||
-      target.closest('label.cds--radio-button__label')
+      target.closest('label.cds--radio-button__label');
+  
+    const isExcludedTarget =
+      target.tagName === 'INPUT' ||
+      target.tagName === 'TEXTAREA' ||
+      target.tagName === 'SELECT' ||
+      target.tagName === 'OPTION' ||
+      target.tagName === 'BUTTON' ||
+      isInCarbonRadio ||
+      target.closest('.cds--modal') ||
+      isInCalendar ||
+      isInCarbonDropdown ||
+      GXUtils.ENABLETYPEAHEADFLAG ||
+      this.macroMode === 'record' ||
+      (target instanceof HTMLInputElement && (target.type === 'radio' || target.type === 'checkbox')) ||
+      target.isContentEditable;
+  
+    if (isExcludedTarget) return;
+  
+    // 💡 Respect the config: disable if PF-key is None
+    if (GXUtils.enableDoubleClickFlag && GXUtils.doubleClickPFKey && (GXUtils.doubleClickPFKey.toLowerCase() !== 'none')){
+      try {
+        const gp = new GridPosition(target); // Calculate position based on clicked element
+        const pos = { row: gp.rowStart, column: gp.colStart }; // Get row and column from GridPosition
+        
+        // Create Cursor object (assuming you might also want to pass an ID)
+        const cursor = new Cursor(pos, target.id); // If you have an ID for the target
+        
+        // Set the cursor position in the navigation service
+        this.navigationService.setCursorPosition(cursor);
+        const pfKey = GXUtils.doubleClickPFKey.toLowerCase();
+        // console.log('🖱️ Double-click detected on:', target);
+        // console.log('📨 Sending PF-key:', GXUtils.doubleClickPFKey);
 
-    if (
-      target.tagName === 'INPUT' ||           // <input> fields
-      target.tagName === 'TEXTAREA' ||        // <textarea> fields
-      target.tagName === 'SELECT' ||          // <select> dropdowns
-      target.tagName === 'OPTION' ||          // <option> inside <select>
-      target.tagName === 'BUTTON' ||          // <button> fields
-      isInCarbonRadio ||                      // <cds-radio> field
-      target.closest('.cds--modal') ||        // <cds-modal> field
-      isInCalendar ||                         // <cds-date-picker> field
-      isInCarbonDropdown ||                   // <cds-dropdown> field
-      GXUtils.ENABLETYPEAHEADFLAG ||          // disabled if typeahead is enabled
-      this.macroMode === 'record'||           // disabled when recording macros
-      (target instanceof HTMLInputElement && (target.type === 'radio' || target.type === 'checkbox')) || // radio and checkbox
-      target.isContentEditable               // contenteditable fields (e.g., divs with contenteditable)
-    ) {
-      return;
+        this.navigationService.sendKeys(GXUtils.doubleClickPFKey);
+      } catch (err) {
+        console.error('Double click PF-key error:', err);
+      }
     }
-    if(GXUtils.enableDoubleClickFlag)
-    this.navigationService.sendKeys('[enter]');
   }
 
   @HostListener('window:beforeunload')

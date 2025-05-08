@@ -286,6 +286,16 @@ Example two (using arrow function):
 * Using keyboard mapping config file under:
 > \<projectDir\>/src/assets/config/KeyboardMappings.json
 
+### Configuring Double Click PF-Key
+
+You can control the behavior of double-clicking in the ApplinX Angular application by using the provided method:
+
+```ts
+ GXUtils.setDoubleClickPFKey('[pf3]');  // Set PF-key to F3
+ GXUtils.setDoubleClickPFKey('[pf1]');  // Set PF-key to F1
+ GXUtils.setDoubleClickPFKey('[enter]');   // Default PF-key (Enter)
+ GXUtils.setDoubleClickPFKey('[enter]');  // Disable feature
+
 
 **Note**: Additional information can be found in ApplinX documentation.
 From the top-level ApplinX User Guide screen, choose Reference > Web Application Development > API References > Client Side (JavaScript) > Keyboard Mapping.

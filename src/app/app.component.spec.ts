@@ -90,15 +90,16 @@ describe('AppComponent', () => {
     const event = new MouseEvent('dblclick', { bubbles: true });
     Object.defineProperty(event, 'target', { value: div });
   
-    // Set the flags
-    (GXUtils as any).ENABLETYPEAHEADFLAG = false;  // Set to false to ensure it's not interfering
-    app.macroMode = '';  // Set macroMode to an empty string
-    (GXUtils as any).enableDoubleClickFlag = true;  // Set the flag to true so the logic for double-click is enabled
+    // Set required flags
+    (GXUtils as any).ENABLETYPEAHEADFLAG = false;
+    (GXUtils as any).enableDoubleClickFlag = true;
+    (GXUtils as any).doubleClickPFKey = '[enter]'; 
+    app.macroMode = '';
   
-    // Trigger the double-click event handler
+    // Call the handler
     app.onGlobalDoubleClick(event);
   
-    // Check if sendKeys('[enter]') was called
+    // Expect the key to be sent
     expect(navigationService.sendKeys).toHaveBeenCalledWith('[enter]');
   });
 
