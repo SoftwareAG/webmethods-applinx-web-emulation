@@ -178,7 +178,7 @@ export class AppComponent implements OnInit, OnDestroy {
   @HostListener('window:dblclick', ['$event'])
   onGlobalDoubleClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
-  
+
     const isInCalendar = target.closest('.flatpickr-calendar') ||
       target.closest('.numInputWrapper') ||
       target.closest('.cur-year') ||
@@ -186,14 +186,14 @@ export class AppComponent implements OnInit, OnDestroy {
       target.closest('[class*="date-picker"]') ||
       target.classList.contains('arrowUp') ||
       target.classList.contains('arrowDown');
-  
+
     const isInCarbonDropdown = target.closest('.cds--list-box') ||
       target.closest('.cds--list-box__field') ||
       target.classList.contains('cds--list-box__label');
-  
+
     const isInCarbonRadio = target.classList.contains('cds--radio-button__appearance') ||
       target.closest('label.cds--radio-button__label');
-  
+
     const isExcludedTarget =
       target.tagName === 'INPUT' || // <input> fields
       target.tagName === 'TEXTAREA' || // <textarea> fields
@@ -208,17 +208,17 @@ export class AppComponent implements OnInit, OnDestroy {
       this.macroMode === 'record' || // disabled when recording macros
       (target instanceof HTMLInputElement && (target.type === 'radio' || target.type === 'checkbox')) || // radio and checkbox
       target.isContentEditable; // contenteditable fields (e.g., divs with contenteditable)
-  
+
     if (isExcludedTarget) return;
-  
+
     // disable if PF-key is None
-    if (GXUtils.enableDoubleClickFlag && GXUtils.doubleClickPFKey && (GXUtils.doubleClickPFKey.toLowerCase() !== 'none')){
+    if (GXUtils.enableDoubleClickFlag && GXUtils.doubleClickPFKey && (GXUtils.doubleClickPFKey.toLowerCase() !== 'none')) {
       try {
         const gp = new GridPosition(target); // Calculate position based on clicked element
         const pos = { row: gp.rowStart, column: gp.colStart }; // Get row and column from GridPosition
-        
+
         const cursor = new Cursor(pos, target.id);
-        
+
         // Setting the cursor position in the navigation service
         this.navigationService.setCursorPosition(cursor);
         const pfKey = GXUtils.doubleClickPFKey.toLowerCase();
@@ -294,6 +294,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // Uncomment below method to change it to a different value
+    // GXUtils.setDoubleClickPFKey('[pf1]');
     this.iconService.registerAll([Notification20, UserAvatar20, AppSwitcher20]);
     this.changeBackgroundColor(this.themeColor);
     this.logger.debug(this.messages.get("INITIALIZING_WEB_APPLICATION"));

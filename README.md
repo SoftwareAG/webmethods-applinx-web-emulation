@@ -288,7 +288,7 @@ Example two (using arrow function):
 
 ### Configuring Double Click PF-Key
 
-You can control the behavior of double-clicking in the ApplinX Angular application by using the provided method:
+You can control the behavior of double-clicking in the ApplinX Angular application by using the provided method in app.component.ts (ngOnInit block):
 
 ```ts
  GXUtils.setDoubleClickPFKey('[pf3]');  // Set PF-key to F3
