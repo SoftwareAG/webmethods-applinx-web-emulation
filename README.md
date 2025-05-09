@@ -294,7 +294,7 @@ You can control the behavior of double-clicking in the ApplinX Angular applicati
  GXUtils.setDoubleClickPFKey('[pf3]');  // Set PF-key to F3
  GXUtils.setDoubleClickPFKey('[pf1]');  // Set PF-key to F1
  GXUtils.setDoubleClickPFKey('[enter]');   // Default PF-key (Enter)
- GXUtils.setDoubleClickPFKey('[enter]');  // Disable feature
+ GXUtils.setDoubleClickPFKey('none');  // Disable feature
 
 
 **Note**: Additional information can be found in ApplinX documentation.
