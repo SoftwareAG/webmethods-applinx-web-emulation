@@ -214,15 +214,8 @@ export class AppComponent implements OnInit, OnDestroy {
     // disable if PF-key is None
     if (GXUtils.enableDoubleClickFlag && GXUtils.doubleClickPFKey && (GXUtils.doubleClickPFKey.toLowerCase() !== 'none')) {
       try {
-        const gp = new GridPosition(target); // Calculate position based on clicked element
-        const pos = { row: gp.rowStart, column: gp.colStart }; // Get row and column from GridPosition
-
-        const cursor = new Cursor(pos, target.id);
-
-        // Setting the cursor position in the navigation service
-        this.navigationService.setCursorPosition(cursor);
         const pfKey = GXUtils.doubleClickPFKey.toLowerCase();
-        // uncomment below lines to log the key used.
+        // Uncomment below lines to log the key used.
         // console.log('🖱️ Double-click detected on:', target);
         // console.log('📨 Sending PF-key:', GXUtils.doubleClickPFKey);
 
