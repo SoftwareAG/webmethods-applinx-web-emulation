@@ -205,7 +205,7 @@ export class AppComponent implements OnInit, OnDestroy {
       isInCalendar ||  // <cds-date-picker> field
       isInCarbonDropdown ||  // <cds-dropdown> field
       GXUtils.ENABLETYPEAHEADFLAG ||  // disabled if typeahead is enabled
-      this.macroMode === 'record' || // disabled when recording macros
+      (this.macroMode === 'record' && !this.sharedService.getCancelFlag()) || // disabled when recording macros
       (target instanceof HTMLInputElement && (target.type === 'radio' || target.type === 'checkbox')) || // radio and checkbox
       target.isContentEditable; // contenteditable fields (e.g., divs with contenteditable)
 

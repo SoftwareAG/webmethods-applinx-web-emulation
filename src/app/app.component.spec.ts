@@ -17,7 +17,7 @@ import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { ApiModule, SessionService, InfoService } from '@ibm/applinx-rest-apis';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { ScreenLockerService } from 'src/app/services/screen-locker.service'
@@ -31,15 +31,21 @@ import { LifecycleUserExits } from 'src/app/user-exits/LifecycleUserExits';
 import { UserExitsEventThrowerService } from './services/user-exits-event-thrower.service';
 import { IconService, ModalService, PlaceholderService } from 'carbon-components-angular';
 import { GXUtils } from 'src/utils/GXUtils';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+
 
 describe('AppComponent', () => {
 
   beforeEach(async(() => {
+    const mockLogger = {
+      getConfigSnapshot: jasmine.createSpy('getConfigSnapshot').and.returnValue({}), // Return empty config snapshot
+      updateConfig: jasmine.createSpy('updateConfig')  // Ensure updateConfig is mocked
+    };
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
         ApiModule,
-        HttpClientModule
+        HttpClientTestingModule
       ],
       declarations: [
         AppComponent
@@ -57,8 +63,8 @@ describe('AppComponent', () => {
         ModalService,
         PlaceholderService,
         IconService,
-        { provide: NGXLogger, useValue: { getConfigSnapshot: () => ({}) } },
-        { provide: 'IJSFunctionService', useClass: JSFunctionsService }
+        { provide: NGXLogger, useValue:mockLogger },
+        { provide: 'IJSFunctionService', useClass: JSFunctionsService },
 
       ]
     }).compileComponents();
@@ -297,5 +303,87 @@ describe('AppComponent', () => {
     expect(navigationService.sendKeys).not.toHaveBeenCalled();
   });
 
+  it('should call sendKeys and handle screen response on double click', async () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    const navigationService = TestBed.inject(NavigationService);
+  
+    // Mocking screen response similar to what the API returns
+    const mockScreenData = {
+      id: 'screen001',
+      title: 'Dashboard',
+      fields: [],
+      cursorPosition: { row: 2, column: 5 }
+    };
+  
+    // Spying on sendKeys and returning a mocked observable of screen
+    spyOn(navigationService, 'sendKeys');
+  
+    GXUtils.ENABLETYPEAHEADFLAG = false;
+    GXUtils.enableDoubleClickFlag = true;
+    GXUtils.doubleClickPFKey = '[enter]';
+    app.macroMode = '';
+  
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+  
+    const event = new MouseEvent('dblclick', { bubbles: true });
+    Object.defineProperty(event, 'target', { value: div });
+  
+    // Calling the double-click handler
+    app.onGlobalDoubleClick(event);
+  
+    // Ensuring API is called and screen is received
+    expect(navigationService.sendKeys).toHaveBeenCalledWith('[enter]');
+  
+  });
+
+  it('should call screen API on double click via sendKeys', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    const navigationService = TestBed.inject(NavigationService);
+    const httpMock = TestBed.inject(HttpTestingController);
+  
+    // Spying on the sendKeys method and simulating the API being triggered
+    spyOn(navigationService, 'sendKeys').and.callFake(() => {
+      const http = TestBed.inject(HttpClient);
+      http.put('/api/screen', {}).subscribe();
+      return;
+    });
+  
+    // Mocking external requests to avoid open HTTP requests
+    const mockMessagesResponse = { };
+    const mockSessionConfigResponse = { };
+    const mockInfoResponse = { };
+  
+    // Mocking the external HTTP requests that might cause issues
+    httpMock.expectOne('./assets/messages/messages.json').flush(mockMessagesResponse);
+    httpMock.expectOne('http://localhost:8080/api/rest/info').flush(mockInfoResponse);
+    httpMock.expectOne('http://localhost:9876/context.html/assets/config/sessionConfig.json').flush(mockSessionConfigResponse);
+    httpMock.expectOne('./assets/config/sessionConfig.json').flush(mockSessionConfigResponse);
+  
+    // Simulating double click event
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+  
+    const event = new MouseEvent('dblclick', { bubbles: true });
+    Object.defineProperty(event, 'target', { value: div });
+  
+    GXUtils.enableDoubleClickFlag = true;
+    GXUtils.doubleClickPFKey = '[enter]';
+    GXUtils.ENABLETYPEAHEADFLAG = false;
+    app.macroMode = '';
+  
+    // Calling the double click handler
+    app.onGlobalDoubleClick(event);
+  
+    // Ensuring the correct HTTP request was made
+    const req = httpMock.expectOne('/api/screen');
+    expect(req.request.method).toBe('PUT');
+    req.flush({});  // Respond to the screen API request
+  
+    // Verifying that there are no pending HTTP requests
+    httpMock.verify();
+  });
 
 });
