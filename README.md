@@ -287,8 +287,8 @@ Example two (using arrow function):
 > \<projectDir\>/src/assets/config/KeyboardMappings.json
 
 ### Configuring Double Click PF-Key
-
-You can control the behavior of double-clicking in the ApplinX Angular application by using the provided method in app.component.ts (ngOnInit block):
+Double clicking a label, empty space on the screen or a non input field, will trigger the Screen PUT API and work as enter key and The page would update with content of the next screen.The default double click PF-key is Enter.Double clicking an input field will not trigger the API call, but will highlight the content on the input field.This feature would be disabled when recording macros or when using type ahead.
+You can control the behavior of double-clicking in the ApplinX Angular application by using the below typescript method in app.component.ts (ngOnInit block):
 
 ```ts
  GXUtils.setDoubleClickPFKey('[pf3]');  // Set PF-key to F3

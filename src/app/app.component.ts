@@ -289,6 +289,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Uncomment below method to change it to a different value
     // GXUtils.setDoubleClickPFKey('[pf1]');
+    // GXUtils.setDoubleClickPFKey('none');
     this.iconService.registerAll([Notification20, UserAvatar20, AppSwitcher20]);
     this.changeBackgroundColor(this.themeColor);
     this.logger.debug(this.messages.get("INITIALIZING_WEB_APPLICATION"));
