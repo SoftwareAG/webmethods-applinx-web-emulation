@@ -17,7 +17,7 @@ import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { ApiModule,SessionService,InfoService } from '@ibm/applinx-rest-apis';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NavigationService } from 'src/app/services/navigation/navigation.service';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { ScreenLockerService } from 'src/app/services/screen-locker.service'
@@ -35,32 +35,29 @@ describe('AppComponent', () => {
 	
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        ApiModule,
-        HttpClientModule
-		],
-      declarations: [
+    declarations: [
         AppComponent
-      ],
-	  providers: [
-		SessionService,
-		NavigationService,
-		LoggerTestingModule,
-		ScreenLockerService,
-		DatePipe,
-		StorageService,
-		UserExitsEventThrowerService,
-		LifecycleUserExits,	
-		InfoService,
-    ModalService,
-    PlaceholderService ,
-    IconService,
-    {provide: NGXLogger, useValue:  {getConfigSnapshot:()=>({})}},
-		{provide: 'IJSFunctionService', useClass: JSFunctionsService}
-		
-	  ]
-    }).compileComponents();
+    ],
+    imports: [RouterTestingModule,
+        ApiModule],
+    providers: [
+        SessionService,
+        NavigationService,
+        LoggerTestingModule,
+        ScreenLockerService,
+        DatePipe,
+        StorageService,
+        UserExitsEventThrowerService,
+        LifecycleUserExits,
+        InfoService,
+        ModalService,
+        PlaceholderService,
+        IconService,
+        { provide: NGXLogger, useValue: { getConfigSnapshot: () => ({}) } },
+        { provide: 'IJSFunctionService', useClass: JSFunctionsService },
+        provideHttpClient(withInterceptorsFromDi())
+    ]
+}).compileComponents();
   }));
 
   it('should create the app', () => {
