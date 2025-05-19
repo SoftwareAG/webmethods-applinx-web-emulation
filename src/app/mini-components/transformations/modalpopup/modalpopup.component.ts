@@ -5,10 +5,11 @@ import { DialogService } from 'carbon-components-angular';
 import { SharedService } from '../../../services/shared.service';
 
 @Component({
-  selector: 'app-modalpopup',
-  providers: [DialogService],
-  templateUrl: './modalpopup.component.html',
-  styleUrls: ['./modalpopup.component.scss']
+    selector: 'app-modalpopup',
+    providers: [DialogService],
+    templateUrl: './modalpopup.component.html',
+    styleUrls: ['./modalpopup.component.scss'],
+    standalone: false
 })
 export class ModalpopupComponent implements OnInit {
 

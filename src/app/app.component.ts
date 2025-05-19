@@ -45,10 +45,11 @@ import AppSwitcher20 from '@carbon/icons/es/app/20';
 import AddIcon from '@carbon/icons/es/4K/32';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  providers: [],
-  styleUrls: ['./app.component.scss']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    providers: [],
+    styleUrls: ['./app.component.scss'],
+    standalone: false
 })
 export class AppComponent implements OnInit, OnDestroy {
 

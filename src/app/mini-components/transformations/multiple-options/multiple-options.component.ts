@@ -20,9 +20,10 @@ import { GridPosition } from 'src/app/services/navigation/tab-and-arrows.service
 import {NavigationService} from '../../../services/navigation/navigation.service';
 
 @Component({
-  selector: 'app-multiple-options',
-  templateUrl: './multiple-options.component.html',
-  styleUrls: ['./multiple-options.component.scss']
+    selector: 'app-multiple-options',
+    templateUrl: './multiple-options.component.html',
+    styleUrls: ['./multiple-options.component.scss'],
+    standalone: false
 })
 export class MultipleOptionsComponent implements OnChanges {
 

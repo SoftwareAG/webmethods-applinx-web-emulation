@@ -19,9 +19,10 @@ import { NavigationService } from '../../../services/navigation/navigation.servi
 import { TableModel, TableHeaderItem, TableItem } from 'carbon-components-angular';
 
 @Component({
-  selector: 'app-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss']
+    selector: 'app-table',
+    templateUrl: './table.component.html',
+    styleUrls: ['./table.component.scss'],
+    standalone: false
 })
 export class TableComponent implements OnChanges {
 

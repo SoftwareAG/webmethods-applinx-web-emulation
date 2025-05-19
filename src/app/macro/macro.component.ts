@@ -9,11 +9,12 @@ import { NotificationService } from 'carbon-components-angular';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
-  selector: 'app-macro',
-  templateUrl: './macro.component.html',
-  styleUrls: ['./macro.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
-  providers: [NotificationService]
+    selector: 'app-macro',
+    templateUrl: './macro.component.html',
+    styleUrls: ['./macro.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
+    providers: [NotificationService],
+    standalone: false
 })
 
 export class MacroComponent {

@@ -19,9 +19,10 @@ import { ClickableTransformation, SendKeysEvent, UrlEvent } from '@ibm/applinx-r
 import {NavigationService} from '../../../services/navigation/navigation.service';
 
 @Component({
-  selector: 'app-clickable',
-  templateUrl: './clickable.component.html',
-  styleUrls: ['./clickable.component.scss']
+    selector: 'app-clickable',
+    templateUrl: './clickable.component.html',
+    styleUrls: ['./clickable.component.scss'],
+    standalone: false
 })
 export class ClickableComponent implements OnInit {
 
