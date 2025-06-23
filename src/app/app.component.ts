@@ -517,11 +517,6 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
 
   setHostKeys(hostkeys: HostKeyTransformation[]): void {
     this.hostKeyTransforms = hostkeys;
-    if (hostkeys !== null) {
-      if (hostkeys[0]?.hostKeys?.length > 12) {
-        this.hostKeysBool = true;
-      }
-    }
   }
 
   onActivate(component) {
@@ -579,33 +574,7 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
       this.hostConnectionSubscription.unsubscribe();
     }
   }
-/*
-  macro_test() {
-    this.recordStop = this.sharedService.getMacroRecordFlag();
-    this.getMacro().subscribe((response: any) => {
-      console.log("Test Response..... ", response)
-      response.fileList.forEach(file => {
-        this.macroList.push(file.substring(0, file.length - 5))
-      });
-      sessionStorage.setItem("macroFileList", JSON.parse(JSON.stringify(this.macroList)));
-      this.macroList = [];
-    })
-  }
 
-  getMacro_test() {
-    let applicationName = this.configurationService.applicationName;
-    let headers = this.defaultHeaders;
-    headers = headers.set('userName', String(this.userName));
-    headers = headers.set('applicationName', String(applicationName));
-    headers = headers.set('Authorization', String(this.storageService.getAuthToken()));
-    return this.httpClient.get(`${this.basePath}/macro/list`, {
-      // withCredentials: this.configuration.withCredentials,
-      headers: headers,
-      observe: "body", //this.observe,
-      reportProgress: this.reportProgress
-    });
-  }
-*/
   macro() {
     this.showButtonFlag = true;
     this.recordStop = this.sharedService.getMacroRecordFlag();
@@ -613,6 +582,7 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
     let applicationName = this.configurationService.applicationName;
     let tempUserName = sessionStorage.getItem('userName');
     this.userName = tempUserName.substr(1, tempUserName.length-2);
+
     this.macroFileListSubscription = this.macroService
         .getMacro(this.userName, applicationName,token)
         .subscribe(data =>{
@@ -626,7 +596,6 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
   }
 
   openMacro(paramType: string) { 
-    console.log("Action :", paramType)
     this.showButtonFlag = false;
     const divToRemove = document.getElementById("macroRecordContainer")
     if (divToRemove){
@@ -638,7 +607,6 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
     (reference.instance as MacroComponent).operationType = paramType;
     this.sharedService.setPopUpFlag(true);
     reference.instance.dataEmitter;
-   console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",reference.instance.dataService.getMacroRecordFlag());
 
     if (paramType == "stopRecord"){
       this.changeRecColor = reference.instance.onRecordStopColor(false)
@@ -741,10 +709,7 @@ fnFormTypeaheadDetails(event: KeyboardEvent) {
   }
   selected(event: any, color: string){
     this.selectedColor = color;
-    console.log(">>>>>>>>>>>>>>>>>>>>",this.selectedColor);
     let themeColor = event.currentTarget.id;
-    console.log(">>>>>>>>>>>>>>>>>>>>",themeColor);
-
     this.changeBackgroundColor(themeColor);
   }
 }

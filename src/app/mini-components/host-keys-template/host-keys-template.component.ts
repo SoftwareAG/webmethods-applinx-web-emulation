@@ -27,8 +27,7 @@ export class HostKeysTemplateComponent implements OnInit {
 
   @Input() transformations: HostKeyTransformation[];
   @Input() themeColor: string;
-  @Input() multipleHostKeys: boolean;
-
+  
   constructor(public navigationService: NavigationService) { }
   align: string = "left";
   isOpen: boolean = false;
