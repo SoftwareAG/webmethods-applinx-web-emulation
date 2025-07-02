@@ -1,18 +1,20 @@
 <div class="hostKeysContainer">
-  <ng-container *ngFor="let transform of transformations; index as i">
-    <div *ngFor="let hostKey of transform.hostKeys">
-    <cds-tooltip [isOpen]="isOpen" [caret]="caret" [align]="align" [highContrast]="highContrast"
-      description="{{hostKey.caption}}">
-      <button cdsButton="secondary" size="sm" class="button-corner"
-        [ngClass]="{green_secondary: themeColor === 'Green'}" id="on-hover" 
-        (click)="onClick(hostKey.action)">
-        <span class="overflowText">
-          {{hostKey.caption}}
-        </span>
-      </button>
-    </cds-tooltip>
-  </div>
-  </ng-container>
+  @for (transform of transformations; track transform; let i = $index) {
+    @for (hostKey of transform.hostKeys; track hostKey) {
+      <div>
+        <cds-tooltip [isOpen]="isOpen" [caret]="caret" [align]="align" [highContrast]="highContrast"
+          description="{{hostKey.caption}}">
+          <button cdsButton="secondary" size="sm" class="button-corner"
+            [ngClass]="{green_secondary: themeColor === 'Green'}" id="on-hover"
+            (click)="onClick(hostKey.action)">
+            <span class="overflowText">
+              {{hostKey.caption}}
+            </span>
+          </button>
+        </cds-tooltip>
+      </div>
+    }
+  }
 
   <cds-tooltip [isOpen]="isOpen" [caret]="caret" [align]="align" [highContrast]="highContrast" description="Enter">
     <button cdsButton size="sm" class="button-corner" id="enter" [ngClass]="{green_enter: themeColor === 'Green'}"
