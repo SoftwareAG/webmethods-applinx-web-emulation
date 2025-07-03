@@ -8,7 +8,7 @@
       [dir]="(field.visualContent && storageService.getLanguage().screenDirectionRTL) ? 'rtl' : 'ltr'"
       [ngClass]="[field.blinking ? 'blink_me' : '', fgClass ? fgClass : '', bgClass ? bgClass : '', this.field.isIntensified ? 'gx_intf' : '']"
       [hidden]="!field.visible">
-      @for (ch of this.content; track ch; let i = $index) {
+      @for (ch of this.content; track i; let i = $index) {
         <span>
           {{ch != ' ' ? ch : '&nbsp;'}}
         </span>

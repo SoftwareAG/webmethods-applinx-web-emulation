@@ -15,7 +15,7 @@
                   'z-index': 0, 'width': 'min-content', 'margin-top': '1rem'}">
     @if (!isChildWindow) {
       <div name="emptyArray" style="display: contents; z-index: -999;">
-        @for (item of screenWidthArray; track item; let i = $index) {
+        @for (item of screenWidthArray; track i; let i = $index) {
           <span [ngStyle]="{'grid-row': 1 / 1, 'grid-column-start': 1+i}">&nbsp;</span>
         }
       </div>
@@ -24,12 +24,14 @@
       <div name="windowTitle"
         style="display: flex; margin-top: -0.7rem; background-color: Hidden; position: relative; top: 10px;"
         [ngStyle]="titlePosition">
-        @for (ch of m_screen.windows[index].title.split(''); track ch; let i = $index) {
+       @for (ch of m_screen.windows[index].title.split(''); track i; let i = $index)
+ {
           <span>{{ch != ' ' ? ch : '&nbsp;'}}</span>
         }
       </div>
     }
-    @for (field of m_screen.fields; track field) {
+    @for (field of m_screen.fields; track i; let i = $index)
+ {
       <ng-container #gridContainer >
         @if (field && (field.protected || (!isChildWindow && hasChildWindows()) || (isChildWindow && !isLastChildWindow))) {
           <app-field [field]="field"></app-field>

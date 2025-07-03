@@ -7,7 +7,7 @@
   <!-- <thead cdsTableHead class="tableHeader" [ngStyle]="{'border-style': 'solid', 'border-width': 'thin'}"> -->
   <thead class="tableHeader" [ngStyle]="{'border-style': 'solid', 'border-width': 'thin'}">
     <tr>
-      @for (col of transform.table.cols; track col) {
+      @for (col of transform.table.cols; track i; let i = $index) {
         <th title="{{col.tooltip}}" name="{{col.name}}">
           {{col.caption}}
         </th>
@@ -18,9 +18,9 @@
   <!-- <tbody cdsTableBody class="tableBody" [ngStyle]="{'border-style': 'solid', 'border-width': 'thin'}"> -->
   <tbody class="tableBody" [ngStyle]="{'border-style': 'solid', 'border-width': 'thin'}">
     <!-- <tr cdsTableRow *ngFor="let row of transform.table.rows; index as i" [ngClass]="(i%2==0) ? 'gx_tbl_alternating1' : 'gx_tbl_alternating2'"> -->
-    @for (row of transform.table.rows; track row; let i = $index) {
+    @for (row of transform.table.rows; track i; let i = $index) {
       <tr [ngClass]="(i%2==0) ? 'gx_tbl_alternating1' : 'gx_tbl_alternating2'">
-        @for (item of row.items; track item; let j = $index) {
+        @for (item of row.items; track j; let j = $index) {
           <td style="border-style: solid; border-width: thin">
             @if (item.type && item.inTableCell) {
               @switch (item.type) {
